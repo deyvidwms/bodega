@@ -1,13 +1,13 @@
 import { Router } from 'express'
-import UsuarioControlador from '../controle/usuarioControle';
+import UsuarioControle from '../controle/usuarioControle';
 
 const usuarioRota = Router()
-const controlador = new UsuarioControlador();
+const controle = new UsuarioControle();
 
-usuarioRota.get('/', controlador.todos);
-usuarioRota.get('/:id', controlador.porId);
-usuarioRota.post('/', controlador.criar);
-usuarioRota.put('/', controlador.atualizar);
-usuarioRota.delete('/:id', controlador.remover);
+usuarioRota.get('/', controle.todos);
+usuarioRota.get('/:id', controle.porId);
+usuarioRota.post('/', controle.criar);
+usuarioRota.put('/', controle.atualizar);
+usuarioRota.delete('/:id', controle.remover);
 
 export default usuarioRota;
