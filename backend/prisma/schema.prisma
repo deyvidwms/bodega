@@ -17,6 +17,18 @@ model Bodega {
   imagem    String
 
   usuarios Usuario[]
+  produtos Produto[]
+}
+
+model Produto {
+  id Int @id @default(autoincrement())
+  titulo    String
+  descricao String
+  imagem    String
+  idCriador Int?
+  criadoPor Usuario? @relation(fields: [idCriador], references: [id])
+  idBodega Int?
+  bodega   Bodega? @relation(fields: [idBodega], references: [id])
 }
 
 model Usuario {
@@ -30,4 +42,5 @@ model Usuario {
 
   idBodega Int?
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
+  produtos Produto[]
 }
