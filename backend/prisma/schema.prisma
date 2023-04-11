@@ -7,6 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Bodega {
+  id Int @id @default(autoincrement())
+
+  nome      String
+  descricao String
+  cnpj      String @unique
+  endereco  String
+  imagem    String
+
+  usuarios Usuario[]
+}
+
 model Usuario {
   id Int @id @default(autoincrement())
 
@@ -15,4 +27,7 @@ model Usuario {
   cpf     String  @unique
   celular String? @unique
   senha   String
+
+  idBodega Int?
+  bodega   Bodega? @relation(fields: [idBodega], references: [id])
 }
