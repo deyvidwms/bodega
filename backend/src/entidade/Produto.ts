@@ -1,6 +1,3 @@
-import Bodega from "./Bodega";
-import Usuario from "./Usuario";
-
 type Produto = {
   id: number;
   titulo: string;

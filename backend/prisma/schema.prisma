@@ -21,14 +21,29 @@ model Bodega {
 }
 
 model Produto {
-  id Int @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   titulo    String
   descricao String
   imagem    String
+
   idCriador Int?
   criadoPor Usuario? @relation(fields: [idCriador], references: [id])
+
   idBodega Int?
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
+
+  CategoriaProduto   CategoriaProduto? @relation(fields: [categoriaProdutoId], references: [id])
+  categoriaProdutoId Int?
+
+  lotes Lote[]
+}
+
+model CategoriaProduto {
+  id     Int    @id @default(autoincrement())
+  nome   String
+  imagem String
+
+  produtos Produto[]
 }
 
 model Usuario {
@@ -42,5 +57,36 @@ model Usuario {
 
   idBodega Int?
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
+
   produtos Produto[]
+  lotes    Lote[]
+}
+
+model Lote {
+  id Int @id @default(autoincrement())
+
+  quantidadeInicial Int
+  quantidadeAtual   Int
+  expiraEm          DateTime?
+  compradoEm        DateTime
+  custo             Decimal
+
+  idProduto Int
+  produto   Produto @relation(fields: [idProduto], references: [id])
+
+  idCriador Int
+  criadoPor Usuario @relation(fields: [idCriador], references: [id])
+
+  vendas Venda[]
+}
+
+model Venda {
+  id Int @id @default(autoincrement())
+
+  quantidade Int
+  vendidoEm  DateTime
+  valorTotal Decimal
+
+  idLote Int
+  lote   Lote @relation(fields: [idLote], references: [id])
 }
