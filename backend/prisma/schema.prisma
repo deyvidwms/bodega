@@ -32,7 +32,18 @@ model Produto {
   idBodega Int?
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
 
+  CategoriaProduto   CategoriaProduto? @relation(fields: [categoriaProdutoId], references: [id])
+  categoriaProdutoId Int?
+
   lotes Lote[]
+}
+
+model CategoriaProduto {
+  id     Int    @id @default(autoincrement())
+  nome   String
+  imagem String
+
+  produtos Produto[]
 }
 
 model Usuario {
