@@ -7,7 +7,7 @@ import vendaRota from "./vendaRota";
 
 const rota = Router();
 
-rota.use('/categoriaProduto', categoriaProdutoRota);
+rota.use('/categoria-produto', categoriaProdutoRota);
 rota.use('/lote', loteRota);
 rota.use('/produto', produtoRota);
 rota.use('/usuario', usuarioRota);
