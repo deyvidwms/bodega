@@ -32,7 +32,7 @@ model Produto {
   idBodega Int?
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
 
-  Lote Lote[]
+  lotes Lote[]
 }
 
 model Usuario {
@@ -48,7 +48,7 @@ model Usuario {
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
 
   produtos Produto[]
-  Lote     Lote[]
+  lotes    Lote[]
 }
 
 model Lote {
@@ -65,4 +65,17 @@ model Lote {
 
   idCriador Int
   criadoPor Usuario @relation(fields: [idCriador], references: [id])
+
+  vendas Venda[]
+}
+
+model Venda {
+  id Int @id @default(autoincrement())
+
+  quantidade Int
+  vendidoEm  DateTime
+  valorTotal Decimal
+
+  idLote Int
+  lote   Lote @relation(fields: [idLote], references: [id])
 }
