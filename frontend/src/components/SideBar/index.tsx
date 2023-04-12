@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup } from "react-icons/fa";
+import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup, FaSignOutAlt } from "react-icons/fa";
 
 import { Container, Menu, OptionList, Option, OptionTitle } from './style';
 
@@ -49,6 +49,11 @@ const SideBar: React.FC = () => {
           onClick={() => handleClickShowMenuList('sell')}
         >
           <OptionTitle><FaCartPlus /> Vendas</OptionTitle>
+        </OptionList>
+        <OptionList
+          onClick={() => handleClickShowMenuList('exit')}
+        >
+          <OptionTitle><FaSignOutAlt fill="#ff0000" /> Sair</OptionTitle>
         </OptionList>
       </Menu>
     </Container>

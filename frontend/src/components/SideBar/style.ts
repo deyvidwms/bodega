@@ -22,6 +22,8 @@ export const OptionTitle = styled.div`
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
 
+  color: #515151;
+
   transition: all ease 0.3s;
 
   svg {
@@ -32,13 +34,13 @@ export const OptionTitle = styled.div`
 export const Option = styled.div`
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
-  cursor: pointer;
-  border-radius: 6px;
+  color: #515151;
   padding: 10px;
   transition: all ease 0.3s;
+  cursor: pointer;
 `;
 
-export const OptionList = styled.div<{show: boolean}>`
+export const OptionList = styled.div<{show?: boolean}>`
   padding: 5px 15px;
   cursor: pointer;
 
