@@ -26,6 +26,10 @@ export const OptionTitle = styled.div`
 
   transition: all ease 0.3s;
 
+  &:hover {
+    background-color: #eaeaea !important;
+  }
+
   svg {
     margin-right: 15px;
   }
@@ -43,6 +47,8 @@ export const Option = styled.div`
 export const OptionList = styled.div<{show?: boolean}>`
   padding: 5px 15px;
   cursor: pointer;
+
+  
 
   ${OptionTitle} {
     background-color: ${(props) => props.show ? '#eaeaea' : '#fff'};
