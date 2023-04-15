@@ -2,15 +2,18 @@ import React from 'react';
 
 import Header from '../Header';
 
-import { Container } from './styles';
+import { Container, Content } from './styles';
 import SideBar from '../SideBar';
 
 const LayoutDashboard: React.FC<{children: React.ReactNode}> = ({children}) => {
+  console.log(children)
   return (
     <Container>
       <Header />
-      <SideBar />
-      {children}
+      <Content>
+        <SideBar />
+        {children}
+      </Content>
     </Container>
   );
 }

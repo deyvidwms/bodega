@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  max-width: 300px;
+  max-width: 250px;
   height: calc(100vh - 70px);
   border-right: 1px solid #CCC;
 `;
 
 export const Menu = styled.div`
-  width: 100%;
+  width: 250px;
   padding: 50px 0;
 `;
 
