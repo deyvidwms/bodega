@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup, FaSignOutAlt } from "react-icons/fa";
 
 import { Container, Menu, OptionList, OptionTitle } from './style';
+import { Link } from 'react-router-dom';
 
 const SideBar: React.FC = () => {
   const [homeActive, setHomeActive] = useState<boolean>(true);
@@ -24,27 +25,33 @@ const SideBar: React.FC = () => {
           show={homeActive}
           onClick={() => handleClickShowMenuList('home')}
         >
-          <OptionTitle><FaHome /> Inicio</OptionTitle>
+          <OptionTitle>
+            <Link to={'/dashboard/'}><FaHome /> Inicio</Link>
+          </OptionTitle>
         </OptionList>
         <OptionList 
           show={productActive} 
           onClick={() => handleClickShowMenuList('product')}
         >
           <OptionTitle>
-            <FaBox /> Produtos
+            <Link to={'/dashboard/produto'}><FaBox /> Produtos</Link>
           </OptionTitle> 
         </OptionList>
         <OptionList 
           show={batchActive}
           onClick={() => handleClickShowMenuList('batch')}
         >
-          <OptionTitle><FaLayerGroup /> Lotes</OptionTitle> 
+          <OptionTitle>
+            <Link to={'/dashboard/lote'}><FaLayerGroup /> Lotes</Link>
+          </OptionTitle> 
         </OptionList>
         <OptionList
           show={sellActive}
           onClick={() => handleClickShowMenuList('sell')}
         >
-          <OptionTitle><FaCartPlus /> Vendas</OptionTitle>
+          <OptionTitle>
+            <Link to={'/dashboard/venda'}><FaCartPlus /> Vendas</Link>
+          </OptionTitle>
         </OptionList>
         <OptionList
           onClick={() => handleClickShowMenuList('exit')}

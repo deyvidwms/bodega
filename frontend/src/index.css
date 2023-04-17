@@ -10,3 +10,8 @@ body {
   overflow-x: hidden;
   background-color: #FEFEFE;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

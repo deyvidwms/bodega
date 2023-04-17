@@ -109,4 +109,5 @@ export const IconTitle = styled.div`
 export const Subtitle = styled.p`
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
+  margin-top: 10px;
 `;
