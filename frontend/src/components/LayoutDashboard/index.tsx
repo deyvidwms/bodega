@@ -6,7 +6,6 @@ import { Container, Content } from './styles';
 import SideBar from '../SideBar';
 
 const LayoutDashboard: React.FC<{children: React.ReactNode}> = ({children}) => {
-  console.log(children)
   return (
     <Container>
       <Header />

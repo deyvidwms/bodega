@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup, FaSignOutAlt } from "react-icons/fa";
 
-import { Container, Menu, OptionList, Option, OptionTitle } from './style';
+import { Container, Menu, OptionList, OptionTitle } from './style';
 
 const SideBar: React.FC = () => {
   const [homeActive, setHomeActive] = useState<boolean>(true);
@@ -33,16 +33,12 @@ const SideBar: React.FC = () => {
           <OptionTitle>
             <FaBox /> Produtos
           </OptionTitle> 
-          <Option>Cadastrar</Option>
-          <Option>Editar</Option>
         </OptionList>
         <OptionList 
           show={batchActive}
           onClick={() => handleClickShowMenuList('batch')}
         >
           <OptionTitle><FaLayerGroup /> Lotes</OptionTitle> 
-          <Option>Cadastrar</Option>
-          <Option>Editar</Option>
         </OptionList>
         <OptionList
           show={sellActive}

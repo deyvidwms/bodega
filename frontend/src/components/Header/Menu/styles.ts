@@ -13,6 +13,13 @@ export const Container = styled.div<{show: boolean}>`
   transition: all ease 0.5s;
   transform: translateX(${(props) => props.show ? '0' : '200%'});
   opacity: ${(props) => props.show ? '1' : '0'};
+
+  @media (max-width: 380px) {
+    display: ${(props) => props.show ? 'block' : 'none'};
+    position: initial;
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 export const MenuList = styled.div`

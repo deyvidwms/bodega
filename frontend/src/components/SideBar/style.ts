@@ -2,8 +2,14 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   max-width: 250px;
+  background-color: #FFF;
   height: calc(100vh - 70px);
   border-right: 1px solid #CCC;
+
+  @media (max-width: 680px) {
+    position: absolute;
+    transform: translateX(-100%);
+  }
 `;
 
 export const Menu = styled.div`
@@ -35,15 +41,6 @@ export const OptionTitle = styled.div`
   }
 `;
 
-export const Option = styled.div`
-  font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
-  color: #515151;
-  padding: 10px;
-  transition: all ease 0.3s;
-  cursor: pointer;
-`;
-
 export const OptionList = styled.div<{show?: boolean}>`
   padding: 5px 15px;
   cursor: pointer;
@@ -52,9 +49,5 @@ export const OptionList = styled.div<{show?: boolean}>`
 
   ${OptionTitle} {
     background-color: ${(props) => props.show ? '#eaeaea' : '#fff'};
-  }
-
-  ${Option} {
-    display: ${(props) => props.show ? 'block' : 'none'};
   }
 `;

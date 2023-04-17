@@ -7,10 +7,21 @@ export const Container = styled.div`
   background-color: #fbb940;
   padding: 0 100px;
   border-bottom: 1px solid #CCC;
+  transition: all ease 0.3s;
 
   h1 {
     font-family: 'Dancing Script', cursive;
     font-size: 2.5rem;
+  }
+
+  @media (max-width: 680px) {
+    padding: 10px 50px;
+  }
+
+  @media (max-width: 380px) {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
   }
 `;
 
