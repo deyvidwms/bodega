@@ -6,10 +6,22 @@ import { Container, Menu, OptionList, OptionTitle } from './style';
 import { Link } from 'react-router-dom';
 
 const SideBar: React.FC = () => {
-  const [homeActive, setHomeActive] = useState<boolean>(true);
-  const [productActive, setProductActive] = useState<boolean>(false);
-  const [batchActive, setBatchActive] = useState<boolean>(false);
-  const [sellActive, setSellActive] = useState<boolean>(false);
+  const [homeActive, setHomeActive] = useState<boolean>(
+    window.location.pathname === '/dashboard' ||
+    window.location.pathname === '/dashboard/'
+  );
+  const [productActive, setProductActive] = useState<boolean>(
+    window.location.pathname === '/dashboard/produto' ||
+    window.location.pathname === '/dashboard/produto/'
+  );
+  const [batchActive, setBatchActive] = useState<boolean>(
+    window.location.pathname === '/dashboard/lote' ||
+    window.location.pathname === '/dashboard/lote/'
+  );
+  const [sellActive, setSellActive] = useState<boolean>(
+    window.location.pathname === '/dashboard/venda' ||
+    window.location.pathname === '/dashboard/venda/'
+  );
 
   const handleClickShowMenuList = (option: string) => {
     setHomeActive(option === 'home');
@@ -21,38 +33,46 @@ const SideBar: React.FC = () => {
   return (
     <Container>
       <Menu>
-        <OptionList
-          show={homeActive}
-          onClick={() => handleClickShowMenuList('home')}
-        >
-          <OptionTitle>
-            <Link to={'/dashboard/'}><FaHome /> Inicio</Link>
-          </OptionTitle>
-        </OptionList>
-        <OptionList 
-          show={productActive} 
-          onClick={() => handleClickShowMenuList('product')}
-        >
-          <OptionTitle>
-            <Link to={'/dashboard/produto'}><FaBox /> Produtos</Link>
-          </OptionTitle> 
-        </OptionList>
-        <OptionList 
-          show={batchActive}
-          onClick={() => handleClickShowMenuList('batch')}
-        >
-          <OptionTitle>
-            <Link to={'/dashboard/lote'}><FaLayerGroup /> Lotes</Link>
-          </OptionTitle> 
-        </OptionList>
+        <Link to={'/dashboard/'}>
+          <OptionList
+            show={homeActive}
+            onClick={() => handleClickShowMenuList('home')}
+          >
+            <OptionTitle>
+              <FaHome /> Inicio
+            </OptionTitle>
+          </OptionList>
+        </Link>
+        <Link to={'/dashboard/produto'}>
+          <OptionList
+            show={productActive}
+            onClick={() => handleClickShowMenuList('product')}
+          >
+            <OptionTitle>
+              <FaBox /> Produtos
+            </OptionTitle>
+          </OptionList>
+        </Link>
+        <Link to={'/dashboard/lote'}>
+          <OptionList
+            show={batchActive}
+            onClick={() => handleClickShowMenuList('batch')}
+          >
+            <OptionTitle>
+              <FaLayerGroup /> Lotes
+            </OptionTitle>
+          </OptionList>
+        </Link>
+        <Link to={'/dashboard/venda'}>
         <OptionList
           show={sellActive}
           onClick={() => handleClickShowMenuList('sell')}
         >
           <OptionTitle>
-            <Link to={'/dashboard/venda'}><FaCartPlus /> Vendas</Link>
+            <FaCartPlus /> Vendas
           </OptionTitle>
         </OptionList>
+        </Link>
         <OptionList
           onClick={() => handleClickShowMenuList('exit')}
         >

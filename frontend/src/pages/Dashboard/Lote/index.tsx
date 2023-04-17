@@ -1,10 +1,16 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import LayoutDashboard from '../../../components/LayoutDashboard';
+
+import { Container } from './styles';
 
 const Lote: React.FC = () => {
   return (
-    <h1>Lote</h1>
+    <LayoutDashboard>
+      <Container>
+        <h1>Lote</h1>
+      </Container>
+    </LayoutDashboard>
   );
 }
 
