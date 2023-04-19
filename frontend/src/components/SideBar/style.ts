@@ -6,7 +6,7 @@ export const Container = styled.div`
   height: calc(100vh - 70px);
   border-right: 1px solid #CCC;
 
-  @media (max-width: 680px) {
+  @media (max-width: 800px) {
     position: absolute;
     transform: translateX(-100%);
   }
