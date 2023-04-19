@@ -1,8 +1,9 @@
 import React from 'react';
 import LayoutLogin from '../../components/LayoutLogin';
 
-import { Column, Row, Title } from './styles';
+import { Column, Title } from './styles';
 import CardLogin from '../../components/LayoutLogin/CardLogin';
+import Row from '../../components/Row';
 
 import { FaArrowRight } from "react-icons/fa";
 

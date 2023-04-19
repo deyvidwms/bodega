@@ -6,11 +6,6 @@ export const Title = styled.h1`
   margin-bottom: 16px;
 `;
 
-export const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
