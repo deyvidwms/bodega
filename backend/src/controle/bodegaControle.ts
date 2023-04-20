@@ -38,6 +38,11 @@ class BodegaControle {
     BodegaControle.servico.remover(Number(req.params.id))
       .then((bodega) => { res.status(200).json({ bodega }) });
   }
+
+  relatorioFinanceiro(req: Request, res: Response): void {
+    BodegaControle.servico.relatorioFinanceiro(req.body.inicio, req.body.fim)
+      .then((relatorioFinanceiro) => { res.status(200).json({ relatorioFinanceiro}) });
+  }
 }
 
 export default BodegaControle;

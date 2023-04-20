@@ -26,6 +26,11 @@ class LoteRepositorio {
   async remover(id: number) {
     return await LoteRepositorio.repositorio.delete({ where: { id } });
   }
+
+  async porPeriodo(inicio: Date, fim: Date) {
+    //retorna a lista por periodo
+    return await LoteRepositorio.repositorio.findMany( { where: {compradoEm: {gte: inicio, lte: fim}}});
+  }
 }
 
 export default LoteRepositorio;

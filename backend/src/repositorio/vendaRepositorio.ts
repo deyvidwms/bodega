@@ -26,6 +26,11 @@ class VendaRepositorio {
   async remover(id: number) {
     return await VendaRepositorio.repositorio.delete({ where: { id } });
   }
+
+  async porPeriodo(inicio: Date, fim: Date) {
+    //retorna a lista por periodo
+    return await VendaRepositorio.repositorio.findMany( { where: {vendidoEm: {gte: inicio, lte: fim}}});
+  }
 }
 
 export default VendaRepositorio;
