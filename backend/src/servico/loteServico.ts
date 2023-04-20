@@ -25,7 +25,6 @@ class LoteServico {
   }
 
   remover(id: number): Promise<Lote | null> {
-    console.log(id);
     return LoteServico.repositorio.remover(id);
   }
 }

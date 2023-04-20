@@ -12,6 +12,14 @@ class ProdutoRepositorio {
     return ProdutoRepositorio.repositorio.findUnique({ where: { id } });
   }
 
+  async porIds(ids: number[]) {
+    return ProdutoRepositorio.repositorio.findMany({
+      where: {
+        id: { in: ids }
+      }
+    });
+  }
+
   async criar(produto: Produto) {
     return await ProdutoRepositorio.repositorio.create({ data: produto })
   }
