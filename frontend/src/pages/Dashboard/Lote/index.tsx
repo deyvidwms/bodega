@@ -54,7 +54,7 @@ const Lote: React.FC = () => {
         <Row>
           <Column>
             <BreadCrumb caminhos={caminhos} />
-            <Title>Lote</Title>
+            <Title>Lotes</Title>
           </Column>
         </Row>
 
