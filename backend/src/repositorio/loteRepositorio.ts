@@ -26,6 +26,15 @@ class LoteRepositorio {
   async remover(id: number) {
     return await LoteRepositorio.repositorio.delete({ where: { id } });
   }
+
+  async produtosComBaixoEstoque(limite: number) {
+    const idProdutos = await LoteRepositorio.repositorio.groupBy({
+      by: ['idProduto'],
+      _sum: { quantidadeAtual: true },
+      where: { quantidadeAtual: { lte: limite } }
+    }).then((res) => (res.map(i => i.idProduto)));
+    return idProdutos;
+  }
 }
 
 export default LoteRepositorio;

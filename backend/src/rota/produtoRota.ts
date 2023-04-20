@@ -9,5 +9,6 @@ produtoRota.get('/:id', controle.porId);
 produtoRota.post('/', controle.criar);
 produtoRota.put('/', controle.atualizar);
 produtoRota.delete('/:id', controle.remover);
+produtoRota.get('/baixo-estoque/:limite', controle.produtosComBaixoEstoque);
 
 export default produtoRota;

@@ -38,6 +38,12 @@ class ProdutoControle {
     ProdutoControle.servico.remover(Number(req.params.id))
       .then((produto) => { res.status(200).json({ produto }) });
   }
+
+  produtosComBaixoEstoque(req: Request, res: Response): void {
+    ProdutoControle.servico.produtosComBaixoEstoque(Number(req.params.limite))
+      .then((response) => res.status(200).json({ produtos: response }))
+      .catch(() => res.status(200).json({ produtos: [] }));
+  }
 }
 
 export default ProdutoControle;
