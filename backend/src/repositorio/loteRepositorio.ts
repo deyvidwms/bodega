@@ -27,6 +27,11 @@ class LoteRepositorio {
     return await LoteRepositorio.repositorio.delete({ where: { id } });
   }
 
+  async porPeriodo(inicio: Date, fim: Date) {
+    //retorna a lista por periodo
+    return await LoteRepositorio.repositorio.findMany( { where: {compradoEm: {gte: inicio, lte: fim}}});
+  }
+  
   async produtosComBaixoEstoque(limite: number) {
     const idProdutos = await LoteRepositorio.repositorio.groupBy({
       by: ['idProduto'],
