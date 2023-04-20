@@ -9,10 +9,12 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 type Props = {
   header: string[];
+  rowsField: string[];
+  rows: { [key: string]: any }[];
   tableItemName: string;
 }
 
-const TableElement: React.FC<Props> = ({ header, tableItemName }) => {
+const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -50,24 +52,26 @@ const TableElement: React.FC<Props> = ({ header, tableItemName }) => {
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
-            ).map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {row.description}
-                </TableCell>
-                <TableCell component="th" scope="row" align='right'>
-                  <ActionIcon background='#ffb703'>
-                    <FaPencilAlt />
-                  </ActionIcon>
-                  <ActionIcon background='#da4d4d'>
-                    <FaTrash />
-                  </ActionIcon>
-                </TableCell>
-              </TableRow>
-            ))}
+            ).map(
+              (row, index) => (
+                <TableRow key={index}>
+                  { 
+                    rowsField.map( 
+                      (element: string, index: number) => 
+                        <TableCell key={index} component="th" scope="row">{row[element]}</TableCell>
+                    )
+                  }
+                  <TableCell component="th" scope="row" align='right'>
+                    <ActionIcon background='#ffb703'>
+                      <FaPencilAlt />
+                    </ActionIcon>
+                    <ActionIcon background='#da4d4d'>
+                      <FaTrash />
+                    </ActionIcon>
+                  </TableCell>
+                </TableRow>
+              )
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
@@ -95,28 +99,5 @@ const TableElement: React.FC<Props> = ({ header, tableItemName }) => {
     </Container>
   );
 }
-
-function createData(
-  name: string,
-  description: string,
-) {
-  return { name, description };
-}
-
-const rows = [
-  createData('Cupcake', 'Descrição do produto'),
-  createData('Donut', 'Descrição do produto'),
-  createData('Eclair', 'Descrição do produto'),
-  createData('Frozen yoghurt', 'Descrição do produto'),
-  createData('Gingerbread', 'Descrição do produto'),
-  createData('Honeycomb', 'Descrição do produto'),
-  createData('Ice cream sandwich', 'Descrição do produto'),
-  createData('Jelly Bean', 'Descrição do produto'),
-  createData('KitKat', 'Descrição do produto'),
-  createData('Lollipop', 'Descrição do produto'),
-  createData('Marshmallow', 'Descrição do produto'),
-  createData('Nougat', 'Descrição do produto'),
-  createData('Oreo', 'Descrição do produto'),
-];
 
 export default TableElement;

@@ -9,6 +9,29 @@ import { Container, Title } from './styles';
 import TableElement from '../../../components/TableElement';
 import ActionButton from '../../../components/ActionButton';
 
+function createData(
+  name: string,
+  description: string,
+) {
+  return { name, description };
+}
+
+const rows = [
+  createData('Cupcake', 'Descrição do produto'),
+  createData('Donut', 'Descrição do produto'),
+  createData('Eclair', 'Descrição do produto'),
+  createData('Frozen yoghurt', 'Descrição do produto'),
+  createData('Gingerbread', 'Descrição do produto'),
+  createData('Honeycomb', 'Descrição do produto'),
+  createData('Ice cream sandwich', 'Descrição do produto'),
+  createData('Jelly Bean', 'Descrição do produto'),
+  createData('KitKat', 'Descrição do produto'),
+  createData('Lollipop', 'Descrição do produto'),
+  createData('Marshmallow', 'Descrição do produto'),
+  createData('Nougat', 'Descrição do produto'),
+  createData('Oreo', 'Descrição do produto'),
+];
+
 const Produto: React.FC = () => {
   const caminhos = [
     {
@@ -43,7 +66,7 @@ const Produto: React.FC = () => {
 
         <Row>
           <Column>
-            <TableElement header={['nome', 'descrição']} tableItemName='Produtos' />
+            <TableElement header={['nome', 'descrição']} rowsField={['name', 'description']} rows={rows} tableItemName='Produtos' />
           </Column>
         </Row>
       </Container>
