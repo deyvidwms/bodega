@@ -1,8 +1,10 @@
 import Produto from "../entidade/Produto";
+import LoteRepositorio from "../repositorio/loteRepositorio";
 import ProdutoRepositorio from "../repositorio/produtoRepositorio";
 
 class ProdutoServico {
   private static repositorio = new ProdutoRepositorio();
+  private static loteRepositorio = new LoteRepositorio();
 
   todos(): Promise<Produto[]> {
     return ProdutoServico.repositorio.todos();
@@ -25,8 +27,12 @@ class ProdutoServico {
   }
 
   remover(id: number): Promise<Produto | null> {
-    console.log(id);
     return ProdutoServico.repositorio.remover(id);
+  }
+
+  async produtosComBaixoEstoque(limite: number): Promise<Produto[]> {
+    const ids = await ProdutoServico.loteRepositorio.produtosComBaixoEstoque(limite);
+    return ProdutoServico.repositorio.porIds(ids);
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup, FaSignOutAlt } from "react-icons/fa";
+import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup, FaSignOutAlt, FaUsers } from "react-icons/fa";
 
 import { Container, Menu, OptionList, OptionTitle } from './style';
 import { Link } from 'react-router-dom';
@@ -18,6 +18,10 @@ const SideBar: React.FC = () => {
     window.location.pathname === '/dashboard/lote' ||
     window.location.pathname === '/dashboard/lote/'
   );
+  const [clientActive, setClientActive] = useState<boolean>(
+    window.location.pathname === '/dashboard/cliente' ||
+    window.location.pathname === '/dashboard/cliente/'
+  );
   const [sellActive, setSellActive] = useState<boolean>(
     window.location.pathname === '/dashboard/venda' ||
     window.location.pathname === '/dashboard/venda/'
@@ -27,6 +31,7 @@ const SideBar: React.FC = () => {
     setHomeActive(option === 'home');
     setProductActive(option === 'product');
     setBatchActive(option === 'batch');
+    setClientActive(option === 'client');
     setSellActive(option === 'sell');
   };
 
@@ -60,6 +65,16 @@ const SideBar: React.FC = () => {
           >
             <OptionTitle>
               <FaLayerGroup /> Lotes
+            </OptionTitle>
+          </OptionList>
+        </Link>
+        <Link to={'/dashboard/cliente'}>
+          <OptionList
+            show={clientActive}
+            onClick={() => handleClickShowMenuList('client')}
+          >
+            <OptionTitle>
+              <FaUsers /> Clientes
             </OptionTitle>
           </OptionList>
         </Link>

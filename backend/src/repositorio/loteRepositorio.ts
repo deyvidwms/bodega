@@ -31,6 +31,15 @@ class LoteRepositorio {
     //retorna a lista por periodo
     return await LoteRepositorio.repositorio.findMany( { where: {compradoEm: {gte: inicio, lte: fim}}});
   }
+  
+  async produtosComBaixoEstoque(limite: number) {
+    const idProdutos = await LoteRepositorio.repositorio.groupBy({
+      by: ['idProduto'],
+      _sum: { quantidadeAtual: true },
+      where: { quantidadeAtual: { lte: limite } }
+    }).then((res) => (res.map(i => i.idProduto)));
+    return idProdutos;
+  }
 }
 
 export default LoteRepositorio;

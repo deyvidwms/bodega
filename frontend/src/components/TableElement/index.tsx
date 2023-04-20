@@ -5,7 +5,8 @@ import TablePaginationActions from './TablePaginationActions';
 
 import { Container, ActionIcon } from './styles';
 
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { FaPencilAlt, FaTrash, FaWhatsapp } from 'react-icons/fa';
+import ActionButton from '../ActionButton';
 
 type Props = {
   header: string[];
@@ -14,7 +15,7 @@ type Props = {
   tableItemName: string;
 }
 
-const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName }) => {
+const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName }) => {  
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -36,6 +37,10 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
     setPage(0);
   };
 
+  const handleClickWhatsApp = (number: string) => {
+    window.open(`https://api.whatsapp.com/send/?phone=55${number}&text=Olá, bom dia.%0ATemos promoções na nossa Budega.%0AVenha conferir!`)
+  };
+
   return (
     <Container>
       <TableContainer>
@@ -43,7 +48,10 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
           <TableHead>
             <TableRow>
               {
-                header.map(element => <TableCell key={element} sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{element}</TableCell>)
+                header.map(element => element.indexOf('link') === -1 ? 
+                  <TableCell key={element} sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{element}</TableCell> :
+                  <TableCell key={element}></TableCell>
+                )
               }
               <TableCell align='right' sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>ações</TableCell>
             </TableRow>
@@ -57,11 +65,18 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
                 <TableRow key={index}>
                   { 
                     rowsField.map( 
-                      (element: string, index: number) => 
-                        <TableCell key={index} component="th" scope="row">{row[element]}</TableCell>
+                      (element: string, index: number) => element.indexOf('link') === -1 ?
+                        <TableCell key={index} component="th" scope="row">{row[element]}</TableCell> :
+                        <TableCell key={index} component="th" scope="row"></TableCell>
                     )
                   }
                   <TableCell component="th" scope="row" align='right'>
+                    {
+                      rowsField.indexOf('linkWhatsApp') !== -1 && 
+                        <ActionIcon background='#4fce5d' onClick={() => handleClickWhatsApp(row.linkWhatsApp)}>
+                          <FaWhatsapp />
+                        </ActionIcon>
+                    }
                     <ActionIcon background='#ffb703'>
                       <FaPencilAlt />
                     </ActionIcon>

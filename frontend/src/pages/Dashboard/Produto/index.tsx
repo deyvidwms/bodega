@@ -8,6 +8,7 @@ import Column from '../../../components/Column';
 import { Container, Title } from './styles';
 import TableElement from '../../../components/TableElement';
 import ActionButton from '../../../components/ActionButton';
+import SideBarForm from '../../../components/SideBarForm';
 
 function createData(
   name: string,
@@ -70,6 +71,7 @@ const Produto: React.FC = () => {
           </Column>
         </Row>
       </Container>
+      <SideBarForm />
     </LayoutDashboard>
   );
 }
