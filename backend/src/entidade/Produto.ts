@@ -5,6 +5,7 @@ type Produto = {
   imagem: string;
   idCriador: number | null;
   idBodega: number | null;
+  idCategoriaProduto: number | null;
 }
 
 export default Produto;
