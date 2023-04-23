@@ -76,7 +76,7 @@ const Produto: React.FC = () => {
         </Row>
       </Container>
       <SideBarForm 
-        title='Cadastro de produtos' 
+        title='Produtos' 
         show={showSideBarForm}
         setShow={setShowSideBarForm}  
         currentSchema={1}
