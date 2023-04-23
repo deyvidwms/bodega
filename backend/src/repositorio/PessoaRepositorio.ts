@@ -26,6 +26,10 @@ class PessoaRepositorio {
   async remover(id: number) {
     return await PessoaRepositorio.repositorio.delete({ where: { id } });
   }
+
+  async porCpf(cpf: string){
+    return PessoaRepositorio.repositorio.findUnique({ where: { cpf } });
+  }
 }
 
 export default PessoaRepositorio;

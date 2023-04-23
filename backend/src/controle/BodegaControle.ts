@@ -41,7 +41,12 @@ class BodegaControle {
 
   relatorioFinanceiro(req: Request, res: Response): void {
     BodegaControle.servico.relatorioFinanceiro(req.body.inicio, req.body.fim)
-      .then((relatorioFinanceiro) => { res.status(200).json({ relatorioFinanceiro}) });
+      .then((relatorioFinanceiro) => { res.status(200).json({ relatorioFinanceiro }) });
+  }
+
+  recomendacaoCliente(req: Request, res: Response): void {
+    BodegaControle.servico.recomendacaoCliente(req.body.cpf)
+      .then((recomendacaoCliente) => { res.status(200).json({ recomendacaoCliente }) });
   }
 }
 

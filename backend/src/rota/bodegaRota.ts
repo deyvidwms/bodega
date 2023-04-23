@@ -12,4 +12,5 @@ bodegaRota.delete('/:id', controle.remover);
 
 bodegaRota.get('/financeiro', controle.relatorioFinanceiro); //pode pedir o relatorio de x dias atrás
 
+bodegaRota.get('/recomendacao', controle.recomendacaoCliente);
 export default bodegaRota;

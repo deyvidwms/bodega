@@ -3,11 +3,13 @@ import Bodega from "../entidade/Bodega";
 import BodegaRepositorio from "../repositorio/BodegaRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
+import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 
 class BodegaServico {
   private static repositorio = new BodegaRepositorio();
   private static loteRepositorio = new LoteRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
+  private static pessoaRepositorio = new PessoaRepositorio();
 
   todos(): Promise<Bodega[]> {
     return BodegaServico.repositorio.todos();
@@ -46,6 +48,11 @@ class BodegaServico {
     });
 
     return { compras: lotes, vendas: vendas, receita, despesa, lucro: receita.minus(despesa) };
+  }
+
+  async recomendacaoCliente(cpf: string){
+    let cliente = await BodegaServico.pessoaRepositorio.porCpf(cpf);
+    return {};
   }
 }
 
