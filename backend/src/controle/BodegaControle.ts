@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import CustomRequest from "../arquitetura/customRequest";
+import CustomRequest from "../arquitetura/CustomRequest";
 import Bodega from "../entidade/Bodega";
-import BodegaServico from "../servico/bodegaServico";
+import BodegaServico from "../servico/BodegaServico";
 
 class BodegaControle {
   private static servico = new BodegaServico();

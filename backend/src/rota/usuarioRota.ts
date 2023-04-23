@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import UsuarioControle from '../controle/usuarioControle';
+import UsuarioControle from '../controle/UsuarioControle';
 
 const usuarioRota = Router()
 const controle = new UsuarioControle();

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import CustomRequest from "../arquitetura/customRequest";
+import CustomRequest from "../arquitetura/CustomRequest";
 import Usuario from "../entidade/Usuario";
-import UsuarioServico from "../servico/usuarioServico";
+import UsuarioServico from "../servico/UsuarioServico";
 
 class UsuarioControle {
   private static servico = new UsuarioServico();

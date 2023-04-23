@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import BodegaControle from '../controle/bodegaControle';
+import BodegaControle from '../controle/BodegaControle';
 
 const bodegaRota = Router()
 const controle = new BodegaControle();

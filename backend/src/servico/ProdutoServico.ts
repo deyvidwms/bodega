@@ -1,6 +1,6 @@
 import Produto from "../entidade/Produto";
-import LoteRepositorio from "../repositorio/loteRepositorio";
-import ProdutoRepositorio from "../repositorio/produtoRepositorio";
+import LoteRepositorio from "../repositorio/LoteRepositorio";
+import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 
 class ProdutoServico {
   private static repositorio = new ProdutoRepositorio();
@@ -15,14 +15,10 @@ class ProdutoServico {
   }
 
   async criar(produto: Produto): Promise<Produto> {
-    // Validar produto
-
     return await ProdutoServico.repositorio.criar(produto);
   }
 
   atualizar(produto: Produto): Promise<Produto | null> {
-    // Validar produto
-
     return ProdutoServico.repositorio.atualizar(produto);
   }
 

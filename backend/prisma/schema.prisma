@@ -40,12 +40,12 @@ model Lote {
   custo             Decimal
 
   idProduto Int
-  produto   Produto @relation(fields: [idProduto], references: [id])
-
   idCriador Int
+
+  produto   Produto @relation(fields: [idProduto], references: [id])
   criadoPor Usuario @relation(fields: [idCriador], references: [id])
 
-  vendas Venda[]
+  vendas VendaLote[]
 }
 
 model Produto {
@@ -95,15 +95,26 @@ model Usuario {
   lotes    Lote[]
 }
 
-model Venda {
+model VendaLote {
   id Int @id @default(autoincrement())
 
   quantidade Int
-  vendidoEm  DateTime
-  valorTotal Decimal
 
-  idLote Int
-  lote   Lote @relation(fields: [idLote], references: [id])
+  valor Decimal
+
+  idVenda Int?
+  idLote  Int
+
+  venda Venda? @relation(fields: [idVenda], references: [id])
+  lote  Lote   @relation(fields: [idLote], references: [id])
+}
+
+model Venda {
+  id Int @id @default(autoincrement())
+
+  vendidoEm DateTime
+
+  vendaLotes VendaLote[]
 }
 
 model ClienteBodega {

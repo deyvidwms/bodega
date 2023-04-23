@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import ProdutoControle from '../controle/produtoControle';
+import ProdutoControle from '../controle/ProdutoControle';
 
 const produtoRota = Router()
 const controle = new ProdutoControle();

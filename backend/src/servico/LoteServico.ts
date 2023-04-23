@@ -1,5 +1,5 @@
 import Lote from "../entidade/Lote";
-import LoteRepositorio from "../repositorio/loteRepositorio";
+import LoteRepositorio from "../repositorio/LoteRepositorio";
 
 class LoteServico {
   private static repositorio = new LoteRepositorio();
@@ -13,14 +13,10 @@ class LoteServico {
   }
 
   async criar(lote: Lote): Promise<Lote> {
-    // Validar lote
-
     return await LoteServico.repositorio.criar(lote);
   }
 
   atualizar(lote: Lote): Promise<Lote | null> {
-    // Validar lote
-
     return LoteServico.repositorio.atualizar(lote);
   }
 

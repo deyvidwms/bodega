@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import CustomRequest from "../arquitetura/customRequest";
+import CustomRequest from "../arquitetura/CustomRequest";
 import Lote from "../entidade/Lote";
-import LoteServico from "../servico/loteServico";
+import LoteServico from "../servico/LoteServico";
 
 class LoteControle {
   private static servico = new LoteServico();

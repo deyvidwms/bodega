@@ -1,5 +1,5 @@
 import Usuario from "../entidade/Usuario";
-import UsuarioRepositorio from "../repositorio/usuarioRepositorio";
+import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 
 class UsuarioServico {
   private static repositorio = new UsuarioRepositorio();
