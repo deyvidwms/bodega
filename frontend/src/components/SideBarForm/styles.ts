@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div<{show: boolean}>`
   position: absolute;
   width: 400px;
   padding: 50px 20px;
@@ -9,6 +9,8 @@ export const Container = styled.div`
   height: calc(100vh - 70px);
   border-left: 1px solid #CCC;
   box-shadow: 0 0 10px rgb( 127 127 127 / 45%);
+  transition: all ease 0.3s;
+  transform: translateX(${(props) => props.show ? '0' : '100%'});
 
   /* @media (max-width: 800px) {
     position: absolute;

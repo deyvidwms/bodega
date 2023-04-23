@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LayoutDashboard from '../../../components/LayoutDashboard';
 
 import BreadCrumb from '../../../components/BreadCrumb';
@@ -9,6 +9,8 @@ import { Container, Title } from './styles';
 import TableElement from '../../../components/TableElement';
 import ActionButton from '../../../components/ActionButton';
 import SideBarForm from '../../../components/SideBarForm';
+import TextFieldElement from '../../../components/TextFieldElement';
+import { Masks } from '../../../assets/ts/Masks';
 
 function createData(
   name: string,
@@ -34,6 +36,8 @@ const rows = [
 ];
 
 const Produto: React.FC = () => {
+  const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
+
   const caminhos = [
     {
       name: 'Dashboard',
@@ -46,7 +50,7 @@ const Produto: React.FC = () => {
   ];
 
   const handleClick = () => {
-    console.log('clicou')
+    setShowSideBarForm(!showSideBarForm);
   }
 
   return (
@@ -71,7 +75,37 @@ const Produto: React.FC = () => {
           </Column>
         </Row>
       </Container>
-      <SideBarForm />
+      <SideBarForm 
+        title='Cadastro de produtos' 
+        show={showSideBarForm}
+        setShow={setShowSideBarForm}  
+        currentSchema={1}
+      >
+        <TextFieldElement 
+          label='Nome'
+          name='nome'
+          maskFunction={Masks.onlyLettersAndSpaces}
+          required
+        />
+
+        <TextFieldElement 
+          label='Descrição'
+          name='descricao'
+          required
+        />
+
+        <TextFieldElement 
+          label='Imagem'
+          name='imagem'
+          required
+        />
+
+        <TextFieldElement 
+          label='Categoria'
+          name='categoria'
+          required
+        />
+      </SideBarForm>
     </LayoutDashboard>
   );
 }

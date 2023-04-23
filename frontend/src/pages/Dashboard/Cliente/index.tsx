@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import LayoutDashboard from '../../../components/LayoutDashboard';
 
@@ -8,13 +8,16 @@ import Column from '../../../components/Column';
 import BreadCrumb from '../../../components/BreadCrumb';
 import ActionButton from '../../../components/ActionButton';
 import TableElement from '../../../components/TableElement';
+import SideBarForm from '../../../components/SideBarForm';
+import TextFieldElement from '../../../components/TextFieldElement';
+import { Masks } from '../../../assets/ts/Masks';
 
 function createData(
   name: string,
-  telefone: string,
+  celular: string,
   linkWhatsApp: string,
 ) {
-  return { name, telefone, linkWhatsApp };
+  return { name, celular, linkWhatsApp };
 }
 
 const rows = [
@@ -34,6 +37,8 @@ const rows = [
 ];
 
 const Cliente: React.FC = () => {
+  const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
+
   const caminhos = [
     {
       name: 'Dashboard',
@@ -46,7 +51,7 @@ const Cliente: React.FC = () => {
   ];
 
   const handleClick = () => {
-    console.log('clicou');
+    setShowSideBarForm(true);
   }
 
   return (
@@ -67,10 +72,44 @@ const Cliente: React.FC = () => {
 
         <Row>
           <Column>
-            <TableElement header={['nome', 'telefone', 'link whatsapp']} rowsField={['name', 'telefone', 'linkWhatsApp']} rows={rows} tableItemName='Lotes' />
+            <TableElement header={['nome', 'celular', 'link whatsapp']} rowsField={['name', 'celular', 'linkWhatsApp']} rows={rows} tableItemName='Lotes' />
           </Column>
         </Row>
       </Container>
+      <SideBarForm 
+        title='clientes' 
+        show={showSideBarForm}
+        setShow={setShowSideBarForm}
+        currentSchema={0}
+      >
+        <TextFieldElement 
+          label='Nome Completo'
+          name='nomeCompleto'
+          maskFunction={Masks.onlyLettersAndSpaces}
+          required
+        />
+
+        <TextFieldElement 
+          label='Apelido'
+          name='apelido'
+          maskFunction={Masks.onlyLettersAndSpaces}
+          required
+        />
+
+        <TextFieldElement 
+          label='CPF'
+          name='cpf'
+          maskFunction={Masks.cpf}
+          required
+        />
+
+        <TextFieldElement 
+          label='Celular'
+          name='celular'
+          maskFunction={Masks.cellPhoneNumber}
+          required
+        />
+      </SideBarForm>
     </LayoutDashboard>
   );
 }
