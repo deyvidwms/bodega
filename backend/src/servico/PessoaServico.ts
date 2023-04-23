@@ -1,5 +1,5 @@
 import Pessoa from "../entidade/Pessoa";
-import PessoaRepositorio from "../repositorio/pessoaRepositorio";
+import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 
 class PessoaServico {
   private static repositorio = new PessoaRepositorio();
@@ -13,19 +13,14 @@ class PessoaServico {
   }
 
   async criar(pessoa: Pessoa): Promise<Pessoa> {
-    // Validar pessoa
-
     return await PessoaServico.repositorio.criar(pessoa);
   }
 
   atualizar(pessoa: Pessoa): Promise<Pessoa | null> {
-    // Validar pessoa
-
     return PessoaServico.repositorio.atualizar(pessoa);
   }
 
   remover(id: number): Promise<Pessoa | null> {
-    console.log(id);
     return PessoaServico.repositorio.remover(id);
   }
 }

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import LoteControle from '../controle/loteControle';
+import LoteControle from '../controle/LoteControle';
 
 const loteRota = Router()
 const controle = new LoteControle();

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import CustomRequest from "../arquitetura/customRequest";
+import CustomRequest from "../arquitetura/CustomRequest";
 import Pessoa from "../entidade/Pessoa";
-import PessoaServico from "../servico/pessoaServico";
+import PessoaServico from "../servico/PessoaServico";
 
 class PessoaControle {
   private static servico = new PessoaServico();

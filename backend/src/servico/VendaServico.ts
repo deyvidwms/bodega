@@ -1,5 +1,5 @@
 import Venda from "../entidade/Venda";
-import VendaRepositorio from "../repositorio/vendaRepositorio";
+import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 class VendaServico {
   private static repositorio = new VendaRepositorio();
@@ -13,19 +13,14 @@ class VendaServico {
   }
 
   async criar(venda: Venda): Promise<Venda> {
-    // Validar venda
-
     return await VendaServico.repositorio.criar(venda);
   }
 
   atualizar(venda: Venda): Promise<Venda | null> {
-    // Validar venda
-
     return VendaServico.repositorio.atualizar(venda);
   }
 
   remover(id: number): Promise<Venda | null> {
-    console.log(id);
     return VendaServico.repositorio.remover(id);
   }
 }

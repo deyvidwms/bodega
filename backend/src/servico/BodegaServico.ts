@@ -1,8 +1,8 @@
-import { Decimal } from "@prisma/client/runtime";
+import { Decimal } from "@prisma/client/runtime/library";
 import Bodega from "../entidade/Bodega";
-import BodegaRepositorio from "../repositorio/bodegaRepositorio";
-import LoteRepositorio from "../repositorio/loteRepositorio";
-import VendaRepositorio from "../repositorio/vendaRepositorio";
+import BodegaRepositorio from "../repositorio/BodegaRepositorio";
+import LoteRepositorio from "../repositorio/LoteRepositorio";
+import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 class BodegaServico {
   private static repositorio = new BodegaRepositorio();
@@ -18,38 +18,34 @@ class BodegaServico {
   }
 
   async criar(bodega: Bodega): Promise<Bodega> {
-    // Validar bodega
-
     return await BodegaServico.repositorio.criar(bodega);
   }
 
   atualizar(bodega: Bodega): Promise<Bodega | null> {
-    // Validar bodega
-
     return BodegaServico.repositorio.atualizar(bodega);
   }
 
   remover(id: number): Promise<Bodega | null> {
-    console.log(id);
     return BodegaServico.repositorio.remover(id);
   }
 
-  async relatorioFinanceiro(inicio: Date, fim: Date){
-    //json no estilo [{lotes}, {produtos}, receita, despesa]
-    let lotes = await BodegaServico.loteRepositorio.porPeriodo(inicio, fim);
-    let vendas = await BodegaServico.vendaRepositorio.porPeriodo(inicio, fim);
-    let receita = new Decimal(0);
+  async relatorioFinanceiro(inicio: Date, fim: Date) {
+    const lotes = await BodegaServico.loteRepositorio.porPeriodo(inicio, fim);
+    const vendas = await BodegaServico.vendaRepositorio.porPeriodo(inicio, fim);
+
     let despesa = new Decimal(0);
     lotes.forEach(element => {
       despesa.add(element.custo);
     });
 
-    vendas.forEach(element => {
-      receita.add(element.valorTotal);
+    let receita = new Decimal(0);
+    vendas.forEach(venda => {
+      venda.vendaLotes.forEach(vendaLote => {
+        receita.add(vendaLote.valor);
+      });
     });
 
-  
-    return {compras: lotes, vendas: vendas, receita, despesa, lucro: receita.minus(despesa)};
+    return { compras: lotes, vendas: vendas, receita, despesa, lucro: receita.minus(despesa) };
   }
 }
 

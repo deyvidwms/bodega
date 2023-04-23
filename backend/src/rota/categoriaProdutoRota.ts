@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import CategoriaProdutoControle from '../controle/categoriaProdutoControle';
+import CategoriaProdutoControle from '../controle/CategoriaProdutoControle';
 
 const categoriaProdutoRota = Router()
 const controle = new CategoriaProdutoControle();

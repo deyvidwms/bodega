@@ -29,7 +29,9 @@ class UsuarioRepositorio {
 
   async usuarioCadastrado(email: string, cpf: string, celular: string | null) {
     const usuarios = await UsuarioRepositorio.repositorio.findMany({
-      where: { OR: [{ email }, { cpf }, { celular }] }
+      where: {
+        OR: [{ pessoa: { cpf, celular } }, { email }]
+      }
     });
 
     return usuarios;

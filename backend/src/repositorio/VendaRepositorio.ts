@@ -28,8 +28,10 @@ class VendaRepositorio {
   }
 
   async porPeriodo(inicio: Date, fim: Date) {
-    //retorna a lista por periodo
-    return await VendaRepositorio.repositorio.findMany( { where: {vendidoEm: {gte: inicio, lte: fim}}});
+    return await VendaRepositorio.repositorio.findMany({
+      where: { vendidoEm: { gte: inicio, lte: fim } },
+      include: { vendaLotes: true },
+    });
   }
 }
 
