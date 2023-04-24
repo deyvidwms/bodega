@@ -4,7 +4,7 @@ type Lote = {
   id: number,
   quantidadeInicial: number;
   quantidadeAtual: number;
-  expiraEm: Date | null;
+  validade: Date | null;
   compradoEm: Date;
   custo: Decimal;
   idProduto: number;
