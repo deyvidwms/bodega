@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import CustomRequest from "../arquitetura/CustomRequest";
 import Produto from "../entidade/Produto";
 import ProdutoServico from "../servico/ProdutoServico";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class ProdutoControle {
   private static servico = new ProdutoServico();
@@ -24,14 +25,26 @@ class ProdutoControle {
       });
   }
 
-  criar(req: CustomRequest<Produto>, res: Response): void {
-    ProdutoControle.servico.criar(req.body)
-      .then((produto) => { res.status(201).json({ produto }) });
+  async criar(req: CustomRequest<Produto>, res: Response): Promise<void> {
+    try {
+      const produto = await ProdutoControle.servico.criar(req.body);
+      res.status(201).json({ produto });
+    } catch (e) {
+      if (e instanceof ErroNegocio) {
+        res.status(400).json({ erros: e.getErros() })
+      }
+    }
   }
 
-  atualizar(req: CustomRequest<Produto>, res: Response): void {
-    ProdutoControle.servico.atualizar(req.body)
-      .then((produto) => { res.status(201).json({ produto }) });
+  async atualizar(req: CustomRequest<Produto>, res: Response): Promise<void> {
+    try {
+      const produto = await ProdutoControle.servico.atualizar(req.body);
+      res.status(201).json({ produto });
+    } catch (e) {
+      if (e instanceof ErroNegocio) {
+        res.status(400).json({ erros: e.getErros() })
+      }
+    }
   }
 
   remover(req: Request, res: Response): void {

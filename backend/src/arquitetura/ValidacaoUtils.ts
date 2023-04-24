@@ -123,4 +123,10 @@ export default class ValidacaoUtils {
     }
     return nome !== '' && !/\d/.test(nome);
   }
+
+  public static email(email: string): boolean {
+    return email !== undefined
+      && email !== ''
+      && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+  }
 }
