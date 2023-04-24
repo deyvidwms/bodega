@@ -35,7 +35,7 @@ model Lote {
 
   quantidadeInicial Int
   quantidadeAtual   Int
-  expiraEm          DateTime?
+  validade          DateTime?
   compradoEm        DateTime
   custo             Decimal
 
