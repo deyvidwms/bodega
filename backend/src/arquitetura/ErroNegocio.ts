@@ -1,11 +1,11 @@
-class ErroNegocio extends Error {
+export default class ErroNegocio extends Error {
   private erros: string[];
 
-  constructor() {
+  constructor(erros: string[]) {
     super();
     Object.setPrototypeOf(this, ErroNegocio.prototype);
 
-    this.erros = [];
+    this.erros = erros;
   }
 
   public addErro(erro: string): void {
