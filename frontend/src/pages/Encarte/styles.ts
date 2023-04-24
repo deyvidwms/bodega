@@ -28,10 +28,15 @@ export const Title = styled.h1`
 `;
 
 export const TitleMobile = styled.h1`
+  display: none;
   font-family: 'Dancing Script', cursive;
   font-size: 3rem;
   margin-bottom: 16px;
   transform: translateY(-60%);
+
+  @media (max-width: 570px) {
+    display: block;
+  }
 `;
 
 export const Subtitle = styled.h2`
