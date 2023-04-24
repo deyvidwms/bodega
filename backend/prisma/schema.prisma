@@ -43,7 +43,7 @@ model Lote {
   idCriador Int
 
   produto   Produto @relation(fields: [idProduto], references: [id])
-  criadoPor Usuario @relation(fields: [idCriador], references: [id])
+  criador Usuario @relation(fields: [idCriador], references: [id])
 
   vendas VendaLote[]
 }
@@ -56,7 +56,7 @@ model Produto {
   imagem    String
 
   idCriador Int?
-  criadoPor Usuario? @relation(fields: [idCriador], references: [id])
+  criador Usuario? @relation(fields: [idCriador], references: [id])
 
   idBodega Int?
   bodega   Bodega? @relation(fields: [idBodega], references: [id])
