@@ -7,12 +7,14 @@ import Produto from './pages/Dashboard/Produto';
 import Venda from './pages/Dashboard/Venda';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
+import Encarte from './pages/Encarte';
 
 const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />}/>
+        <Route path="/encarte" element={<Encarte />}/>
         <Route path="/dashboard">
           <Route index element={<Dashboard />} />
           <Route path="cliente" element={<Cliente />}/>
