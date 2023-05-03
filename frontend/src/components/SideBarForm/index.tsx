@@ -47,6 +47,8 @@ const SideBarForm: React.FC<Props> = ({title, children, show, setShow, currentSc
     }, 3000)
   };
 
+  console.log(methods.formState.errors)
+
   return (
     <Container show={show}>
       { !success && <Title>Cadastro de {title}</Title> }
@@ -72,6 +74,7 @@ const SideBarForm: React.FC<Props> = ({title, children, show, setShow, currentSc
                 variant="contained" 
                 color="success"
                 type='submit'
+                onClick={() => console.log('clicou')}
               >
                 Cadastrar
               </Button>

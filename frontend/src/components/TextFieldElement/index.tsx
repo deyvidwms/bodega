@@ -13,14 +13,14 @@ type Props = {
   required?: boolean;
 }
 
-  const TextFieldElement: React.FC<Props> = ({maskFunction, name, label, required}) => {
+const TextFieldElement: React.FC<Props> = ({ maskFunction, name, label, required }) => {
   const { watch, control } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({field, fieldState})=>(
+      render={({ field, fieldState }) => (
         <Container>
           <TextField
             {...field}
@@ -37,7 +37,7 @@ type Props = {
                 event.currentTarget.value = event.currentTarget.value
                   ?.toString()
                   .toUpperCase();
-  
+
               field.onChange(maskFunction ? maskFunction(event) : event);
             }}
             value={watch(name) || ""}
