@@ -39,8 +39,8 @@ model Lote {
   compradoEm        DateTime
   custo             Decimal
 
-  idProduto Int
   idCriador Int
+  idProduto Int
 
   produto   Produto @relation(fields: [idProduto], references: [id])
   criador Usuario @relation(fields: [idCriador], references: [id])
@@ -55,14 +55,13 @@ model Produto {
   descricao String
   imagem    String
 
-  idCriador Int?
-  criador Usuario? @relation(fields: [idCriador], references: [id])
-
-  idBodega Int?
-  bodega   Bodega? @relation(fields: [idBodega], references: [id])
-
   idCategoriaProduto Int?
-  CategoriaProduto   CategoriaProduto? @relation(fields: [idCategoriaProduto], references: [id])
+  idCriador          Int?
+  idBodega           Int?
+
+  bodega           Bodega?           @relation(fields: [idBodega], references: [id])
+  categoriaProduto CategoriaProduto? @relation(fields: [idCategoriaProduto], references: [id])
+  criador        Usuario?          @relation(fields: [idCriador], references: [id])
 
   lotes Lote[]
 }
@@ -85,11 +84,11 @@ model Usuario {
   email String @unique
   senha String
 
-  idPessoa Int    @unique
-  pessoa   Pessoa @relation(fields: [idPessoa], references: [id])
-
   idBodega Int?
-  bodega   Bodega? @relation(fields: [idBodega], references: [id])
+  idPessoa Int  @unique
+
+  bodega Bodega? @relation(fields: [idBodega], references: [id])
+  pessoa Pessoa  @relation(fields: [idPessoa], references: [id])
 
   produtos Produto[]
   lotes    Lote[]
@@ -102,11 +101,11 @@ model VendaLote {
 
   valor Decimal
 
-  idVenda Int?
   idLote  Int
+  idVenda Int?
 
-  venda Venda? @relation(fields: [idVenda], references: [id])
   lote  Lote   @relation(fields: [idLote], references: [id])
+  venda Venda? @relation(fields: [idVenda], references: [id])
 }
 
 model Venda {
@@ -120,9 +119,9 @@ model Venda {
 model ClienteBodega {
   id Int @id @default(autoincrement())
 
+  idBodega  Int
   idCliente Int
-  cliente   Pessoa @relation(fields: [idCliente], references: [id])
 
-  idBodega Int
-  bodega   Bodega @relation(fields: [idBodega], references: [id])
+  cliente Pessoa @relation(fields: [idCliente], references: [id])
+  bodega  Bodega @relation(fields: [idBodega], references: [id])
 }

@@ -1,41 +1,27 @@
 import { Decimal } from "@prisma/client/runtime/library";
+import ServicoEscrita from "../arquitetura/ServicoEscrita";
+import Validacao from "../arquitetura/Validacao";
+import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
 import Bodega from "../entidade/Bodega";
 import BodegaRepositorio from "../repositorio/BodegaRepositorio";
-import LoteRepositorio from "../repositorio/LoteRepositorio";
+import LoteRepositorio from "../repositorio/LoteRepositorio"
 import VendaRepositorio from "../repositorio/VendaRepositorio";
-import ErroNegocio from "../arquitetura/ErroNegocio";
-import IServico from "../arquitetura/IServico";
-import ValidacaoUtils from "../arquitetura/ValidacaoUtils";
-import Lote from "../entidade/Lote";
-import Venda from "../entidade/Venda";
 
-class BodegaServico implements IServico<Bodega> {
+class BodegaServico implements ServicoEscrita<Bodega> {
   private static repositorio = new BodegaRepositorio();
   private static loteRepositorio = new LoteRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
 
+  private static validadorBodega: ValidadorAtributo = {
+    'nome': Validacao.nome,
+    'descricao': (descricao) => Validacao.vazio('Descrição', descricao),
+    'cnpj': Validacao.cnpj,
+    'endereco': (endereco) => Validacao.vazio('Endereço', endereco),
+    'imagem': (imagem) => Validacao.vazio('Imagem', imagem),
+  };
+
   validar(bodega: Bodega): void {
-    let erros: string[] = [];
-
-    if (!ValidacaoUtils.cnpj(bodega.cnpj)) {
-      erros.push('CNPJ inválido')
-    }
-
-    if (bodega.nome !== undefined && bodega.nome !== "") {
-      erros.push('Nome inválido')
-    }
-
-    if (bodega.endereco !== undefined && bodega.endereco !== "") {
-      erros.push('Endereço inválido')
-    }
-
-    if (bodega.imagem !== undefined && bodega.imagem !== "") {
-      erros.push('Imagem inválida')
-    }
-
-    if (erros.length !== 0) {
-      throw new ErroNegocio(erros);
-    }
+    Validacao.validar(BodegaServico.validadorBodega, bodega);
   }
 
   todos(): Promise<Bodega[]> {
@@ -46,11 +32,13 @@ class BodegaServico implements IServico<Bodega> {
     return BodegaServico.repositorio.porId(id);
   }
 
-  async criar(bodega: Bodega): Promise<Bodega> {
-    return await BodegaServico.repositorio.criar(bodega);
+  criar(bodega: Bodega): Promise<Bodega> {
+    this.validar(bodega);
+    return BodegaServico.repositorio.criar(bodega);
   }
 
-  atualizar(bodega: Bodega): Promise<Bodega | null> {
+  atualizar(bodega: Bodega): Promise<Bodega> {
+    this.validar(bodega);
     return BodegaServico.repositorio.atualizar(bodega);
   }
 

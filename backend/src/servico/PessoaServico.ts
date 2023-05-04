@@ -1,32 +1,21 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
-import IServico from "../arquitetura/IServico";
-import ValidacaoUtils from "../arquitetura/ValidacaoUtils";
+import ServicoEscrita from "../arquitetura/ServicoEscrita";
+import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import Validacao from "../arquitetura/Validacao";
 import Pessoa from "../entidade/Pessoa";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 
-class PessoaServico implements IServico<Pessoa> {
+class PessoaServico implements ServicoEscrita<Pessoa> {
   private static repositorio = new PessoaRepositorio();
 
+  private static validadorPessoa: ValidadorAtributo = {
+    'cpf': Validacao.cpf,
+    'nome': Validacao.nome,
+    'celular': Validacao.celular,
+    'endereco': (endereco) => Validacao.vazio('Endereço', endereco),
+  };
+
   validar(pessoa: Pessoa): void {
-    let erros: string[] = [];
-
-    if (!ValidacaoUtils.cpf(pessoa.cpf)) {
-      erros.push('CPF inválido');
-    }
-
-    if (!ValidacaoUtils.nome(pessoa.nome)) {
-      erros.push('Nome inválido');
-    }
-
-    if (pessoa.celular !== null) {
-      if (!ValidacaoUtils.celular(pessoa.celular)) {
-        erros.push('Celular inválido');
-      }
-    }
-
-    if (erros.length !== 0) {
-      throw new ErroNegocio(erros);
-    }
+    Validacao.validar(PessoaServico.validadorPessoa, pessoa);
   }
 
   todos(): Promise<Pessoa[]> {

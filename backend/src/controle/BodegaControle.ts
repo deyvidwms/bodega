@@ -7,7 +7,7 @@ import ErroNegocio from "../arquitetura/ErroNegocio";
 class BodegaControle {
   private static servico = new BodegaServico();
 
-  async todos(_: CustomRequest<Bodega>, res: Response): Promise<Bodega[]> {
+  async todos(_: CustomRequest<Bodega>, __: Response): Promise<Bodega[]> {
     const bodegas = await BodegaControle.servico.todos();
     return bodegas;
   }

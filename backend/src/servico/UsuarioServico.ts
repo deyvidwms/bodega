@@ -1,32 +1,23 @@
 import ErroNegocio from "../arquitetura/ErroNegocio";
-import IServico from "../arquitetura/IServico";
-import ValidacaoUtils from "../arquitetura/ValidacaoUtils";
+import ServicoEscrita from "../arquitetura/ServicoEscrita";
+import Validacao from "../arquitetura/Validacao";
+import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
 import Usuario from "../entidade/Usuario";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 
-class UsuarioServico implements IServico<Usuario> {
+class UsuarioServico implements ServicoEscrita<Usuario> {
   private static repositorio = new UsuarioRepositorio();
   private static pessoaRepositorio = new PessoaRepositorio();
 
+  private static validadorUsuario: ValidadorAtributo = {
+    'email': Validacao.email,
+    'senha': (senha) => Validacao.vazio('Senha', senha),
+    'idPessoa': (id) => Validacao.entidadeFoiInformada('Pessoa', id, UsuarioServico.pessoaRepositorio.porId, true),
+  };
+
   validar(usuario: Usuario): void {
-    let erros: string[] = [];
-
-    if (!ValidacaoUtils.email(usuario.email)) {
-      erros.push('E-mail inválido');
-    }
-
-    if (usuario.senha === undefined || usuario.senha === '') {
-      erros.push('Senha inválida');
-    }
-
-    UsuarioServico.pessoaRepositorio.porId(usuario.idPessoa).catch(() => {
-      erros.push('Pessoa inexistente');
-    });
-
-    if (erros.length > 0) {
-      throw new ErroNegocio(erros);
-    }
+    Validacao.validar(UsuarioServico.validadorUsuario, usuario);
   }
 
   todos(): Promise<Usuario[]> {
@@ -42,7 +33,7 @@ class UsuarioServico implements IServico<Usuario> {
     return await UsuarioServico.repositorio.criar(usuario);
   }
 
-  atualizar(usuario: Usuario): Promise<Usuario | null> {
+  atualizar(usuario: Usuario): Promise<Usuario> {
     this.validar(usuario);
     return UsuarioServico.repositorio.atualizar(usuario);
   }

@@ -1,18 +1,16 @@
-export default class ErroNegocio extends Error {
-  private erros: string[];
+type ErrosAtributos = { [atributo: string]: string };
 
-  constructor(erros: string[]) {
+export default class ErroNegocio extends Error {
+  private erros: ErrosAtributos;
+
+  constructor(erros: ErrosAtributos) {
     super();
     Object.setPrototypeOf(this, ErroNegocio.prototype);
 
     this.erros = erros;
   }
 
-  public addErro(erro: string): void {
-    this.erros.push(erro);
-  }
-
-  public getErros(): string[] {
+  public getErros(): ErrosAtributos {
     return this.erros;
   }
 }
