@@ -1,5 +1,5 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Validacao from "../arquitetura/Validacao";
 import Pessoa from "../entidade/Pessoa";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
@@ -7,7 +7,7 @@ import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 class PessoaServico implements ServicoEscrita<Pessoa> {
   private static repositorio = new PessoaRepositorio();
 
-  private static validadorPessoa: ValidadorAtributo = {
+  private static validadorPessoa: ValidadorEntidade = {
     'cpf': Validacao.cpf,
     'nome': Validacao.nome,
     'celular': Validacao.celular,

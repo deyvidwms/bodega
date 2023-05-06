@@ -1,10 +1,11 @@
 import ErroNegocio from "./ErroNegocio";
-import ValidadorAtributo from "./ValidadorAtributo";
+import ValidadorEntidade from "./ValidadorEntidade";
+import { Decimal } from "@prisma/client/runtime/library";
 
 type ObjetoGenerico = { [key: string]: any };
 
 export default class Validacao {
-  public static validar(validador: ValidadorAtributo, entidade: ObjetoGenerico): ObjetoGenerico {
+  public static validar(validador: ValidadorEntidade, entidade: ObjetoGenerico): ObjetoGenerico {
     let erros: ObjetoGenerico = {};
 
     for (const atributo in validador) {
@@ -32,6 +33,14 @@ export default class Validacao {
 
     if (funcaoTestaExistencia(idEntidade) === null) {
       return `Entidade "${nomeEntidade}" com id "${idEntidade}" não encontrada no sistema`;
+    }
+
+    return null;
+  }
+
+  public static precoPositivo(preco: Decimal): string | null {
+    if (preco.lessThan(0)) {
+      return 'Valor não pode ser negativo';
     }
 
     return null;

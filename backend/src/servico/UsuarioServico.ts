@@ -1,7 +1,6 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Usuario from "../entidade/Usuario";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
@@ -10,7 +9,7 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   private static repositorio = new UsuarioRepositorio();
   private static pessoaRepositorio = new PessoaRepositorio();
 
-  private static validadorUsuario: ValidadorAtributo = {
+  private static validadorUsuario: ValidadorEntidade = {
     'email': Validacao.email,
     'senha': (senha) => Validacao.vazio('Senha', senha),
     'idPessoa': (id) => Validacao.entidadeFoiInformada('Pessoa', id, UsuarioServico.pessoaRepositorio.porId, true),

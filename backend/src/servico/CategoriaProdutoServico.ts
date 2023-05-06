@@ -1,13 +1,13 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import CategoriaProduto from "../entidade/CategoriaProduto";
 import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoRepositorio";
 
 class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   private static repositorio = new CategoriaProdutoRepositorio();
 
-  private static validadorCategoriaProduto: ValidadorAtributo = {
+  private static validadorCategoriaProduto: ValidadorEntidade = {
     'nome': (nome) => Validacao.vazio('Nome', nome),
     'imagem': (imagem) => Validacao.vazio('Imagem', imagem),
   };

@@ -1,3 +1,3 @@
-export default interface ValidadorAtributo {
+export default interface ValidadorEntidade {
   [key: string]: (valor: any) => string | null;
 }

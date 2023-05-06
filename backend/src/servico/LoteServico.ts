@@ -1,6 +1,6 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Lote from "../entidade/Lote";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
@@ -11,11 +11,14 @@ class LoteServico implements ServicoEscrita<Lote> {
   private static pessoaRepositorio = new PessoaRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
 
-  private static validadorLote: ValidadorAtributo = {
+  private static validadorLote: ValidadorEntidade = {
     'quantidadeInicial': (quantidadeInicial) => Validacao.vazio('Quantidade inicial', quantidadeInicial),
     'quantidadeAtual': (quantidadeAtual) => Validacao.vazio('Quantidade atual', quantidadeAtual),
-    'compradoEm': (compradoEm) => null,
-    'custo': (custo) => null,
+    'compradoEm': Validacao.precoPositivo,
+    'custo': Validacao.precoPositivo,
+    'precoVenda': Validacao.precoPositivo,
+    'precoVendaPromocao': (precoVendaPromocao) => (precoVendaPromocao !== null && precoVendaPromocao !== undefined) ? Validacao.precoPositivo(precoVendaPromocao) : null,
+    'emPromocao': (emPromocao) => Validacao.vazio('Em promoção', emPromocao),
     'idCriador': (id) => Validacao.entidadeFoiInformada('Criador', id, LoteServico.pessoaRepositorio.porId, true),
     'idProduto': (id) => Validacao.entidadeFoiInformada('Produto', id, LoteServico.produtoRepositorio.porId, true),
   };

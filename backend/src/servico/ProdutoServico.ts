@@ -1,6 +1,5 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Validacao from "../arquitetura/Validacao";
 import Produto from "../entidade/Produto";
 import BodegaRepositorio from "../repositorio/BodegaRepositorio";
@@ -17,7 +16,7 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   private static usuarioRepositorio = new UsuarioRepositorio();
 
   validar(produto: Produto): void {
-    const validador: ValidadorAtributo = {
+    const validador: ValidadorEntidade = {
       'titulo': (titulo) => Validacao.vazio('Título', titulo),
       'descricao': (descricao) => Validacao.vazio('Descrição', descricao),
       'imagem': (imagem) => Validacao.vazio('Imagem', imagem),

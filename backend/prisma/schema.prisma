@@ -33,16 +33,19 @@ model CategoriaProduto {
 model Lote {
   id Int @id @default(autoincrement())
 
-  quantidadeInicial Int
-  quantidadeAtual   Int
-  validade          DateTime?
-  compradoEm        DateTime
-  custo             Decimal
+  quantidadeInicial  Int
+  quantidadeAtual    Int
+  validade           DateTime?
+  compradoEm         DateTime
+  custo              Decimal
+  precoVenda         Decimal
+  precoVendaPromocao Decimal?
+  emPromocao         Boolean
 
   idCriador Int
   idProduto Int
 
-  produto   Produto @relation(fields: [idProduto], references: [id])
+  produto Produto @relation(fields: [idProduto], references: [id])
   criador Usuario @relation(fields: [idCriador], references: [id])
 
   vendas VendaLote[]
@@ -61,7 +64,7 @@ model Produto {
 
   bodega           Bodega?           @relation(fields: [idBodega], references: [id])
   categoriaProduto CategoriaProduto? @relation(fields: [idCategoriaProduto], references: [id])
-  criador        Usuario?          @relation(fields: [idCriador], references: [id])
+  criador          Usuario?          @relation(fields: [idCriador], references: [id])
 
   lotes Lote[]
 }

@@ -1,13 +1,13 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();
 
-  private static validadorVenda: ValidadorAtributo = {
+  private static validadorVenda: ValidadorEntidade = {
     'vendidoEm': () => null,
   };
 

@@ -1,7 +1,7 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Bodega from "../entidade/Bodega";
 import BodegaRepositorio from "../repositorio/BodegaRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio"
@@ -12,7 +12,7 @@ class BodegaServico implements ServicoEscrita<Bodega> {
   private static loteRepositorio = new LoteRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
 
-  private static validadorBodega: ValidadorAtributo = {
+  private static validadorBodega: ValidadorEntidade = {
     'nome': Validacao.nome,
     'descricao': (descricao) => Validacao.vazio('Descrição', descricao),
     'cnpj': Validacao.cnpj,
