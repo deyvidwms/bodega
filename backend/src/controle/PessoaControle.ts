@@ -31,7 +31,6 @@ class PessoaControle {
       const pessoa = await PessoaControle.servico.criar(req.body);
       res.status(201).json({ pessoa });
     } catch (e) {
-      console.log(e)
       if (e instanceof ErroNegocio) {
         res.status(400).json({ erros: e.getErros() })
       }
