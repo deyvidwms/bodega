@@ -8,12 +8,12 @@ class PessoaControle {
   private static servico = new PessoaServico();
 
   async todos(_: CustomRequest<Pessoa>, res: Response): Promise<void> {
-    const pessoa = await PessoaControle.servico.todos();
-    if (pessoa == null) {
+    const pessoas = await PessoaControle.servico.todos();
+    if (pessoas == null) {
       res.status(404).send();
       return;
     }
-    res.status(201).json({ pessoa })
+    res.status(201).json({ pessoas })
   }
 
   async porId(req: Request, res: Response): Promise<void> {
