@@ -7,9 +7,13 @@ import ErroNegocio from "../arquitetura/ErroNegocio";
 class PessoaControle {
   private static servico = new PessoaServico();
 
-  async todos(_: CustomRequest<Pessoa>, res: Response): Promise<Pessoa[]> {
-    const pessoas = await PessoaControle.servico.todos();
-    return pessoas;
+  async todos(_: CustomRequest<Pessoa>, res: Response): Promise<void> {
+    const pessoa = await PessoaControle.servico.todos();
+    if (pessoa == null) {
+      res.status(404).send();
+      return;
+    }
+    res.status(201).json({ pessoa })
   }
 
   async porId(req: Request, res: Response): Promise<void> {
@@ -27,6 +31,7 @@ class PessoaControle {
       const pessoa = await PessoaControle.servico.criar(req.body);
       res.status(201).json({ pessoa });
     } catch (e) {
+      console.log(e)
       if (e instanceof ErroNegocio) {
         res.status(400).json({ erros: e.getErros() })
       }
