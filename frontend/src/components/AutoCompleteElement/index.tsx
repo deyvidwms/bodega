@@ -3,6 +3,7 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { Autocomplete, TextField } from "@mui/material";
+import { Container } from "./styles";
 
 type Option = {
   id : number;
@@ -29,29 +30,31 @@ const AutoCompleteElement: React.FC<Props> = ({options, name, label, required}) 
       control={control}
       render={({ field, fieldState }) => {
         return (
-          <Autocomplete
-            {...field}
-            disabled={!options.length}
-            id={name}
-            options={options}
-            getOptionLabel={(option) => option.name}
-            value={previousValue || null}
-            isOptionEqualToValue={(option, value) => option.name === value.name}
-            noOptionsText="Nenhuma informação encontrada"
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={label}
-                variant="outlined"
-                required={required}
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
-              />
-            )}
-            onChange={(_, data) => {
-              data ? field.onChange(data.id) : field.onChange(undefined);
-            }}
-          />
+          <Container>
+            <Autocomplete
+              {...field}
+              disabled={!options.length}
+              id={name}
+              options={options}
+              getOptionLabel={(option) => option.name}
+              value={previousValue || null}
+              isOptionEqualToValue={(option, value) => option.name === value.name}
+              noOptionsText="Nenhuma informação encontrada"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={label}
+                  variant="outlined"
+                  required={required}
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+              onChange={(_, data) => {
+                data ? field.onChange(data.id) : field.onChange(undefined);
+              }}
+            />
+          </Container>
         );
       }}
     />

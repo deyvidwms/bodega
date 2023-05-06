@@ -138,3 +138,38 @@ export const RegisterClientFormFooter = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
+export const SuccessMessage = styled.div`
+  text-align: center;
+  background-color: #FFF;
+  width: fit-content;
+  padding: 50px;
+  border-radius: 6px;
+  box-shadow: 10px 10px 20px rgb( 0 0 0 / 5%),
+              -10px -10px 20px rgb( 0 0 0 / 15%);
+
+  svg {
+    font-size: 5rem;
+    color: #008000;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+
+    @media (max-width: 600px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.125rem;
+    max-width: 600px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+`;

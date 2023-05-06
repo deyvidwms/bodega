@@ -11,17 +11,17 @@ const validateName = (value: string | undefined) => {
 export const validationSchemaClient = yup
   .object()
   .shape({
-    nomeCompleto: yup
+    nome: yup
       .string()
       .required("O campo acima é obrigatório")
       .test("fullName", "Você deve digitar o nome completo", (value) =>
         validateName(value)
       ),
-    apelido: yup
-      .string()
-      .min(3, "O campo acima deve ter no mínimo 3 caracteres")
-      .max(30, "O campo acima deve ter no máximo 30 caracteres")
-      .required("O campo acima é obrigatório"),
+    // apelido: yup
+    //   .string()
+    //   .min(3, "O campo acima deve ter no mínimo 3 caracteres")
+    //   .max(30, "O campo acima deve ter no máximo 30 caracteres")
+    //   .required("O campo acima é obrigatório"),
     cpf: yup
       .string()
       .min(14, "O CPF deve ser preenchido corretamente")

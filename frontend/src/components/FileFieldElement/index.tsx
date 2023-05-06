@@ -19,7 +19,7 @@ const FileFieldElement: React.FC<Props> = ({name, label, required}) => {
       name={name}
       control={control}
       render={({field, fieldState})=> (
-        <Container>
+        <Container style={{marginTop: 0}}>
           <FormLabel component="legend" sx={{mb: 1}}>Imagem do produto</FormLabel>
           <MuiFileInput
             onChange={(event) => field.onChange(event)}

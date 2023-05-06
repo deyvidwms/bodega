@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import LayoutDashboard from '../../../components/LayoutDashboard';
 
@@ -20,24 +20,27 @@ function createData(
   return { name, celular, linkWhatsApp };
 }
 
-const rows = [
-  createData('Cupcake', '(83) 98637-6689', '84998180770'),
-  createData('Donut', '(83) 98637-6689', '84998180770'),
-  createData('Eclair', '(83) 98637-6689', '84998180770'),
-  createData('Frozen yoghurt', '(83) 98637-6689', '84998180770'),
-  createData('Gingerbread', '(83) 98637-6689', '84998180770'),
-  createData('Honeycomb', '(83) 98637-6689', '84998180770'),
-  createData('Ice cream sandwich', '(83) 98637-6689', '84998180770'),
-  createData('Jelly Bean', '(83) 98637-6689', '84998180770'),
-  createData('KitKat', '(83) 98637-6689', '84998180770'),
-  createData('Lollipop', '(83) 98637-6689', '84998180770'),
-  createData('Marshmallow', '(83) 98637-6689', '84998180770'),
-  createData('Nougat', '(83) 98637-6689', '84998180770'),
-  createData('Oreo', '(83) 98637-6689', '84998180770'),
-];
+// const rows: {name: string, celular: string, linkWhatsApp: string}[]  = [];
+
+// const rows = [
+//   createData('Cupcake', '(83) 98637-6689', '84998180770'),
+//   createData('Donut', '(83) 98637-6689', '84998180770'),
+//   createData('Eclair', '(83) 98637-6689', '84998180770'),
+//   createData('Frozen yoghurt', '(83) 98637-6689', '84998180770'),
+//   createData('Gingerbread', '(83) 98637-6689', '84998180770'),
+//   createData('Honeycomb', '(83) 98637-6689', '84998180770'),
+//   createData('Ice cream sandwich', '(83) 98637-6689', '84998180770'),
+//   createData('Jelly Bean', '(83) 98637-6689', '84998180770'),
+//   createData('KitKat', '(83) 98637-6689', '84998180770'),
+//   createData('Lollipop', '(83) 98637-6689', '84998180770'),
+//   createData('Marshmallow', '(83) 98637-6689', '84998180770'),
+//   createData('Nougat', '(83) 98637-6689', '84998180770'),
+//   createData('Oreo', '(83) 98637-6689', '84998180770'),
+// ];
 
 const Cliente: React.FC = () => {
   const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
+  const [rows, setRows] = useState<{name: string, celular: string, linkWhatsApp: string}[]>([]);
 
   const caminhos = [
     {
@@ -53,6 +56,19 @@ const Cliente: React.FC = () => {
   const handleClick = () => {
     setShowSideBarForm(true);
   }
+
+  useEffect(() => {
+    
+    const getClients = () => {
+      fetch('http://127.0.0.1:3000/pessoa')
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
+    };
+
+    getClients();
+
+  }, []);
 
   return (
     <LayoutDashboard>
@@ -81,20 +97,21 @@ const Cliente: React.FC = () => {
         show={showSideBarForm}
         setShow={setShowSideBarForm}
         currentSchema={0}
+        endpoint={'pessoa'}
       >
         <TextFieldElement 
           label='Nome Completo'
-          name='nomeCompleto'
+          name='nome'
           maskFunction={Masks.onlyLettersAndSpaces}
           required
         />
 
-        <TextFieldElement 
+        {/* <TextFieldElement 
           label='Apelido'
           name='apelido'
           maskFunction={Masks.onlyLettersAndSpaces}
           required
-        />
+        /> */}
 
         <TextFieldElement 
           label='CPF'

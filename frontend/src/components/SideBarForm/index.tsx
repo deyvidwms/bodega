@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchemaClient } from '../../schemas/validationSchema/Cliente';
@@ -17,6 +17,7 @@ type Props = {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   currentSchema: number;
+  endpoint?: string;
 };
 
 const validationSchemas = [
@@ -24,7 +25,7 @@ const validationSchemas = [
   validationSchemaProduct
 ];
 
-const SideBarForm: React.FC<Props> = ({title, children, show, setShow, currentSchema}) => {
+const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint }) => {
   const [success, setSuccess] = useState<boolean>(false);
 
   const methods = useForm<FormValues>({
@@ -41,37 +42,53 @@ const SideBarForm: React.FC<Props> = ({title, children, show, setShow, currentSc
 
   const onSubmitHandler = (values: FormValues) => {
     console.log("valores", values);
-    setSuccess(true);
-    setTimeout(() => {
-      handleClickCancel();
-    }, 3000)
+    fetch(`http://127.0.0.1:3000/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values)
+    })
+      .then(response => response.json())
+      .then(data => (
+        setSuccess(true)
+      ))
+      .catch(error => console.error(error))
   };
+
+  useEffect(() => {
+    if (success===true){
+      setTimeout(() => {
+        handleClickCancel();
+      }, 3000)
+    }
+  }, [success]);
 
   console.log(methods.formState.errors)
 
   return (
     <Container show={show}>
-      { !success && <Title>Cadastro de {title}</Title> }
+      {!success && <Title>Cadastro de {title}</Title>}
       {
         !success &&
         <ProductRegisterForm
-            noValidate
-            autoComplete="off"
-            onSubmit={methods.handleSubmit(onSubmitHandler)}
+          noValidate
+          autoComplete="off"
+          onSubmit={methods.handleSubmit(onSubmitHandler)}
         >
           <FormProvider {...methods}>
             {children}
 
             <ButtonsList>
-              <Button 
-                variant="outlined" 
-                sx={{color: '#999', borderColor: '#999'}}
+              <Button
+                variant="outlined"
+                sx={{ color: '#999', borderColor: '#999' }}
                 onClick={handleClickCancel}
               >
                 Cancelar
               </Button>
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
                 color="success"
                 type='submit'
                 onClick={() => console.log('clicou')}
@@ -83,10 +100,10 @@ const SideBarForm: React.FC<Props> = ({title, children, show, setShow, currentSc
         </ProductRegisterForm>
       }
       {
-        success && 
+        success &&
         <SuccessMessage>
           <FaCheckCircle />
-          <p><span>{title.substring(0, title.length-1)}</span> cadastrado com sucesso!</p>
+          <p><span>{title.substring(0, title.length - 1)}</span> cadastrado com sucesso!</p>
         </SuccessMessage>
       }
     </Container>

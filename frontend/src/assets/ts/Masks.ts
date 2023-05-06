@@ -42,4 +42,15 @@ export class Masks {
     event.currentTarget.value = value;
     return value;
   }
+
+  static date(event: React.KeyboardEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    event.currentTarget.maxLength = 10;
+    let value = event.currentTarget.value;
+    value = value.replace(/\D/g, "");
+    value = value.replace(/^(\d{2})(\d{2})(\d{4})/, "$1/$2/$3");
+    if (value.length > event.currentTarget.maxLength)
+      value = value.substring(0, event.currentTarget.maxLength);
+    event.currentTarget.value = value;
+    return value;
+  }
 }

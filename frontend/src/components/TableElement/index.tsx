@@ -15,7 +15,7 @@ type Props = {
   tableItemName: string;
 }
 
-const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName }) => {  
+const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -48,7 +48,7 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
           <TableHead>
             <TableRow>
               {
-                header.map(element => element.indexOf('link') === -1 ? 
+                header.map(element => element.indexOf('link') === -1 ?
                   <TableCell key={element} sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{element}</TableCell> :
                   <TableCell key={element}></TableCell>
                 )
@@ -57,14 +57,22 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
             </TableRow>
           </TableHead>
           <TableBody>
+            {
+              rows.length === 0 &&
+              <TableRow key={1}>
+                <TableCell key={1} component="th" colSpan={4} scope="row">
+                  <p>Nenhuma informação encontrada</p>
+                </TableCell>
+              </TableRow>
+            }
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
             ).map(
               (row, index) => (
                 <TableRow key={index}>
-                  { 
-                    rowsField.map( 
+                  {
+                    rowsField.map(
                       (element: string, index: number) => element.indexOf('link') === -1 ?
                         <TableCell key={index} component="th" scope="row">{row[element]}</TableCell> :
                         <TableCell key={index} component="th" scope="row"></TableCell>
@@ -72,10 +80,10 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
                   }
                   <TableCell component="th" scope="row" align='right'>
                     {
-                      rowsField.indexOf('linkWhatsApp') !== -1 && 
-                        <ActionIcon background='#4fce5d' onClick={() => handleClickWhatsApp(row.linkWhatsApp)}>
-                          <FaWhatsapp />
-                        </ActionIcon>
+                      rowsField.indexOf('linkWhatsApp') !== -1 &&
+                      <ActionIcon background='#4fce5d' onClick={() => handleClickWhatsApp(row.linkWhatsApp)}>
+                        <FaWhatsapp />
+                      </ActionIcon>
                     }
                     <ActionIcon background='#ffb703'>
                       <FaPencilAlt />
