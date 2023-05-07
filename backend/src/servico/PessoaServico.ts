@@ -11,7 +11,6 @@ class PessoaServico implements ServicoEscrita<Pessoa> {
     'cpf': Validacao.cpf,
     'nome': Validacao.nome,
     'celular': Validacao.celular,
-    'endereco': (endereco) => Validacao.vazio('Endereço', endereco),
   };
 
   validar(pessoa: Pessoa): void {
