@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LayoutDashboard from '../../../components/LayoutDashboard';
 
 import BreadCrumb from '../../../components/BreadCrumb';
@@ -13,6 +13,7 @@ import TextFieldElement from '../../../components/TextFieldElement';
 import { Masks } from '../../../assets/ts/Masks';
 import FileFieldElement from '../../../components/FileFieldElement';
 import AutoCompleteElement from '../../../components/AutoCompleteElement';
+import SideBarFormEdit from '../../../components/SideBarFormEdit';
 
 function createData(
   name: string,
@@ -21,24 +22,20 @@ function createData(
   return { name, description };
 }
 
-const rows = [
-  createData('Cupcake', 'Descrição do produto'),
-  createData('Donut', 'Descrição do produto'),
-  createData('Eclair', 'Descrição do produto'),
-  createData('Frozen yoghurt', 'Descrição do produto'),
-  createData('Gingerbread', 'Descrição do produto'),
-  createData('Honeycomb', 'Descrição do produto'),
-  createData('Ice cream sandwich', 'Descrição do produto'),
-  createData('Jelly Bean', 'Descrição do produto'),
-  createData('KitKat', 'Descrição do produto'),
-  createData('Lollipop', 'Descrição do produto'),
-  createData('Marshmallow', 'Descrição do produto'),
-  createData('Nougat', 'Descrição do produto'),
-  createData('Oreo', 'Descrição do produto'),
-];
+type Produto = {
+  id: number;
+  titulo: string;
+  descricao: string;
+  imagem: string;
+  idCategoriaProduto: number;
+}
 
 const Produto: React.FC = () => {
   const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
+  const [showSideBarFormEdit, setShowSideBarFormEdit] = useState<boolean>(false);
+  const [rows, setRows] = useState<Produto[]>([]);
+  const [rowId, setRowId] = useState<number>(0);
+  
 
   const caminhos = [
     {
@@ -53,6 +50,42 @@ const Produto: React.FC = () => {
 
   const handleClick = () => {
     setShowSideBarForm(!showSideBarForm);
+  }
+
+  useEffect(() => {
+    const getProducts = () => {
+      fetch('http://127.0.0.1:3000/produto')
+        .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error(error))
+    };
+
+    const setProducts = (data: any) => {
+      const response: Produto[] = [];
+      data.produtos.forEach( (element: Produto) => response.push(element) );
+      setRows(response)
+      console.log(response);
+    };
+
+    getProducts();
+  }, []);
+
+  const editProduct = (id: number) => {
+    console.log('o id é ', id)
+    setRowId(id);
+    setShowSideBarFormEdit(true);
+  }
+
+  const deleteProduct = (id: number) => {
+    fetch(`http://127.0.0.1:3000/produto/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(data => window.location.reload())
+      .catch(error => console.error(error))
   }
 
   return (
@@ -78,8 +111,8 @@ const Produto: React.FC = () => {
               rowsField={['name', 'description']} 
               rows={rows} 
               tableItemName='Produtos'
-              handleEdit={() => console.log('edit')}
-              handleDelete={() => console.log('delete')}  
+              handleEdit={editProduct}
+              handleDelete={deleteProduct}  
             />
           </Column>
         </Row>
@@ -89,6 +122,7 @@ const Produto: React.FC = () => {
         show={showSideBarForm}
         setShow={setShowSideBarForm}  
         currentSchema={1}
+        endpoint={'produto'}
       >
         <TextFieldElement 
           label='Nome'
@@ -117,6 +151,42 @@ const Produto: React.FC = () => {
         />
 
       </SideBarForm>
+
+      <SideBarFormEdit 
+        title='produtos' 
+        show={showSideBarFormEdit}
+        setShow={setShowSideBarFormEdit}
+        currentSchema={1}
+        endpoint={'produto'}
+        idItem={rowId}
+      >
+        <TextFieldElement 
+          label='Nome Completo'
+          name='nome'
+          maskFunction={Masks.onlyLettersAndSpaces}
+          required
+        />
+
+        <TextFieldElement 
+          label='Apelido'
+          name='apelido'
+          maskFunction={Masks.onlyLettersAndSpaces}
+        />
+
+        <TextFieldElement 
+          label='CPF'
+          name='cpf'
+          maskFunction={Masks.cpf}
+          required
+        />
+
+        <TextFieldElement 
+          label='Celular'
+          name='celular'
+          maskFunction={Masks.cellPhoneNumber}
+          required
+        />
+      </SideBarFormEdit>
     </LayoutDashboard>
   );
 }

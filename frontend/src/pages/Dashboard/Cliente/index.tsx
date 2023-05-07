@@ -22,24 +22,6 @@ function createData(
   return { name, celular, linkWhatsApp };
 }
 
-// const rows: {name: string, celular: string, linkWhatsApp: string}[]  = [];
-
-// const rows = [
-//   createData('Cupcake', '(83) 98637-6689', '84998180770'),
-//   createData('Donut', '(83) 98637-6689', '84998180770'),
-//   createData('Eclair', '(83) 98637-6689', '84998180770'),
-//   createData('Frozen yoghurt', '(83) 98637-6689', '84998180770'),
-//   createData('Gingerbread', '(83) 98637-6689', '84998180770'),
-//   createData('Honeycomb', '(83) 98637-6689', '84998180770'),
-//   createData('Ice cream sandwich', '(83) 98637-6689', '84998180770'),
-//   createData('Jelly Bean', '(83) 98637-6689', '84998180770'),
-//   createData('KitKat', '(83) 98637-6689', '84998180770'),
-//   createData('Lollipop', '(83) 98637-6689', '84998180770'),
-//   createData('Marshmallow', '(83) 98637-6689', '84998180770'),
-//   createData('Nougat', '(83) 98637-6689', '84998180770'),
-//   createData('Oreo', '(83) 98637-6689', '84998180770'),
-// ];
-
 type Pessoa = {
   id: number,
   cpf: string,
@@ -152,12 +134,6 @@ const Cliente: React.FC = () => {
         />
 
         <TextFieldElement 
-          label='Apelido'
-          name='apelido'
-          maskFunction={Masks.onlyLettersAndSpaces}
-        />
-
-        <TextFieldElement 
           label='CPF'
           name='cpf'
           maskFunction={Masks.cpf}
@@ -185,12 +161,6 @@ const Cliente: React.FC = () => {
           name='nome'
           maskFunction={Masks.onlyLettersAndSpaces}
           required
-        />
-
-        <TextFieldElement 
-          label='Apelido'
-          name='apelido'
-          maskFunction={Masks.onlyLettersAndSpaces}
         />
 
         <TextFieldElement 
