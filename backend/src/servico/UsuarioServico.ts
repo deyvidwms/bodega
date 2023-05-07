@@ -1,7 +1,7 @@
 import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Usuario from "../entidade/Usuario";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
@@ -10,14 +10,18 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   private static repositorio = new UsuarioRepositorio();
   private static pessoaRepositorio = new PessoaRepositorio();
 
-  private static validadorUsuario: ValidadorAtributo = {
-    'email': Validacao.email,
-    'senha': (senha) => Validacao.vazio('Senha', senha),
-    'idPessoa': (id) => Validacao.entidadeFoiInformada('Pessoa', id, UsuarioServico.pessoaRepositorio.porId, true),
+  private static validadorUsuario: ValidadorEntidade = {
+    validacoesSincronas: {
+      'email': Validacao.email,
+      'senha': Validacao.vazio,
+    },
+    validacoesAssincronas: {
+      'idPessoa': (id) => Validacao.entidadeFoiInformada(id, UsuarioServico.pessoaRepositorio.porId, true),
+    }
   };
 
-  validar(usuario: Usuario): void {
-    Validacao.validar(UsuarioServico.validadorUsuario, usuario);
+  validar(usuario: Usuario): Promise<ErroNegocio | null> {
+    return Validacao.validar(UsuarioServico.validadorUsuario, usuario);
   }
 
   todos(): Promise<Usuario[]> {
@@ -29,13 +33,19 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   }
 
   async criar(usuario: Usuario): Promise<Usuario> {
-    this.validar(usuario);
-    return await UsuarioServico.repositorio.criar(usuario);
+    const retorno = await this.validar(usuario);
+    if (retorno === null) {
+      return await UsuarioServico.repositorio.criar(usuario);
+    }
+    throw retorno;
   }
 
-  atualizar(usuario: Usuario): Promise<Usuario> {
-    this.validar(usuario);
-    return UsuarioServico.repositorio.atualizar(usuario);
+  async atualizar(usuario: Usuario): Promise<Usuario> {
+    const retorno = await this.validar(usuario);
+    if (retorno === null) {
+      return await UsuarioServico.repositorio.atualizar(usuario);
+    }
+    throw retorno;
   }
 
   remover(id: number): Promise<Usuario | null> {

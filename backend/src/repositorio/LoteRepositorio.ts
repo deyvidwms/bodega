@@ -5,7 +5,9 @@ class LoteRepositorio {
   private static repositorio = new PrismaClient().lote;
 
   async todos() {
-    return await LoteRepositorio.repositorio.findMany();
+    return await LoteRepositorio.repositorio.findMany({
+      include: { produto: true },
+    });
   }
 
   async porId(id: number) {
@@ -29,9 +31,9 @@ class LoteRepositorio {
 
   async porPeriodo(inicio: Date, fim: Date) {
     //retorna a lista por periodo
-    return await LoteRepositorio.repositorio.findMany( { where: {compradoEm: {gte: inicio, lte: fim}}});
+    return await LoteRepositorio.repositorio.findMany({ where: { compradoEm: { gte: inicio, lte: fim } } });
   }
-  
+
   async produtosComBaixoEstoque(limite: number) {
     const idProdutos = await LoteRepositorio.repositorio.groupBy({
       by: ['idProduto'],

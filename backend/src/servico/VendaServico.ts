@@ -1,18 +1,22 @@
+import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();
 
-  private static validadorVenda: ValidadorAtributo = {
-    'vendidoEm': () => null,
+  private static validadorVenda: ValidadorEntidade = {
+    validacoesSincronas: {
+      'vendidoEm': () => null,
+    },
+    validacoesAssincronas: {}
   };
 
-  validar(venda: Venda): void {
-    Validacao.validar(VendaServico.validadorVenda, venda);
+  validar(venda: Venda): Promise<ErroNegocio | null> {
+    return Validacao.validar(VendaServico.validadorVenda, venda);
   }
 
   todos(): Promise<Venda[]> {
@@ -24,13 +28,19 @@ class VendaServico implements ServicoEscrita<Venda> {
   }
 
   async criar(venda: Venda): Promise<Venda> {
-    this.validar(venda);
-    return await VendaServico.repositorio.criar(venda);
+    const retorno = await this.validar(venda);
+    if (retorno === null) {
+      return await VendaServico.repositorio.criar(venda);
+    }
+    throw retorno;
   }
 
-  atualizar(venda: Venda): Promise<Venda> {
-    this.validar(venda);
-    return VendaServico.repositorio.atualizar(venda);
+  async atualizar(venda: Venda): Promise<Venda> {
+    const retorno = await this.validar(venda);
+    if (retorno === null) {
+      return await VendaServico.repositorio.atualizar(venda);
+    }
+    throw retorno;
   }
 
   remover(id: number): Promise<Venda | null> {

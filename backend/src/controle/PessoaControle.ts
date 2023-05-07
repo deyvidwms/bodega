@@ -9,11 +9,7 @@ class PessoaControle {
 
   async todos(_: CustomRequest<Pessoa>, res: Response): Promise<void> {
     const pessoas = await PessoaControle.servico.todos();
-    if (pessoas == null) {
-      res.status(404).send();
-      return;
-    }
-    res.status(201).json({ pessoas })
+    res.status(201).json(pessoas == null ? [] : pessoas);
   }
 
   async porId(req: Request, res: Response): Promise<void> {

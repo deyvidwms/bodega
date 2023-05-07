@@ -1,45 +1,75 @@
 import ErroNegocio from "./ErroNegocio";
-import ValidadorAtributo from "./ValidadorAtributo";
+import ValidadorEntidade from "./ValidadorEntidade";
+import { Decimal } from "@prisma/client/runtime/library";
 
 type ObjetoGenerico = { [key: string]: any };
 
 export default class Validacao {
-  public static validar(validador: ValidadorAtributo, entidade: ObjetoGenerico): ObjetoGenerico {
+  public static async validar(validador: ValidadorEntidade, entidade: ObjetoGenerico): Promise<ErroNegocio | null> {
     let erros: ObjetoGenerico = {};
 
-    for (const atributo in validador) {
-      let erro = validador[atributo](entidade[atributo]);
-      if (erro !== undefined) {
+    for (const atributo in validador.validacoesSincronas) {
+      let erro = validador.validacoesSincronas[atributo](entidade[atributo]);
+      if (erro !== null) {
         erros[atributo] = erro;
       }
     }
 
-    if (erros.length > 0) {
-      throw new ErroNegocio(erros);
-    }
-
-    return entidade;
-  }
-
-  public static entidadeFoiInformada(nomeEntidade: string, idEntidade: number, funcaoTestaExistencia: (id: number) => Promise<any | null>, obrigatoria: boolean): string | null {
-    if (idEntidade === null) {
-      if (obrigatoria) {
-        return `Entidade "${nomeEntidade}" não foi informada`;
+    for (const atributo in validador.validacoesAssincronas) {
+      const erro = await validador.validacoesAssincronas[atributo](entidade[atributo])
+      if (erro !== null) {
+        erros[atributo] = erro;
       }
-
-      return null;
     }
 
-    if (funcaoTestaExistencia(idEntidade) === null) {
-      return `Entidade "${nomeEntidade}" com id "${idEntidade}" não encontrada no sistema`;
+    for (const atributo in entidade) {
+      if (validador.validacoesSincronas[atributo] === undefined && validador.validacoesAssincronas[atributo] === undefined) {
+        erros[atributo] = 'Atributo não reconhecido';
+      }
+    }
+
+    if (Object.keys(erros).length > 0) {
+      return new ErroNegocio(erros);
     }
 
     return null;
   }
 
-  public static vazio(nomeCampo: string, str: string): string | null {
+  public static async entidadeFoiInformada(idEntidade: number, funcaoTestaExistencia: (id: number) => Promise<any | null>, obrigatoria: boolean): Promise<string | null> {
+    if (idEntidade === null || idEntidade === undefined) {
+      if (obrigatoria) {
+        return 'Id não informado';
+      }
+
+      return null;
+    }
+
+    const entidade = await funcaoTestaExistencia(idEntidade);
+    if (entidade === null) {
+      return 'Entidade não encontrada no sistema';
+    }
+    return null;
+  }
+
+  public static precoPositivo(preco: number | Decimal | null): string | null {
+    if (preco === null || preco === undefined) {
+      return 'Valor não informado';
+    }
+
+    if (typeof preco === 'number') {
+      preco = new Decimal(preco);
+    }
+
+    if (preco.isNegative()) {
+      return 'Valor não pode ser negativo';
+    }
+
+    return null;
+  }
+
+  public static vazio(str: string): string | null {
     if (str === undefined || str.length === 0) {
-      return `Campo "${nomeCampo}" não informado`
+      return `Valor não informado`
     }
 
     return null;

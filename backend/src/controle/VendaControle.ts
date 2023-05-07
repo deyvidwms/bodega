@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import CustomRequest from "../arquitetura/CustomRequest";
 import Venda from "../entidade/Venda";
 import VendaServico from "../servico/VendaServico";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class VendaControle {
   private static servico = new VendaServico();
 
-  todos(_: CustomRequest<Venda>, res: Response): void {
-    VendaControle.servico.todos()
-      .then((response) => res.status(200).json({ vendas: response }))
-      .catch(() => res.status(200).json({ vendas: [] }));
+  async todos(_: CustomRequest<Venda>, res: Response): Promise<void> {
+    const vendas = await VendaControle.servico.todos();
+    res.status(201).json(vendas == null ? [] : vendas);
   }
 
   porId(req: Request, res: Response): void {
@@ -24,9 +24,15 @@ class VendaControle {
       });
   }
 
-  criar(req: CustomRequest<Venda>, res: Response): void {
-    VendaControle.servico.criar(req.body)
-      .then((venda) => { res.status(201).json({ venda }) });
+  async criar(req: CustomRequest<Venda>, res: Response): Promise<void> {
+    try {
+      const venda = await VendaControle.servico.criar(req.body);
+      res.status(201).json(venda);
+    } catch (e) {
+      if (e instanceof ErroNegocio) {
+        res.status(400).json({ erros: e.getErros() })
+      }
+    }
   }
 
   atualizar(req: CustomRequest<Venda>, res: Response): void {

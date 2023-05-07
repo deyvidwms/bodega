@@ -1,20 +1,24 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Validacao from "../arquitetura/Validacao";
 import Pessoa from "../entidade/Pessoa";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class PessoaServico implements ServicoEscrita<Pessoa> {
   private static repositorio = new PessoaRepositorio();
 
-  private static validadorPessoa: ValidadorAtributo = {
-    'cpf': Validacao.cpf,
-    'nome': Validacao.nome,
-    'celular': Validacao.celular,
+  private static validadorPessoa: ValidadorEntidade = {
+    validacoesSincronas: {
+      'cpf': Validacao.cpf,
+      'nome': Validacao.nome,
+      'celular': Validacao.celular,
+    },
+    validacoesAssincronas: {}
   };
 
-  validar(pessoa: Pessoa): void {
-    Validacao.validar(PessoaServico.validadorPessoa, pessoa);
+  validar(pessoa: Pessoa): Promise<ErroNegocio | null> {
+    return Validacao.validar(PessoaServico.validadorPessoa, pessoa);
   }
 
   todos(): Promise<Pessoa[]> {
@@ -25,14 +29,20 @@ class PessoaServico implements ServicoEscrita<Pessoa> {
     return PessoaServico.repositorio.porId(id);
   }
 
-  criar(pessoa: Pessoa): Promise<Pessoa> {
-    this.validar(pessoa);
-    return PessoaServico.repositorio.criar(pessoa);
+  async criar(pessoa: Pessoa): Promise<Pessoa> {
+    const retorno = await this.validar(pessoa);
+    if (retorno === null) {
+      return await PessoaServico.repositorio.criar(pessoa);
+    }
+    throw retorno;
   }
 
-  atualizar(pessoa: Pessoa): Promise<Pessoa> {
-    this.validar(pessoa);
-    return PessoaServico.repositorio.atualizar(pessoa);
+  async atualizar(pessoa: Pessoa): Promise<Pessoa> {
+    const retorno = await this.validar(pessoa);
+    if (retorno === null) {
+      return await PessoaServico.repositorio.atualizar(pessoa);
+    }
+    throw retorno;
   }
 
   remover(id: number): Promise<Pessoa> {

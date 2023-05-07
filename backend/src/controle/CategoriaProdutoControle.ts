@@ -6,10 +6,9 @@ import CategoriaProdutoServico from "../servico/CategoriaProdutoServico";
 class CategoriaProdutoControle {
   private static servico = new CategoriaProdutoServico();
 
-  todos(_: CustomRequest<CategoriaProduto>, res: Response): void {
-    CategoriaProdutoControle.servico.todos()
-      .then((response) => res.status(200).json({ categoriasProdutos: response }))
-      .catch(() => res.status(200).json({ categoriasProdutos: [] }));
+  async todos(_: CustomRequest<CategoriaProduto>, res: Response): Promise<void> {
+    const categoriasProdutos = await CategoriaProdutoControle.servico.todos();
+    res.status(201).json(categoriasProdutos == null ? [] : categoriasProdutos);
   }
 
   porId(req: Request, res: Response): void {

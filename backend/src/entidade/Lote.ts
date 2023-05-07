@@ -7,6 +7,9 @@ type Lote = {
   validade: Date | null;
   compradoEm: Date;
   custo: Decimal;
+  precoVenda: Decimal;
+  precoVendaPromocao: Decimal | null;
+  emPromocao: boolean;
   idProduto: number;
   idCriador: number;
 }

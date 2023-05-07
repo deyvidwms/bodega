@@ -1,27 +1,34 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
-import ValidadorAtributo from "../arquitetura/ValidadorAtributo";
+import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Bodega from "../entidade/Bodega";
+import Lote from "../entidade/Lote";
+import Produto from "../entidade/Produto";
 import BodegaRepositorio from "../repositorio/BodegaRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio"
+import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class BodegaServico implements ServicoEscrita<Bodega> {
   private static repositorio = new BodegaRepositorio();
   private static loteRepositorio = new LoteRepositorio();
+  private static produtoRepositorio = new ProdutoRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
 
-  private static validadorBodega: ValidadorAtributo = {
-    'nome': Validacao.nome,
-    'descricao': (descricao) => Validacao.vazio('Descrição', descricao),
-    'cnpj': Validacao.cnpj,
-    'endereco': (endereco) => Validacao.vazio('Endereço', endereco),
-    'imagem': (imagem) => Validacao.vazio('Imagem', imagem),
+  private static validadorBodega: ValidadorEntidade = {
+    validacoesSincronas: {
+      'nome': Validacao.nome,
+      'descricao': Validacao.vazio,
+      'cnpj': Validacao.cnpj,
+      'imagem': Validacao.vazio,
+    },
+    validacoesAssincronas: {},
   };
 
-  validar(bodega: Bodega): void {
-    Validacao.validar(BodegaServico.validadorBodega, bodega);
+  validar(bodega: Bodega): Promise<ErroNegocio | null> {
+    return Validacao.validar(BodegaServico.validadorBodega, bodega);
   }
 
   todos(): Promise<Bodega[]> {
@@ -32,18 +39,28 @@ class BodegaServico implements ServicoEscrita<Bodega> {
     return BodegaServico.repositorio.porId(id);
   }
 
-  criar(bodega: Bodega): Promise<Bodega> {
-    this.validar(bodega);
-    return BodegaServico.repositorio.criar(bodega);
+  async criar(bodega: Bodega): Promise<Bodega> {
+    const retorno = await this.validar(bodega);
+    if (retorno === null) {
+      return await BodegaServico.repositorio.criar(bodega);
+    }
+    throw retorno;
   }
 
-  atualizar(bodega: Bodega): Promise<Bodega> {
-    this.validar(bodega);
-    return BodegaServico.repositorio.atualizar(bodega);
+  async atualizar(bodega: Bodega): Promise<Bodega> {
+    const retorno = await this.validar(bodega);
+    if (retorno === null) {
+      return await BodegaServico.repositorio.atualizar(bodega);
+    }
+    throw retorno;
   }
 
   remover(id: number): Promise<Bodega | null> {
     return BodegaServico.repositorio.remover(id);
+  }
+
+  encarte(id: number): Promise<(Produto & { lotes: Lote[]; })[]> {
+    return BodegaServico.produtoRepositorio.encarte(id);
   }
 
   async relatorioFinanceiro(inicio: Date, fim: Date) {
