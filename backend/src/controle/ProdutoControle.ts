@@ -7,10 +7,9 @@ import ErroNegocio from "../arquitetura/ErroNegocio";
 class ProdutoControle {
   private static servico = new ProdutoServico();
 
-  todos(_: CustomRequest<Produto>, res: Response): void {
-    ProdutoControle.servico.todos()
-      .then((response) => res.status(200).json({ produtos: response }))
-      .catch(() => res.status(200).json({ produtos: [] }));
+  async todos(_: CustomRequest<Produto>, res: Response): Promise<void> {
+    const produtos = await ProdutoControle.servico.todos();
+    res.status(201).json(produtos == null ? [] : produtos);
   }
 
   porId(req: Request, res: Response): void {

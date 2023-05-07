@@ -34,6 +34,16 @@ class ProdutoRepositorio {
   async remover(id: number) {
     return await ProdutoRepositorio.repositorio.delete({ where: { id } });
   }
+
+  async encarte(idBodega: number) {
+    return await ProdutoRepositorio.repositorio.findMany({
+      include: { lotes: true },
+      where: {
+        lotes: { some: { quantidadeAtual: { gt: 0 } } },
+        criador: { idBodega: { equals: idBodega } },
+      },
+    });
+  }
 }
 
 export default ProdutoRepositorio;

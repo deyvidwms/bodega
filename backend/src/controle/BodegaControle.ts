@@ -9,11 +9,7 @@ class BodegaControle {
 
   async todos(_: CustomRequest<Bodega>, res: Response): Promise<void> {
     const bodegas = await BodegaControle.servico.todos();
-    if (bodegas == null) {
-      res.status(404).send();
-      return;
-    }
-    res.status(201).json({ bodegas })
+    res.status(201).json(bodegas == null ? [] : bodegas);
   }
 
   async porId(req: Request, res: Response): Promise<void> {
@@ -57,6 +53,17 @@ class BodegaControle {
         res.status(400).json({ erros: e.getErros() })
       }
     }
+  }
+
+  async encarte(req: Request, res: Response): Promise<void> {
+    console.log('encarte, bodegaControle');
+    const encarte = await BodegaControle.servico.encarte(Number(req.params.id));
+    if (encarte == null) {
+      res.status(404).send();
+      return;
+    }
+
+    res.status(201).json({ encarte });
   }
 
   async relatorioFinanceiro(req: Request, res: Response): Promise<void> {

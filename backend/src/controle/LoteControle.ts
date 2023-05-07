@@ -6,10 +6,9 @@ import LoteServico from "../servico/LoteServico";
 class LoteControle {
   private static servico = new LoteServico();
 
-  todos(_: CustomRequest<Lote>, res: Response): void {
-    LoteControle.servico.todos()
-      .then((response) => res.status(200).json({ lotes: response }))
-      .catch(() => res.status(200).json({ lotes: [] }));
+  async todos(_: CustomRequest<Lote>, res: Response): Promise<void> {
+    const lotes = await LoteControle.servico.todos();
+    res.status(201).json(lotes == null ? [] : lotes);
   }
 
   porId(req: Request, res: Response): void {

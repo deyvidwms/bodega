@@ -3,13 +3,17 @@ import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Bodega from "../entidade/Bodega";
+import Lote from "../entidade/Lote";
+import Produto from "../entidade/Produto";
 import BodegaRepositorio from "../repositorio/BodegaRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio"
+import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 class BodegaServico implements ServicoEscrita<Bodega> {
   private static repositorio = new BodegaRepositorio();
   private static loteRepositorio = new LoteRepositorio();
+  private static produtoRepositorio = new ProdutoRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
 
   private static validadorBodega: ValidadorEntidade = {
@@ -44,6 +48,10 @@ class BodegaServico implements ServicoEscrita<Bodega> {
 
   remover(id: number): Promise<Bodega | null> {
     return BodegaServico.repositorio.remover(id);
+  }
+
+  encarte(id: number): Promise<(Produto & { lotes: Lote[]; })[]> {
+    return BodegaServico.produtoRepositorio.encarte(id);
   }
 
   async relatorioFinanceiro(inicio: Date, fim: Date) {
