@@ -8,7 +8,7 @@ type Lote = {
   compradoEm: Date;
   custo: Decimal;
   precoVenda: Decimal;
-  precoVendaPromocao: Decimal | null;
+  precoVendaPromocao: Decimal;
   emPromocao: boolean;
   idProduto: number;
   idCriador: number;
