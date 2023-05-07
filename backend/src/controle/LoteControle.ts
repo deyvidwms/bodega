@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import CustomRequest from "../arquitetura/CustomRequest";
 import Lote from "../entidade/Lote";
 import LoteServico from "../servico/LoteServico";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class LoteControle {
   private static servico = new LoteServico();
@@ -23,9 +24,15 @@ class LoteControle {
       });
   }
 
-  criar(req: CustomRequest<Lote>, res: Response): void {
-    LoteControle.servico.criar(req.body)
-      .then((lote) => { res.status(201).json({ lote }) });
+  async criar(req: CustomRequest<Lote>, res: Response): Promise<void> {
+    try {
+      const lote = await LoteControle.servico.criar(req.body);
+      res.status(201).json({ lote });
+    } catch (e) {
+      if (e instanceof ErroNegocio) {
+        res.status(400).json({ erros: e.getErros() })
+      }
+    }
   }
 
   atualizar(req: CustomRequest<Lote>, res: Response): void {

@@ -56,7 +56,6 @@ class BodegaControle {
   }
 
   async encarte(req: Request, res: Response): Promise<void> {
-    console.log('encarte, bodegaControle');
     const encarte = await BodegaControle.servico.encarte(Number(req.params.id));
     if (encarte == null) {
       res.status(404).send();

@@ -1,3 +1,4 @@
+import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
@@ -12,19 +13,24 @@ class LoteServico implements ServicoEscrita<Lote> {
   private static produtoRepositorio = new ProdutoRepositorio();
 
   private static validadorLote: ValidadorEntidade = {
-    'quantidadeInicial': (quantidadeInicial) => Validacao.vazio('Quantidade inicial', quantidadeInicial),
-    'quantidadeAtual': (quantidadeAtual) => Validacao.vazio('Quantidade atual', quantidadeAtual),
-    'compradoEm': Validacao.precoPositivo,
-    'custo': Validacao.precoPositivo,
-    'precoVenda': Validacao.precoPositivo,
-    'precoVendaPromocao': (precoVendaPromocao) => (precoVendaPromocao !== null && precoVendaPromocao !== undefined) ? Validacao.precoPositivo(precoVendaPromocao) : null,
-    'emPromocao': (emPromocao) => Validacao.vazio('Em promoção', emPromocao),
-    'idCriador': (id) => Validacao.entidadeFoiInformada('Criador', id, LoteServico.pessoaRepositorio.porId, true),
-    'idProduto': (id) => Validacao.entidadeFoiInformada('Produto', id, LoteServico.produtoRepositorio.porId, true),
+    validacoesSincronas: {
+      'quantidadeInicial': Validacao.vazio,
+      'quantidadeAtual': Validacao.vazio,
+      'validade': (validade) => null,
+      'compradoEm': (compradoEm) => null,
+      'custo': Validacao.precoPositivo,
+      'precoVenda': Validacao.precoPositivo,
+      'precoVendaPromocao': Validacao.precoPositivo,
+      'emPromocao': Validacao.vazio,
+    },
+    validacoesAssincronas: {
+      'idCriador': (id) => Validacao.entidadeFoiInformada(id, LoteServico.pessoaRepositorio.porId, true),
+      'idProduto': (id) => Validacao.entidadeFoiInformada(id, LoteServico.produtoRepositorio.porId, true),
+    }
   };
 
-  validar(lote: Lote): void {
-    Validacao.validar(LoteServico.validadorLote, lote);
+  validar(lote: Lote): Promise<ErroNegocio | null> {
+    return Validacao.validar(LoteServico.validadorLote, lote);
   }
 
   todos(): Promise<Lote[]> {
@@ -36,13 +42,19 @@ class LoteServico implements ServicoEscrita<Lote> {
   }
 
   async criar(lote: Lote): Promise<Lote> {
-    this.validar(lote);
-    return await LoteServico.repositorio.criar(lote);
+    const retorno = await this.validar(lote);
+    if (retorno === null) {
+      return await LoteServico.repositorio.criar(lote);
+    }
+    throw retorno;
   }
 
-  atualizar(lote: Lote): Promise<Lote> {
-    this.validar(lote);
-    return LoteServico.repositorio.atualizar(lote);
+  async atualizar(lote: Lote): Promise<Lote> {
+    const retorno = await this.validar(lote);
+    if (retorno === null) {
+      return await LoteServico.repositorio.atualizar(lote);
+    }
+    throw retorno;
   }
 
   remover(id: number): Promise<Lote | null> {

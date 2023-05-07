@@ -1,3 +1,7 @@
+type ValidacaoSincrona = { [key: string]: (valor: any) => string | null };
+type ValidacaoAssincrona = { [key: string]: (valor: any) => Promise<string | null> };
+
 export default interface ValidadorEntidade {
-  [key: string]: (valor: any) => string | null;
+  validacoesSincronas: ValidacaoSincrona;
+  validacoesAssincronas: ValidacaoAssincrona;
 }

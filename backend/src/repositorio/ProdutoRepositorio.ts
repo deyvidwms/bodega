@@ -37,9 +37,9 @@ class ProdutoRepositorio {
 
   async encarte(idBodega: number) {
     return await ProdutoRepositorio.repositorio.findMany({
-      include: { lotes: true },
+      include: { lotes: { where: { AND: { emPromocao: true, quantidadeAtual: { gt: 0 } } } } },
       where: {
-        lotes: { some: { quantidadeAtual: { gt: 0 } } },
+        lotes: { some: { AND: { emPromocao: true, quantidadeAtual: { gt: 0 } } }, },
         criador: { idBodega: { equals: idBodega } },
       },
     });

@@ -39,7 +39,7 @@ model Lote {
   compradoEm         DateTime
   custo              Decimal
   precoVenda         Decimal
-  precoVendaPromocao Decimal?
+  precoVendaPromocao Decimal
   emPromocao         Boolean
 
   idCriador Int

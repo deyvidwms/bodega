@@ -7,6 +7,7 @@ import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoReposito
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class ProdutoServico implements ServicoEscrita<Produto> {
   private static repositorio = new ProdutoRepositorio();
@@ -15,17 +16,22 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   private static loteRepositorio = new LoteRepositorio();
   private static usuarioRepositorio = new UsuarioRepositorio();
 
-  validar(produto: Produto): void {
-    const validador: ValidadorEntidade = {
-      'titulo': (titulo) => Validacao.vazio('Título', titulo),
-      'descricao': (descricao) => Validacao.vazio('Descrição', descricao),
-      'imagem': (imagem) => Validacao.vazio('Imagem', imagem),
-      'idCriador': (id) => Validacao.entidadeFoiInformada('Criador', id, ProdutoServico.usuarioRepositorio.porId, false),
-      'idBodega': (id) => Validacao.entidadeFoiInformada('Bodega', id, ProdutoServico.bodegaRepositorio.porId, false),
-      'idCategoriaProduto': (id) => Validacao.entidadeFoiInformada('Categoria do produto', id, ProdutoServico.categoriaProdutoRepositorio.porId, false),
-    };
+  private static validadorProduto: ValidadorEntidade = {
+    validacoesSincronas: {
+      'titulo': Validacao.vazio,
+      'descricao': Validacao.vazio,
+      'imagem': Validacao.vazio,
 
-    Validacao.validar(validador, produto);
+    },
+    validacoesAssincronas: {
+      'idCriador': (id) => Validacao.entidadeFoiInformada(id, ProdutoServico.usuarioRepositorio.porId, false),
+      'idBodega': (id) => Validacao.entidadeFoiInformada(id, ProdutoServico.bodegaRepositorio.porId, false),
+      'idCategoriaProduto': (id) => Validacao.entidadeFoiInformada(id, ProdutoServico.categoriaProdutoRepositorio.porId, false),
+    }
+  };
+
+  validar(produto: Produto): Promise<ErroNegocio | null> {
+    return Validacao.validar(ProdutoServico.validadorProduto, produto);
   }
 
   todos(): Promise<Produto[]> {
@@ -37,13 +43,19 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   }
 
   async criar(produto: Produto): Promise<Produto> {
-    this.validar(produto);
-    return await ProdutoServico.repositorio.criar(produto);
+    const retorno = await this.validar(produto);
+    if (retorno === null) {
+      return await ProdutoServico.repositorio.criar(produto);
+    }
+    throw retorno;
   }
 
-  atualizar(produto: Produto): Promise<Produto> {
-    this.validar(produto);
-    return ProdutoServico.repositorio.atualizar(produto);
+  async atualizar(produto: Produto): Promise<Produto> {
+    const retorno = await this.validar(produto);
+    if (retorno === null) {
+      return await ProdutoServico.repositorio.atualizar(produto);
+    }
+    throw retorno;
   }
 
   remover(id: number): Promise<Produto | null> {
