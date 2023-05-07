@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { validationSchemaClient } from '../../schemas/validationSchema/Cliente';
+import { validationSchemaClientEdit } from '../../schemas/validationSchema/Cliente';
 import { validationSchemaProduct } from '../../schemas/validationSchema/Produto';
 
 import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
@@ -17,19 +17,21 @@ type Props = {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   currentSchema: number;
-  endpoint?: string;
+  endpoint: string;
+  idItem: number;
 };
 
 const validationSchemas = [
-  validationSchemaClient,
+  validationSchemaClientEdit,
   validationSchemaProduct
 ];
 
-const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint }) => {
+const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem }) => {
   const [success, setSuccess] = useState<boolean>(false);
+  const [defaultValues, setDefaultValues] = useState<{ [key: string]: any }>({});
 
   const methods = useForm<FormValues>({
-    resolver: yupResolver(validationSchemas[currentSchema])
+    resolver: yupResolver(validationSchemas[currentSchema]),
   });
 
   const handleClickCancel = () => {
@@ -40,7 +42,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
   const onSubmitHandler = (values: FormValues) => {
     console.log("valores", values);
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -50,8 +52,22 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
       .then(data => (
         setSuccess(true)
       ))
+      .then(data => console.log('data', data))
       .catch(error => console.error(error))
   };
+
+  useEffect(() => {
+    const getItem = async (id: number) => {
+      if (id > 0)
+        return await fetch(`http://127.0.0.1:3000/${endpoint}/${id}`)
+          .then(response => response.json())
+          .then(data => setDefaultValues(data))
+          .catch(error => { })
+      return setDefaultValues({});
+    }
+
+    getItem(idItem)
+  }, [idItem]);
 
   useEffect(() => {
     if (success === true) {
@@ -59,15 +75,22 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
       setShow(false);
       setTimeout(() => {
         window.location.reload();
-      }, 300)
+      }, 3000)
     }
   }, [success]);
 
-  console.log(methods.formState.errors)
+  useEffect(() => {
+    console.log('default', defaultValues)
+    defaultValues['endereco'] = '';
+    methods.reset(defaultValues[endpoint]);
+  }, [defaultValues])
+
+  console.log('values', methods.getValues())
+  console.log('errors', methods.formState.errors)
 
   return (
     <Container show={show}>
-      {!success && <Title>Cadastro de {title}</Title>}
+      {!success && <Title>Edição de {title}</Title>}
       {
         !success &&
         <ProductRegisterForm
@@ -92,7 +115,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
                 type='submit'
                 onClick={() => console.log('clicou')}
               >
-                Cadastrar
+                Editar
               </Button>
             </ButtonsList>
           </FormProvider>
@@ -102,11 +125,11 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
         success &&
         <SuccessMessage>
           <FaCheckCircle />
-          <p><span>{title.substring(0, title.length - 1)}</span> cadastrado com sucesso!</p>
+          <p><span>{title.substring(0, title.length - 1)}</span> editado com sucesso!</p>
         </SuccessMessage>
       }
     </Container>
   );
 }
 
-export default SideBarForm;
+export default SideBarFormEdit;

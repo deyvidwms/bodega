@@ -73,7 +73,14 @@ const Produto: React.FC = () => {
 
         <Row>
           <Column>
-            <TableElement header={['nome', 'descrição']} rowsField={['name', 'description']} rows={rows} tableItemName='Produtos' />
+            <TableElement 
+              header={['nome', 'descrição']} 
+              rowsField={['name', 'description']} 
+              rows={rows} 
+              tableItemName='Produtos'
+              handleEdit={() => console.log('edit')}
+              handleDelete={() => console.log('delete')}  
+            />
           </Column>
         </Row>
       </Container>

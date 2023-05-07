@@ -11,6 +11,8 @@ import TableElement from '../../../components/TableElement';
 import SideBarForm from '../../../components/SideBarForm';
 import TextFieldElement from '../../../components/TextFieldElement';
 import { Masks } from '../../../assets/ts/Masks';
+import CurrencyFieldElement from '../../../components/CurrencyFieldElement';
+import SideBarFormEdit from '../../../components/SideBarFormEdit';
 
 function createData(
   name: string,
@@ -38,9 +40,22 @@ function createData(
 //   createData('Oreo', '(83) 98637-6689', '84998180770'),
 // ];
 
+type Pessoa = {
+  id: number,
+  cpf: string,
+  nome: string,
+  apelido: string,
+  celular: string,
+  endereco: string | null,
+  cliente: boolean,
+  saldoDevedor: string,
+}
+
 const Cliente: React.FC = () => {
   const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
-  const [rows, setRows] = useState<{name: string, celular: string, linkWhatsApp: string}[]>([]);
+  const [showSideBarFormEdit, setShowSideBarFormEdit] = useState<boolean>(false);
+  const [rows, setRows] = useState<Pessoa[]>([]);
+  const [rowId, setRowId] = useState<number>(0);
 
   const caminhos = [
     {
@@ -58,17 +73,40 @@ const Cliente: React.FC = () => {
   }
 
   useEffect(() => {
-    
     const getClients = () => {
       fetch('http://127.0.0.1:3000/pessoa')
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => setClients(data))
         .catch(error => console.error(error))
     };
 
-    getClients();
+    const setClients = (data: any) => {
+      const response: Pessoa[] = [];
+      data.pessoas.forEach( (element: Pessoa) => response.push(element) );
+      setRows(response)
+      console.log(response);
+    };
 
+    getClients();
   }, []);
+
+  const editClient = (id: number) => {
+    console.log('o id é ', id)
+    setRowId(id);
+    setShowSideBarFormEdit(true);
+  }
+
+  const deleteClient = (id: number) => {
+    fetch(`http://127.0.0.1:3000/pessoa/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(data => window.location.reload())
+      .catch(error => console.error(error))
+  }
 
   return (
     <LayoutDashboard>
@@ -88,7 +126,14 @@ const Cliente: React.FC = () => {
 
         <Row>
           <Column>
-            <TableElement header={['nome', 'celular', 'link whatsapp']} rowsField={['name', 'celular', 'linkWhatsApp']} rows={rows} tableItemName='Lotes' />
+            <TableElement 
+              header={['nome', 'celular', 'saldo devedor']} 
+              rowsField={['nome', 'celular', 'saldoDevedor']} 
+              rows={rows} 
+              tableItemName='Clientes'
+              handleEdit={editClient}
+              handleDelete={deleteClient}
+            />
           </Column>
         </Row>
       </Container>
@@ -106,12 +151,11 @@ const Cliente: React.FC = () => {
           required
         />
 
-        {/* <TextFieldElement 
+        <TextFieldElement 
           label='Apelido'
           name='apelido'
           maskFunction={Masks.onlyLettersAndSpaces}
-          required
-        /> */}
+        />
 
         <TextFieldElement 
           label='CPF'
@@ -127,6 +171,49 @@ const Cliente: React.FC = () => {
           required
         />
       </SideBarForm>
+
+      <SideBarFormEdit 
+        title='clientes' 
+        show={showSideBarFormEdit}
+        setShow={setShowSideBarFormEdit}
+        currentSchema={0}
+        endpoint={'pessoa'}
+        idItem={rowId}
+      >
+        <TextFieldElement 
+          label='Nome Completo'
+          name='nome'
+          maskFunction={Masks.onlyLettersAndSpaces}
+          required
+        />
+
+        <TextFieldElement 
+          label='Apelido'
+          name='apelido'
+          maskFunction={Masks.onlyLettersAndSpaces}
+        />
+
+        <TextFieldElement 
+          label='CPF'
+          name='cpf'
+          maskFunction={Masks.cpf}
+          required
+        />
+
+        <TextFieldElement 
+          label='Celular'
+          name='celular'
+          maskFunction={Masks.cellPhoneNumber}
+          required
+        />
+
+        <CurrencyFieldElement
+          label='Saldo Devedor'
+          name='saldoDevedor'
+          required
+        />
+
+      </SideBarFormEdit>
     </LayoutDashboard>
   );
 }

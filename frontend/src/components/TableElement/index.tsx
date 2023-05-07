@@ -13,9 +13,11 @@ type Props = {
   rowsField: string[];
   rows: { [key: string]: any }[];
   tableItemName: string;
+  handleEdit: (id: number) => void;
+  handleDelete: (id: number) => void;
 }
 
-const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName }) => {
+const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName, handleEdit, handleDelete }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -72,23 +74,21 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName 
               (row, index) => (
                 <TableRow key={index}>
                   {
-                    rowsField.map(
-                      (element: string, index: number) => element.indexOf('link') === -1 ?
-                        <TableCell key={index} component="th" scope="row">{row[element]}</TableCell> :
-                        <TableCell key={index} component="th" scope="row"></TableCell>
+                    rowsField.map( ( element: string, index: number ) =>
+                      <TableCell key={index} component="th" scope="row">{ element.indexOf('saldo') > -1 ? Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(row[element])) : row[element]}</TableCell>
                     )
                   }
                   <TableCell component="th" scope="row" align='right'>
                     {
-                      rowsField.indexOf('linkWhatsApp') !== -1 &&
-                      <ActionIcon background='#4fce5d' onClick={() => handleClickWhatsApp(row.linkWhatsApp)}>
+                      rowsField.indexOf('celular') !== -1 &&
+                      <ActionIcon background='#4fce5d' onClick={() => handleClickWhatsApp(row.celular.replace(/\D+/g, ""))}>
                         <FaWhatsapp />
                       </ActionIcon>
                     }
-                    <ActionIcon background='#ffb703'>
+                    <ActionIcon background='#ffb703' onClick={() => handleEdit(row.id)}>
                       <FaPencilAlt />
                     </ActionIcon>
-                    <ActionIcon background='#da4d4d'>
+                    <ActionIcon background='#da4d4d' onClick={() => handleDelete(row.id)} >
                       <FaTrash />
                     </ActionIcon>
                   </TableCell>
