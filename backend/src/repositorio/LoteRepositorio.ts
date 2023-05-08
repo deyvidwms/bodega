@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Lote from "../entidade/Lote";
+import Usuario from "../entidade/Usuario";
+import Produto from "../entidade/Produto";
 
 class LoteRepositorio {
   private static repositorio = new PrismaClient().lote;
@@ -15,7 +17,8 @@ class LoteRepositorio {
   }
 
   async criar(lote: Lote) {
-    return await LoteRepositorio.repositorio.create({ data: lote })
+    console.log(lote);
+    return await LoteRepositorio.repositorio.create({ data: lote });
   }
 
   async atualizar(lote: Lote) {

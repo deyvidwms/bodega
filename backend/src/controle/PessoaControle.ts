@@ -9,38 +9,48 @@ class PessoaControle {
 
   async todos(_: CustomRequest<Pessoa>, res: Response): Promise<void> {
     const pessoas = await PessoaControle.servico.todos();
-    res.status(201).json(pessoas == null ? [] : pessoas);
+    res.status(201).json({ pessoas });
   }
 
   async porId(req: Request, res: Response): Promise<void> {
-    const pessoa = await PessoaControle.servico.porId(Number(req.params.id));
-    if (pessoa == null) {
-      res.status(404).send();
-      return;
-    }
+    PessoaControle.servico.porId(Number(req.params.id))
+      .then((entidade) => {
+        if (entidade == null) {
+          res.status(404).send();
+          return;
+        }
 
-    res.status(201).json({ pessoa });
+        res.status(201).json({ entidade })
+      });
   }
 
   async criar(req: CustomRequest<Pessoa>, res: Response): Promise<void> {
     try {
-      const pessoa = await PessoaControle.servico.criar(req.body);
-      res.status(201).json({ pessoa });
+      const entidade = await PessoaControle.servico.criar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
   async atualizar(req: CustomRequest<Pessoa>, res: Response): Promise<void> {
     try {
-      const pessoa = PessoaControle.servico.atualizar(req.body);
-      res.status(201).json({ pessoa });
+      const entidade = await PessoaControle.servico.atualizar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 

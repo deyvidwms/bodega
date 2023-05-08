@@ -9,38 +9,52 @@ class LoteControle {
 
   async todos(_: CustomRequest<Lote>, res: Response): Promise<void> {
     const lotes = await LoteControle.servico.todos();
-    res.status(201).json(lotes == null ? [] : lotes);
+    res.status(201).json({ lotes });
   }
 
   porId(req: Request, res: Response): void {
     LoteControle.servico.porId(Number(req.params.id))
-      .then((lote) => {
-        if (lote == null) {
+      .then((entidade) => {
+        if (entidade == null) {
           res.status(404).send();
           return;
         }
 
-        res.status(201).json({ lote })
+        res.status(201).json({ entidade })
       });
   }
 
   async criar(req: CustomRequest<Lote>, res: Response): Promise<void> {
     try {
-      const lote = await LoteControle.servico.criar(req.body);
-      res.status(201).json({ lote });
+      const entidade = await LoteControle.servico.criar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
-  atualizar(req: CustomRequest<Lote>, res: Response): void {
-    LoteControle.servico.atualizar(req.body)
-      .then((lote) => { res.status(201).json({ lote }) });
+  async atualizar(req: CustomRequest<Lote>, res: Response): Promise<void> {
+    try {
+      const entidade = await LoteControle.servico.atualizar(req.body);
+      res.status(201).json(entidade);
+    } catch (e) {
+      if (e instanceof ErroNegocio) {
+        res.status(400).json({ erros: e.getErros() });
+        return;
+      }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
+    }
   }
 
-  remover(req: Request, res: Response): void {
+  async remover(req: Request, res: Response): Promise<void> {
     LoteControle.servico.remover(Number(req.params.id))
       .then((lote) => { res.status(200).json({ lote }) });
   }

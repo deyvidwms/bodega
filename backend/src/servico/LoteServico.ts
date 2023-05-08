@@ -4,12 +4,12 @@ import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Lote from "../entidade/Lote";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
-import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
+import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 
 class LoteServico implements ServicoEscrita<Lote> {
   private static repositorio = new LoteRepositorio();
-  private static pessoaRepositorio = new PessoaRepositorio();
+  private static usuarioRepositorio = new UsuarioRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
 
   private static validadorLote: ValidadorEntidade = {
@@ -24,7 +24,7 @@ class LoteServico implements ServicoEscrita<Lote> {
       'emPromocao': Validacao.vazio,
     },
     validacoesAssincronas: {
-      'idCriador': (id) => Validacao.entidadeFoiInformada(id, LoteServico.pessoaRepositorio.porId, true),
+      'idCriador': (id) => Validacao.entidadeFoiInformada(id, LoteServico.usuarioRepositorio.porId, true),
       'idProduto': (id) => Validacao.entidadeFoiInformada(id, LoteServico.produtoRepositorio.porId, true),
     }
   };

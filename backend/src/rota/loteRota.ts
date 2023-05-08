@@ -1,7 +1,7 @@
-import { Router } from 'express'
+import { Router } from 'express';
 import LoteControle from '../controle/LoteControle';
 
-const loteRota = Router()
+const loteRota = Router();
 const controle = new LoteControle();
 
 loteRota.get('/', controle.todos);

@@ -10,8 +10,8 @@ type Lote = {
   precoVenda: Decimal;
   precoVendaPromocao: Decimal;
   emPromocao: boolean;
-  idProduto: number;
   idCriador: number;
+  idProduto: number;
 }
 
 export default Lote;

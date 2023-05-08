@@ -9,38 +9,52 @@ class VendaControle {
 
   async todos(_: CustomRequest<Venda>, res: Response): Promise<void> {
     const vendas = await VendaControle.servico.todos();
-    res.status(201).json(vendas == null ? [] : vendas);
+    res.status(201).json({ vendas });
   }
 
-  porId(req: Request, res: Response): void {
+  async porId(req: Request, res: Response): Promise<void> {
     VendaControle.servico.porId(Number(req.params.id))
-      .then((venda) => {
-        if (venda == null) {
+      .then((entidade) => {
+        if (entidade == null) {
           res.status(404).send();
           return;
         }
 
-        res.status(201).json({ venda })
+        res.status(201).json({ entidade })
       });
   }
 
   async criar(req: CustomRequest<Venda>, res: Response): Promise<void> {
     try {
-      const venda = await VendaControle.servico.criar(req.body);
-      res.status(201).json(venda);
+      const entidade = await VendaControle.servico.criar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
-  atualizar(req: CustomRequest<Venda>, res: Response): void {
-    VendaControle.servico.atualizar(req.body)
-      .then((venda) => { res.status(201).json({ venda }) });
+  async atualizar(req: CustomRequest<Venda>, res: Response): Promise<void> {
+    try {
+      const entidade = await VendaControle.servico.atualizar(req.body);
+      res.status(201).json(entidade);
+    } catch (e) {
+      if (e instanceof ErroNegocio) {
+        res.status(400).json({ erros: e.getErros() });
+        return;
+      }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
+    }
   }
 
-  remover(req: Request, res: Response): void {
+  async remover(req: Request, res: Response): Promise<void> {
     VendaControle.servico.remover(Number(req.params.id))
       .then((venda) => { res.status(200).json({ venda }) });
   }

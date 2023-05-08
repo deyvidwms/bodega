@@ -3,7 +3,6 @@ type Bodega = {
   nome: string
   descricao: string
   cnpj: string
-  endereco: string
   imagem: string
 }
 

@@ -3,8 +3,8 @@ type Produto = {
   titulo: string;
   descricao: string;
   imagem: string;
-  idCriador: number | null;
   idBodega: number | null;
+  idCriador: number | null;
   idCategoriaProduto: number | null;
 }
 

@@ -2,7 +2,7 @@ import ErroNegocio from "./ErroNegocio";
 import ValidadorEntidade from "./ValidadorEntidade";
 import { Decimal } from "@prisma/client/runtime/library";
 
-type ObjetoGenerico = { [key: string]: any };
+export type ObjetoGenerico = { [key: string]: any };
 
 export default class Validacao {
   public static async validar(validador: ValidadorEntidade, entidade: ObjetoGenerico): Promise<ErroNegocio | null> {
@@ -16,7 +16,7 @@ export default class Validacao {
     }
 
     for (const atributo in validador.validacoesAssincronas) {
-      const erro = await validador.validacoesAssincronas[atributo](entidade[atributo])
+      const erro = await validador.validacoesAssincronas[atributo](entidade[atributo]);
       if (erro !== null) {
         erros[atributo] = erro;
       }
@@ -85,7 +85,7 @@ export default class Validacao {
       return NAO_INFORMADO;
     }
 
-    cpf = cpf.replace(/[^\d]+\g/, '');
+    cpf = cpf.replace(/\D/g, '');
 
     if (cpf.length != 11) {
       return Validacao.descricaoCampoInvalido('CPF');

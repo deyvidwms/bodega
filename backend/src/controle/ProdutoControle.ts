@@ -9,49 +9,57 @@ class ProdutoControle {
 
   async todos(_: CustomRequest<Produto>, res: Response): Promise<void> {
     const produtos = await ProdutoControle.servico.todos();
-    res.status(201).json(produtos == null ? [] : produtos);
+    res.status(201).json({ produtos });
   }
 
-  porId(req: Request, res: Response): void {
+  async porId(req: Request, res: Response): Promise<void> {
     ProdutoControle.servico.porId(Number(req.params.id))
-      .then((produto) => {
-        if (produto == null) {
+      .then((entidade) => {
+        if (entidade == null) {
           res.status(404).send();
           return;
         }
 
-        res.status(201).json({ produto })
+        res.status(201).json({ entidade })
       });
   }
 
   async criar(req: CustomRequest<Produto>, res: Response): Promise<void> {
     try {
-      const produto = await ProdutoControle.servico.criar(req.body);
-      res.status(201).json({ produto });
+      const entidade = await ProdutoControle.servico.criar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
   async atualizar(req: CustomRequest<Produto>, res: Response): Promise<void> {
     try {
-      const produto = await ProdutoControle.servico.atualizar(req.body);
-      res.status(201).json({ produto });
+      const entidade = await ProdutoControle.servico.atualizar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
-  remover(req: Request, res: Response): void {
+  async remover(req: Request, res: Response): Promise<void> {
     ProdutoControle.servico.remover(Number(req.params.id))
       .then((produto) => { res.status(200).json({ produto }) });
   }
 
-  produtosComBaixoEstoque(req: Request, res: Response): void {
+  async produtosComBaixoEstoque(req: Request, res: Response): Promise<void> {
     ProdutoControle.servico.produtosComBaixoEstoque(Number(req.params.limite))
       .then((response) => res.status(200).json({ produtos: response }))
       .catch(() => res.status(200).json({ produtos: [] }));

@@ -9,38 +9,48 @@ class BodegaControle {
 
   async todos(_: CustomRequest<Bodega>, res: Response): Promise<void> {
     const bodegas = await BodegaControle.servico.todos();
-    res.status(201).json(bodegas == null ? [] : bodegas);
+    res.status(201).json({ bodegas });
   }
 
   async porId(req: Request, res: Response): Promise<void> {
-    const bodega = BodegaControle.servico.porId(Number(req.params.id));
-    if (bodega == null) {
-      res.status(404).send();
-      return;
-    }
+    BodegaControle.servico.porId(Number(req.params.id))
+      .then((entidade) => {
+        if (entidade == null) {
+          res.status(404).send();
+          return;
+        }
 
-    res.status(201).json({ bodega });
+        res.status(201).json({ entidade })
+      });
   }
 
   async criar(req: CustomRequest<Bodega>, res: Response): Promise<void> {
     try {
-      const bodega = await BodegaControle.servico.criar(req.body);
-      res.status(201).json({ bodega });
+      const entidade = await BodegaControle.servico.criar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
   async atualizar(req: CustomRequest<Bodega>, res: Response): Promise<void> {
     try {
-      const bodega = await BodegaControle.servico.atualizar(req.body);
-      res.status(201).json({ bodega });
+      const entidade = await BodegaControle.servico.atualizar(req.body);
+      res.status(201).json(entidade);
     } catch (e) {
       if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
+        res.status(400).json({ erros: e.getErros() });
+        return;
       }
+      res.status(400).json({
+        erros: ['Houve um erro ao processar a sua requisição']
+      });
     }
   }
 
