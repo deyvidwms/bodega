@@ -135,16 +135,17 @@ const produtosList = [
 
 async function cadastrarCategoriasProdutos() {
   categoriaProdutoList.forEach((categoriaProduto) => (
-    prisma.categoriaProduto.create({ data: categoriaProduto })
+    prisma.categoriaProduto.create({ data: categoriaProduto }).catch(error => console.log('error:', error))
   ))
+  return true;
 }
 
 async function cadastrarProdutos() {
-  produtosList.forEach((produto) => (prisma.produto.create({ data: produto })));
+  produtosList.forEach((produto) => (prisma.produto.create({ data: produto }).catch(error => console.log('error:', error))));
 }
 
 async function cadastrarPessoas() {
-  pessoasList.forEach((pessoa) => (prisma.pessoa.create({ data: pessoa })));
+  pessoasList.forEach((pessoa) => (prisma.pessoa.create({ data: pessoa }).catch(error => console.log('error:', error))));
 }
 
 async function main() {
@@ -157,10 +158,8 @@ async function main() {
       imagem: 'logo-bodega.jpg'
     }
   })
-    .then(() => {
-      cadastrarCategoriasProdutos();
-      cadastrarPessoas();
-    })
+    .then(cadastrarCategoriasProdutos)
+    .then(cadastrarPessoas)
     .then(() => {
       prisma.usuario.create({
         data: {
@@ -169,13 +168,13 @@ async function main() {
           idBodega: 1,
           idPessoa: 1
         }
-      })
+      }).catch(error => console.log('error:', error))
     })
     .then(cadastrarProdutos)
     .then(() => {
       pessoasList.forEach(async (element, index: number) => {
         if (index > 0) {
-          prisma.clienteBodega.create({ data: { idBodega: 1, idCliente: 1, } })
+          prisma.clienteBodega.create({ data: { idBodega: 1, idCliente: 1, } }).catch(error => console.log('error:', error))
         }
       })
     })
@@ -193,10 +192,10 @@ async function main() {
           idCriador: 1,
           idProduto: 1
         }
-      })
+      }).catch(error => console.log('error:', error))
     })
     .then(() => {
-      prisma.venda.create({ data: { vendidoEm: '2023-04-09T18:25:43.511Z' } })
+      prisma.venda.create({ data: { vendidoEm: '2023-04-09T18:25:43.511Z' } }).catch(error => console.log('error:', error))
     })
     .then(() => {
       prisma.vendaLote.create({
@@ -206,8 +205,9 @@ async function main() {
           idLote: 1,
           idVenda: 1
         }
-      })
-    });
+      }).catch(error => console.log('error:', error))
+    })
+      .catch(error => console.log('error', error));
 }
 
 main()
