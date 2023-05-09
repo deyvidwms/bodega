@@ -1,10 +1,155 @@
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
+
+const pessoasList = [
+  {
+    nome: "João da Silva",
+    cpf: "105.497.540-08",
+    celular: "(11) 9 9999-9999"
+  },
+  {
+    nome: "Maria Oliveira",
+    cpf: "434.012.120-79",
+    celular: "(11) 9 9999-9998"
+  },
+  {
+    nome: "Pedro Santos",
+    cpf: "690.128.200-14",
+    celular: "(11) 9 9999-9997"
+  },
+  {
+    nome: "Ana Souza",
+    cpf: "735.704.120-40",
+    celular: "(11) 9 9999-9996"
+  },
+  {
+    nome: "Lucas Almeida",
+    cpf: "898.026.400-34",
+    celular: "(11) 9 9999-9995"
+  },
+  {
+    nome: "Carla Ferreira",
+    cpf: "476.551.840-03",
+    celular: "(11) 9 9999-9994"
+  },
+  {
+    nome: "Paulo Ribeiro",
+    cpf: "404.249.170-76",
+    celular: "(11) 9 9999-9993"
+  },
+  {
+    nome: "Isabela Nogueira",
+    cpf: "039.614.080-74",
+    celular: "(11) 9 9999-9992"
+  },
+  {
+    nome: "Maurício Costa",
+    cpf: "971.942.850-37",
+    celular: "(11) 9 9999-9991"
+  },
+  {
+    nome: "Camila Silva",
+    cpf: "063.683.460-35",
+    celular: "(11) 9 9999-9990"
+  }
+];
+
+const categoriaProdutoList = [
+  {
+    nome: "Hortifruti",
+    imagem: '',
+  },
+  {
+    nome: "Carnes",
+    imagem: '',
+  },
+  {
+    nome: "Peixes e frutos do mar",
+    imagem: '',
+  },
+  {
+    nome: "Laticínios",
+    imagem: '',
+  },
+  {
+    nome: "Açougue",
+    imagem: '',
+  },
+  {
+    nome: "Frios e embutidos",
+    imagem: '',
+  },
+  {
+    nome: "Bebidas",
+    imagem: '',
+  },
+  {
+    nome: "Doces e sobremesas",
+    imagem: '',
+  }
+];
+
+const produtosList = [
+  {
+    titulo: "Arroz branco",
+    descricao: "Arroz branco tipo 1, 1kg",
+    imagem: "https://exemplo.com/arroz_branco.jpg",
+    idBodega: 1,
+    idCategoriaProduto: 1,
+    idCriador: 1
+  },
+  {
+    titulo: "Feijão carioca",
+    descricao: "Feijão carioca tipo 1, 1kg",
+    imagem: "https://exemplo.com/feijao_carioca.jpg",
+    idBodega: 1,
+    idCategoriaProduto: 1,
+    idCriador: 1
+  },
+  {
+    titulo: "Leite integral",
+    descricao: "Leite integral em caixa, 1L",
+    imagem: "https://exemplo.com/leite_integral.jpg",
+    idBodega: 1,
+    idCategoriaProduto: 1,
+    idCriador: 1
+  },
+  {
+    titulo: "Pão de forma",
+    descricao: "Pão de forma integral, 500g",
+    imagem: "https://exemplo.com/pao_de_forma.jpg",
+    idBodega: 1,
+    idCategoriaProduto: 1,
+    idCriador: 1
+  },
+  {
+    titulo: "Óleo de soja",
+    descricao: "Óleo de soja refinado, 900ml",
+    imagem: "https://exemplo.com/oleo_de_soja.jpg",
+    idBodega: 1,
+    idCategoriaProduto: 1,
+    idCriador: 1
+  }
+];
+
+async function cadastrarCategoriasProdutos() {
+  categoriaProdutoList.forEach((categoriaProduto) => (
+    prisma.categoriaProduto.create({ data: categoriaProduto })
+  ))
+}
+
+async function cadastrarProdutos() {
+  produtosList.forEach((produto) => (prisma.produto.create({ data: produto })));
+}
+
+async function cadastrarPessoas() {
+  pessoasList.forEach((pessoa) => (prisma.pessoa.create({ data: pessoa })));
+}
 
 async function main() {
   // cria uma bodega
-  await prisma.bodega.create({
+  prisma.bodega.create({
     data: {
       nome: 'Bodega do Alpha',
       descricao: 'Melhor bodega do mundo',
@@ -12,212 +157,57 @@ async function main() {
       imagem: 'logo-bodega.jpg'
     }
   })
-
-  // cria categorias de produto
-  const categoriaProdutoList = [
-    {
-      nome: "Hortifruti",
-      imagem: '',
-    },
-    {
-      nome: "Carnes",
-      imagem: '',
-    },
-    {
-      nome: "Peixes e frutos do mar",
-      imagem: '',
-    },
-    {
-      nome: "Laticínios",
-      imagem: '',
-    },
-    {
-      nome: "Açougue",
-      imagem: '',
-    },
-    {
-      nome: "Frios e embutidos",
-      imagem: '',
-    },
-    {
-      nome: "Bebidas",
-      imagem: '',
-    },
-    {
-      nome: "Doces e sobremesas",
-      imagem: '',
-    }
-  ];
-
-  categoriaProdutoList.forEach(async (categoriaProduto) => (
-    await prisma.categoriaProduto.create({
-      data: categoriaProduto
+    .then(() => {
+      cadastrarCategoriasProdutos();
+      cadastrarPessoas();
     })
-  ))
-
-  // cria pessoas
-  const pessoasList = [
-    {
-      nome: "João da Silva",
-      cpf: "105.497.540-08",
-      celular: "(11) 9 9999-9999"
-    },
-    {
-      nome: "Maria Oliveira",
-      cpf: "434.012.120-79",
-      celular: "(11) 9 9999-9998"
-    },
-    {
-      nome: "Pedro Santos",
-      cpf: "690.128.200-14",
-      celular: "(11) 9 9999-9997"
-    },
-    {
-      nome: "Ana Souza",
-      cpf: "735.704.120-40",
-      celular: "(11) 9 9999-9996"
-    },
-    {
-      nome: "Lucas Almeida",
-      cpf: "898.026.400-34",
-      celular: "(11) 9 9999-9995"
-    },
-    {
-      nome: "Carla Ferreira",
-      cpf: "476.551.840-03",
-      celular: "(11) 9 9999-9994"
-    },
-    {
-      nome: "Paulo Ribeiro",
-      cpf: "404.249.170-76",
-      celular: "(11) 9 9999-9993"
-    },
-    {
-      nome: "Isabela Nogueira",
-      cpf: "039.614.080-74",
-      celular: "(11) 9 9999-9992"
-    },
-    {
-      nome: "Maurício Costa",
-      cpf: "971.942.850-37",
-      celular: "(11) 9 9999-9991"
-    },
-    {
-      nome: "Camila Silva",
-      cpf: "063.683.460-35",
-      celular: "(11) 9 9999-9990"
-    }
-  ];
-  pessoasList.forEach(async (pessoa) => (
-    await prisma.pessoa.create({
-      data: pessoa
-    })
-  ))
-
-  // cria um usuario
-  await prisma.usuario.create({
-    data: {
-      email: 'email@dominio.com',
-      senha: '202cb962ac59075b964b07152d234b70', // 123
-      idBodega: 1,
-      idPessoa: 1
-    }
-  })
-
-  // cria produtos
-  const produtosList = [
-    {
-      titulo: "Arroz branco",
-      descricao: "Arroz branco tipo 1, 1kg",
-      imagem: "https://exemplo.com/arroz_branco.jpg",
-      idBodega: 1,
-      idCategoriaProduto: 1,
-      idCriador: 1
-    },
-    {
-      titulo: "Feijão carioca",
-      descricao: "Feijão carioca tipo 1, 1kg",
-      imagem: "https://exemplo.com/feijao_carioca.jpg",
-      idBodega: 1,
-      idCategoriaProduto: 1,
-      idCriador: 1
-    },
-    {
-      titulo: "Leite integral",
-      descricao: "Leite integral em caixa, 1L",
-      imagem: "https://exemplo.com/leite_integral.jpg",
-      idBodega: 1,
-      idCategoriaProduto: 1,
-      idCriador: 1
-    },
-    {
-      titulo: "Pão de forma",
-      descricao: "Pão de forma integral, 500g",
-      imagem: "https://exemplo.com/pao_de_forma.jpg",
-      idBodega: 1,
-      idCategoriaProduto: 1,
-      idCriador: 1
-    },
-    {
-      titulo: "Óleo de soja",
-      descricao: "Óleo de soja refinado, 900ml",
-      imagem: "https://exemplo.com/oleo_de_soja.jpg",
-      idBodega: 1,
-      idCategoriaProduto: 1,
-      idCriador: 1
-    }
-  ];
-  produtosList.forEach(async (produto) => (
-    await prisma.produto.create({
-      data: produto
-    })
-  ))
-
-  // cria clientes
-  pessoasList.forEach( async (element, index: number) => {
-    if ( index > 0 ) {
-      await prisma.clienteBodega.create({
+    .then(() => {
+      prisma.usuario.create({
         data: {
+          email: 'email@dominio.com',
+          senha: '202cb962ac59075b964b07152d234b70', // 123
           idBodega: 1,
-          idCliente: 1,
+          idPessoa: 1
         }
       })
-    }
-  })
-
-  // cria o lote
-  await prisma.lote.create({
-    data: {
-      quantidadeInicial: 10,
-      quantidadeAtual: 9,
-      validade: '2023-05-24T18:25:43.511Z',
-      compradoEm: '2023-04-08T18:25:43.511Z',
-      custo: 10.00,
-      precoVenda: 15.00,
-      precoVendaPromocao: 0.00,
-      emPromocao: false,
-      idCriador: 1,
-      idProduto: 1
-    }
-  })
-
-  // cria venda
-  await prisma.venda.create({
-    data: {
-      vendidoEm: '2023-04-09T18:25:43.511Z'
-    }
-  })
-
-  // cria venda lote
-  await prisma.vendaLote.create({
-    data: {
-      quantidade: 1,
-      valor: 15.00,
-      idLote: 1,
-      idVenda: 1
-    }
-  })
-
+    })
+    .then(cadastrarProdutos)
+    .then(() => {
+      pessoasList.forEach(async (element, index: number) => {
+        if (index > 0) {
+          prisma.clienteBodega.create({ data: { idBodega: 1, idCliente: 1, } })
+        }
+      })
+    })
+    .then(() => {
+      prisma.lote.create({
+        data: {
+          quantidadeInicial: 10,
+          quantidadeAtual: 9,
+          validade: '2023-05-24T18:25:43.511Z',
+          compradoEm: '2023-04-08T18:25:43.511Z',
+          custo: 10.00,
+          precoVenda: 15.00,
+          precoVendaPromocao: 0.00,
+          emPromocao: false,
+          idCriador: 1,
+          idProduto: 1
+        }
+      })
+    })
+    .then(() => {
+      prisma.venda.create({ data: { vendidoEm: '2023-04-09T18:25:43.511Z' } })
+    })
+    .then(() => {
+      prisma.vendaLote.create({
+        data: {
+          quantidade: 1,
+          valor: 15.00,
+          idLote: 1,
+          idVenda: 1
+        }
+      })
+    });
 }
 
 main()
