@@ -31,6 +31,7 @@ type Pessoa = {
   endereco: string | null,
   cliente: boolean,
   saldoDevedor: string,
+  Usuario: any | null,
 }
 
 const Cliente: React.FC = () => {
@@ -64,7 +65,7 @@ const Cliente: React.FC = () => {
 
     const setClients = (data: any) => {
       const response: Pessoa[] = [];
-      data.pessoas.forEach( (element: Pessoa) => response.push(element) );
+      data.pessoas.forEach( (element: Pessoa) => element.Usuario === null && response.push(element) );
       setRows(response)
       console.log(response);
     };

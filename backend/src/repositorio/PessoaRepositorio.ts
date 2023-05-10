@@ -5,7 +5,7 @@ class PessoaRepositorio {
   private static repositorio = new PrismaClient().pessoa;
 
   async todos() {
-    return await PessoaRepositorio.repositorio.findMany();
+    return await PessoaRepositorio.repositorio.findMany({ include: { Usuario: true } });
   }
 
   async porId(id: number) {
