@@ -21,6 +21,7 @@ class ProdutoRepositorio {
   }
 
   async criar(produto: Produto) {
+    produto.idCategoriaProduto = Number(produto.idCategoriaProduto);
     return await ProdutoRepositorio.repositorio.create({ data: produto })
   }
 

@@ -20,7 +20,7 @@ class ProdutoControle {
           return;
         }
 
-        res.status(201).json({ entidade })
+        res.status(201).json(entidade)
       });
   }
 
@@ -33,6 +33,7 @@ class ProdutoControle {
         res.status(400).json({ erros: e.getErros() });
         return;
       }
+      console.log(e)
       res.status(400).json({
         erros: ['Houve um erro ao processar a sua requisição']
       });

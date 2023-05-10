@@ -20,7 +20,7 @@ class UsuarioControle {
           return;
         }
 
-        res.status(201).json({ entidade })
+        res.status(201).json(entidade)
       });
   }
 
