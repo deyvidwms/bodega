@@ -11,9 +11,10 @@ type Props = {
   name: string;
   label: string;
   required?: boolean;
+  style?: React.CSSProperties | undefined;
 }
 
-const TextFieldElement: React.FC<Props> = ({ maskFunction, name, label, required }) => {
+const TextFieldElement: React.FC<Props> = ({ maskFunction, name, label, required, style }) => {
   const { watch, control } = useFormContext();
 
   return (
@@ -24,6 +25,7 @@ const TextFieldElement: React.FC<Props> = ({ maskFunction, name, label, required
         <Container>
           <TextField
             {...field}
+            sx={style}
             variant='outlined'
             label={label}
             id={name}

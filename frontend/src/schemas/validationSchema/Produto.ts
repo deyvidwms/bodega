@@ -12,7 +12,7 @@ const SUPPORTED_FORMATS = [
 export const validationSchemaProduct = yup
   .object()
   .shape({
-    nome: yup
+    titulo: yup
       .string()
       .required("O campo acima é obrigatório"),
     descricao: yup
@@ -39,6 +39,6 @@ export const validationSchemaProduct = yup
       //   }
       // )
       .default([]),
-    categoria: yup.string().required("Selecione uma opção válida"),
+    idCategoriaProduto: yup.string().required("Selecione uma opção válida"),
   })
   .required()

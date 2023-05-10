@@ -40,7 +40,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }
 
   const onSubmitHandler = (values: FormValues) => {
-    console.log("valores", values);
+    // console.log("valores", values);
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
       method: 'PUT',
       headers: {
@@ -52,7 +52,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       .then(data => (
         setSuccess(true)
       ))
-      .then(data => console.log('data', data))
+      // .then(data => console.log('data', data))
       .catch(error => console.error(error))
   };
 
@@ -80,13 +80,13 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }, [success]);
 
   useEffect(() => {
-    console.log('default', defaultValues)
+    // console.log('default', defaultValues)
     defaultValues['endereco'] = '';
     methods.reset(defaultValues[endpoint]);
   }, [defaultValues])
 
-  console.log('values', methods.getValues())
-  console.log('errors', methods.formState.errors)
+  // console.log('values', methods.getValues())
+  // console.log('errors', methods.formState.errors)
 
   return (
     <Container show={show}>

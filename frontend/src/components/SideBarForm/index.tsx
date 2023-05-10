@@ -38,6 +38,16 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
   }
 
   const onSubmitHandler = (values: FormValues) => {
+    if (endpoint === 'produto') {
+      values['idCriador'] = 1;
+      values['idBodega'] = 1;
+    }
+
+    if (values?.imagem) {
+      if (Object.keys(values.imagem).length === 0)
+        values.imagem = 'imagem.jpg';
+    }
+
     console.log("valores", values);
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
       method: 'POST',
@@ -58,12 +68,12 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
       methods.reset()
       setShow(false);
       setTimeout(() => {
-        // window.location.reload();
+        window.location.reload();
       }, 300)
     }
   }, [success]);
 
-  console.log(methods.formState.errors)
+  // console.log(methods.formState.errors)
 
   return (
     <Container show={show}>

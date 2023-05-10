@@ -7,7 +7,7 @@ import { Container } from "./styles";
 
 type Option = {
   id : number;
-  name: string;
+  nome: string;
 }
 
 type Props = {
@@ -36,9 +36,9 @@ const AutoCompleteElement: React.FC<Props> = ({options, name, label, required}) 
               disabled={!options.length}
               id={name}
               options={options}
-              getOptionLabel={(option) => option.name}
+              getOptionLabel={(option) => option.nome}
               value={previousValue || null}
-              isOptionEqualToValue={(option, value) => option.name === value.name}
+              isOptionEqualToValue={(option, value) => option.nome === value.nome}
               noOptionsText="Nenhuma informação encontrada"
               renderInput={(params) => (
                 <TextField
