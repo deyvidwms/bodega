@@ -16,8 +16,12 @@ class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
     validacoesAssincronas: {},
   };
 
-  validar(categoriaProduto: CategoriaProduto): Promise<ErroNegocio | null> {
-    return Validacao.validar(CategoriaProdutoServico.validadorCategoriaProduto, categoriaProduto);
+  validarCadastro(categoriaProduto: CategoriaProduto): Promise<ErroNegocio | null> {
+    return Validacao.validar(CategoriaProdutoServico.validadorCategoriaProduto, categoriaProduto, false);
+  }
+
+  validarAtualizacao(categoriaProduto: CategoriaProduto): Promise<ErroNegocio | null> {
+    return Validacao.validar(CategoriaProdutoServico.validadorCategoriaProduto, categoriaProduto, true);
   }
 
   todos(): Promise<CategoriaProduto[]> {
@@ -29,7 +33,7 @@ class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   }
 
   async criar(categoriaProduto: CategoriaProduto): Promise<CategoriaProduto> {
-    const retorno = await this.validar(categoriaProduto);
+    const retorno = await this.validarCadastro(categoriaProduto);
     if (retorno === null) {
       return await CategoriaProdutoServico.repositorio.criar(categoriaProduto);
     }
@@ -37,7 +41,7 @@ class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   }
 
   async atualizar(categoriaProduto: CategoriaProduto): Promise<CategoriaProduto> {
-    const retorno = await this.validar(categoriaProduto);
+    const retorno = await this.validarAtualizacao(categoriaProduto);
     if (retorno === null) {
       return await CategoriaProdutoServico.repositorio.atualizar(categoriaProduto);
     }

@@ -29,8 +29,12 @@ class LoteServico implements ServicoEscrita<Lote> {
     }
   };
 
-  validar(lote: Lote): Promise<ErroNegocio | null> {
-    return Validacao.validar(LoteServico.validadorLote, lote);
+  validarCadastro(lote: Lote): Promise<ErroNegocio | null> {
+    return Validacao.validar(LoteServico.validadorLote, lote, false);
+  }
+
+  validarAtualizacao(lote: Lote): Promise<ErroNegocio | null> {
+    return Validacao.validar(LoteServico.validadorLote, lote, true);
   }
 
   todos(): Promise<Lote[]> {
@@ -42,7 +46,7 @@ class LoteServico implements ServicoEscrita<Lote> {
   }
 
   async criar(lote: Lote): Promise<Lote> {
-    const retorno = await this.validar(lote);
+    const retorno = await this.validarCadastro(lote);
     if (retorno === null) {
       return await LoteServico.repositorio.criar(lote);
     }
@@ -50,7 +54,7 @@ class LoteServico implements ServicoEscrita<Lote> {
   }
 
   async atualizar(lote: Lote): Promise<Lote> {
-    const retorno = await this.validar(lote);
+    const retorno = await this.validarAtualizacao(lote);
     if (retorno === null) {
       return await LoteServico.repositorio.atualizar(lote);
     }

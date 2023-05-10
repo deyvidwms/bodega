@@ -83,6 +83,7 @@ const Produto: React.FC = () => {
   }, []);
 
   const editProduct = (id: number) => {
+    console.log('o id é ', id)
     setRowId(id);
     setShowSideBarFormEdit(true);
   }

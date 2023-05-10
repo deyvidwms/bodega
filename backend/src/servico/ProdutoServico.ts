@@ -30,8 +30,12 @@ class ProdutoServico implements ServicoEscrita<Produto> {
     }
   };
 
-  validar(produto: Produto): Promise<ErroNegocio | null> {
-    return Validacao.validar(ProdutoServico.validadorProduto, produto);
+  validarCadastro(produto: Produto): Promise<ErroNegocio | null> {
+    return Validacao.validar(ProdutoServico.validadorProduto, produto, false);
+  }
+
+  validarAtualizacao(produto: Produto): Promise<ErroNegocio | null> {
+    return Validacao.validar(ProdutoServico.validadorProduto, produto, true);
   }
 
   todos(): Promise<Produto[]> {
@@ -43,7 +47,7 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   }
 
   async criar(produto: Produto): Promise<Produto> {
-    const retorno = await this.validar(produto);
+    const retorno = await this.validarCadastro(produto);
     if (retorno === null) {
       return await ProdutoServico.repositorio.criar(produto);
     }
@@ -51,7 +55,7 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   }
 
   async atualizar(produto: Produto): Promise<Produto> {
-    const retorno = await this.validar(produto);
+    const retorno = await this.validarAtualizacao(produto);
     if (retorno === null) {
       return await ProdutoServico.repositorio.atualizar(produto);
     }

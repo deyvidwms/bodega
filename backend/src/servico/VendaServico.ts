@@ -15,8 +15,12 @@ class VendaServico implements ServicoEscrita<Venda> {
     validacoesAssincronas: {}
   };
 
-  validar(venda: Venda): Promise<ErroNegocio | null> {
-    return Validacao.validar(VendaServico.validadorVenda, venda);
+  validarCadastro(venda: Venda): Promise<ErroNegocio | null> {
+    return Validacao.validar(VendaServico.validadorVenda, venda, false);
+  }
+
+  validarAtualizacao(venda: Venda): Promise<ErroNegocio | null> {
+    return Validacao.validar(VendaServico.validadorVenda, venda, true);
   }
 
   todos(): Promise<Venda[]> {
@@ -28,7 +32,7 @@ class VendaServico implements ServicoEscrita<Venda> {
   }
 
   async criar(venda: Venda): Promise<Venda> {
-    const retorno = await this.validar(venda);
+    const retorno = await this.validarCadastro(venda);
     if (retorno === null) {
       return await VendaServico.repositorio.criar(venda);
     }
@@ -36,7 +40,7 @@ class VendaServico implements ServicoEscrita<Venda> {
   }
 
   async atualizar(venda: Venda): Promise<Venda> {
-    const retorno = await this.validar(venda);
+    const retorno = await this.validarAtualizacao(venda);
     if (retorno === null) {
       return await VendaServico.repositorio.atualizar(venda);
     }

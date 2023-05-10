@@ -87,9 +87,10 @@ model Lote {
 model Pessoa {
   id Int @id @default(autoincrement())
 
-  cpf     String  @unique
-  nome    String
-  celular String? @unique
+  cpf          String  @unique
+  nome         String
+  celular      String? @unique
+  saldoDevedor Decimal @default(0)
 
   Usuario       Usuario?
   ClienteBodega ClienteBodega[]
@@ -99,8 +100,6 @@ model VendaLote {
   id Int @id @default(autoincrement())
 
   quantidade Int
-
-  valor Decimal
 
   idLote  Int
   idVenda Int?

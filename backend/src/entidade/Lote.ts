@@ -1,7 +1,7 @@
 import { Decimal } from "@prisma/client/runtime/library";
 
 type Lote = {
-  id: number,
+  id: number;
   quantidadeInicial: number;
   quantidadeAtual: number;
   validade: Date | null;

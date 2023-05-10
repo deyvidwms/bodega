@@ -62,8 +62,8 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
         return await fetch(`http://127.0.0.1:3000/${endpoint}/${id}`)
           .then(response => response.json())
           .then(data => setDefaultValues(data))
-          .catch(error => { })
-      return setDefaultValues({});
+          .catch(error => { console.log(error) })
+      return setDefaultValues({ });
     }
 
     getItem(idItem)
@@ -80,12 +80,9 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }, [success]);
 
   useEffect(() => {
-    // console.log('default', defaultValues)
-    defaultValues['endereco'] = '';
-    methods.reset(defaultValues[endpoint]);
+    methods.reset(defaultValues);
   }, [defaultValues])
 
-  // console.log('values', methods.getValues())
   // console.log('errors', methods.formState.errors)
 
   return (

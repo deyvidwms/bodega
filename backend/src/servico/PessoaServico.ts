@@ -13,12 +13,17 @@ class PessoaServico implements ServicoEscrita<Pessoa> {
       'cpf': Validacao.cpf,
       'nome': Validacao.nome,
       'celular': Validacao.celular,
+      'saldoDevedor': () => null,
     },
     validacoesAssincronas: {}
   };
 
-  validar(pessoa: Pessoa): Promise<ErroNegocio | null> {
-    return Validacao.validar(PessoaServico.validadorPessoa, pessoa);
+  validarCadastro(pessoa: Pessoa): Promise<ErroNegocio | null> {
+    return Validacao.validar(PessoaServico.validadorPessoa, pessoa, false);
+  }
+
+  validarAtualizacao(pessoa: Pessoa): Promise<ErroNegocio | null> {
+    return Validacao.validar(PessoaServico.validadorPessoa, pessoa, true);
   }
 
   todos(): Promise<Pessoa[]> {
@@ -30,7 +35,7 @@ class PessoaServico implements ServicoEscrita<Pessoa> {
   }
 
   async criar(pessoa: Pessoa): Promise<Pessoa> {
-    const retorno = await this.validar(pessoa);
+    const retorno = await this.validarCadastro(pessoa);
     if (retorno === null) {
       return await PessoaServico.repositorio.criar(pessoa);
     }
@@ -38,7 +43,7 @@ class PessoaServico implements ServicoEscrita<Pessoa> {
   }
 
   async atualizar(pessoa: Pessoa): Promise<Pessoa> {
-    const retorno = await this.validar(pessoa);
+    const retorno = await this.validarAtualizacao(pessoa);
     if (retorno === null) {
       return await PessoaServico.repositorio.atualizar(pessoa);
     }

@@ -27,8 +27,12 @@ class BodegaServico implements ServicoEscrita<Bodega> {
     validacoesAssincronas: {},
   };
 
-  validar(bodega: Bodega): Promise<ErroNegocio | null> {
-    return Validacao.validar(BodegaServico.validadorBodega, bodega);
+  validarCadastro(bodega: Bodega): Promise<ErroNegocio | null> {
+    return Validacao.validar(BodegaServico.validadorBodega, bodega, false);
+  }
+
+  validarAtualizacao(bodega: Bodega): Promise<ErroNegocio | null> {
+    return Validacao.validar(BodegaServico.validadorBodega, bodega, true);
   }
 
   todos(): Promise<Bodega[]> {
@@ -40,7 +44,7 @@ class BodegaServico implements ServicoEscrita<Bodega> {
   }
 
   async criar(bodega: Bodega): Promise<Bodega> {
-    const retorno = await this.validar(bodega);
+    const retorno = await this.validarCadastro(bodega);
     if (retorno === null) {
       return await BodegaServico.repositorio.criar(bodega);
     }
@@ -48,7 +52,7 @@ class BodegaServico implements ServicoEscrita<Bodega> {
   }
 
   async atualizar(bodega: Bodega): Promise<Bodega> {
-    const retorno = await this.validar(bodega);
+    const retorno = await this.validarAtualizacao(bodega);
     if (retorno === null) {
       return await BodegaServico.repositorio.atualizar(bodega);
     }
@@ -73,11 +77,11 @@ class BodegaServico implements ServicoEscrita<Bodega> {
     });
 
     let receita = new Decimal(0);
-    vendas.forEach(venda => {
-      venda.vendaLotes.forEach(vendaLote => {
-        receita.add(vendaLote.valor);
-      });
-    });
+    // vendas.forEach(venda => {
+    //   venda.vendaLotes.forEach(vendaLote => {
+    //     receita.add(vendaLote.valor);
+    //   });
+    // });
 
     return { compras: lotes, vendas: vendas, receita, despesa, lucro: receita.minus(despesa) };
   }

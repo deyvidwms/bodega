@@ -5,7 +5,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 export type ObjetoGenerico = { [key: string]: any };
 
 export default class Validacao {
-  public static async validar(validador: ValidadorEntidade, entidade: ObjetoGenerico): Promise<ErroNegocio | null> {
+  public static async validar(validador: ValidadorEntidade, entidade: ObjetoGenerico, atualizacao: boolean): Promise<ErroNegocio | null> {
     let erros: ObjetoGenerico = {};
 
     for (const atributo in validador.validacoesSincronas) {
@@ -23,6 +23,10 @@ export default class Validacao {
     }
 
     for (const atributo in entidade) {
+      if (atributo === 'id' && atualizacao) {
+        continue;
+      }
+
       if (validador.validacoesSincronas[atributo] === undefined && validador.validacoesAssincronas[atributo] === undefined) {
         erros[atributo] = 'Atributo não reconhecido';
       }

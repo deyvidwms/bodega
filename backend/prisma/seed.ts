@@ -6,52 +6,52 @@ const pessoasList = [
   {
     nome: "João da Silva",
     cpf: "105.497.540-08",
-    celular: "(11) 9 9999-9999"
+    celular: "(11) 99999-9999"
   },
   {
     nome: "Maria Oliveira",
     cpf: "434.012.120-79",
-    celular: "(11) 9 9999-9998"
+    celular: "(11) 99999-9998"
   },
   {
     nome: "Pedro Santos",
     cpf: "690.128.200-14",
-    celular: "(11) 9 9999-9997"
+    celular: "(11) 99999-9997"
   },
   {
     nome: "Ana Souza",
     cpf: "735.704.120-40",
-    celular: "(11) 9 9999-9996"
+    celular: "(11) 99999-9996"
   },
   {
     nome: "Lucas Almeida",
     cpf: "898.026.400-34",
-    celular: "(11) 9 9999-9995"
+    celular: "(11) 99999-9995"
   },
   {
     nome: "Carla Ferreira",
     cpf: "476.551.840-03",
-    celular: "(11) 9 9999-9994"
+    celular: "(11) 99999-9994"
   },
   {
     nome: "Paulo Ribeiro",
     cpf: "404.249.170-76",
-    celular: "(11) 9 9999-9993"
+    celular: "(11) 99999-9993"
   },
   {
     nome: "Isabela Nogueira",
     cpf: "039.614.080-74",
-    celular: "(11) 9 9999-9992"
+    celular: "(11) 99999-9992"
   },
   {
     nome: "Maurício Costa",
     cpf: "971.942.850-37",
-    celular: "(11) 9 9999-9991"
+    celular: "(11) 99999-9991"
   },
   {
     nome: "Camila Silva",
     cpf: "063.683.460-35",
-    celular: "(11) 9 9999-9990"
+    celular: "(11) 99999-9990"
   }
 ];
 
@@ -201,7 +201,6 @@ async function main() {
       prisma.vendaLote.create({
         data: {
           quantidade: 1,
-          valor: 15.00,
           idLote: 1,
           idVenda: 1
         }

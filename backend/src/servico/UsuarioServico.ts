@@ -20,8 +20,12 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
     }
   };
 
-  validar(usuario: Usuario): Promise<ErroNegocio | null> {
-    return Validacao.validar(UsuarioServico.validadorUsuario, usuario);
+  validarCadastro(usuario: Usuario): Promise<ErroNegocio | null> {
+    return Validacao.validar(UsuarioServico.validadorUsuario, usuario, false);
+  }
+
+  validarAtualizacao(usuario: Usuario): Promise<ErroNegocio | null> {
+    return Validacao.validar(UsuarioServico.validadorUsuario, usuario, true);
   }
 
   todos(): Promise<Usuario[]> {
@@ -33,7 +37,7 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   }
 
   async criar(usuario: Usuario): Promise<Usuario> {
-    const retorno = await this.validar(usuario);
+    const retorno = await this.validarCadastro(usuario);
     if (retorno === null) {
       return await UsuarioServico.repositorio.criar(usuario);
     }
@@ -41,7 +45,7 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   }
 
   async atualizar(usuario: Usuario): Promise<Usuario> {
-    const retorno = await this.validar(usuario);
+    const retorno = await this.validarAtualizacao(usuario);
     if (retorno === null) {
       return await UsuarioServico.repositorio.atualizar(usuario);
     }
