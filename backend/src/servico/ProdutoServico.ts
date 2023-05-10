@@ -24,9 +24,9 @@ class ProdutoServico implements ServicoEscrita<Produto> {
 
     },
     validacoesAssincronas: {
-      'idCriador': (id) => Validacao.entidadeFoiInformada(id, ProdutoServico.usuarioRepositorio.porId, false),
-      'idBodega': (id) => Validacao.entidadeFoiInformada(id, ProdutoServico.bodegaRepositorio.porId, false),
-      'idCategoriaProduto': (id) => Validacao.entidadeFoiInformada(id, ProdutoServico.categoriaProdutoRepositorio.porId, false),
+      'idCriador': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.usuarioRepositorio.porId, false),
+      'idBodega': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.bodegaRepositorio.porId, false),
+      'idCategoriaProduto': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.categoriaProdutoRepositorio.porId, false),
     }
   };
 

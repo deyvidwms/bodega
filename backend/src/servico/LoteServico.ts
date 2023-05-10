@@ -24,8 +24,8 @@ class LoteServico implements ServicoEscrita<Lote> {
       'emPromocao': Validacao.vazio,
     },
     validacoesAssincronas: {
-      'idCriador': (id) => Validacao.entidadeFoiInformada(id, LoteServico.usuarioRepositorio.porId, true),
-      'idProduto': (id) => Validacao.entidadeFoiInformada(id, LoteServico.produtoRepositorio.porId, true),
+      'idCriador': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.usuarioRepositorio.porId, true),
+      'idProduto': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.produtoRepositorio.porId, true),
     }
   };
 

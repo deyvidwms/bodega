@@ -16,7 +16,7 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
       'senha': Validacao.vazio,
     },
     validacoesAssincronas: {
-      'idPessoa': (id) => Validacao.entidadeFoiInformada(id, UsuarioServico.pessoaRepositorio.porId, true),
+      'idPessoa': (id) => Validacao.entidadeFoiInformada(Number(id), UsuarioServico.pessoaRepositorio.porId, true),
     }
   };
 
