@@ -59,6 +59,9 @@ export const Subtitle = styled.h2`
 export const ContentEncarte = styled.div`
   max-width: 1250px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const CategoryEncarte = styled.div`

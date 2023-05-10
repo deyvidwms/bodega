@@ -72,7 +72,7 @@ class BodegaControle {
       return;
     }
 
-    res.status(201).json({ encarte });
+    res.status(201).json(encarte);
   }
 
   async relatorioFinanceiro(req: Request, res: Response): Promise<void> {
