@@ -88,12 +88,12 @@ const Lote: React.FC = () => {
         setShow={setShowSideBarForm}  
         currentSchema={1}
       >
-        <AutoCompleteElement
+        {/* <AutoCompleteElement
           label='Produto'
           name='produto'
           options={top100Films}
           required
-        />
+        /> */}
 
         <TextFieldElement 
           label='Quantidade'
