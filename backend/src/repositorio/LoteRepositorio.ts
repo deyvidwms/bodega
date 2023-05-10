@@ -45,6 +45,21 @@ class LoteRepositorio {
     }).then((res) => (res.map(i => i.idProduto)));
     return idProdutos;
   }
+
+  async verificarValidade() {
+    const tresMesesEmMillis = 90 * 24 * 60 * 60 * 1000; // 90 dias em milissegundos
+    const dataAtual = new Date();
+    const lotes = await LoteRepositorio.repositorio.findMany();
+    for (let i = 0; i < lotes.length; i++) {
+      const lote = lotes[i];
+      if (lote.validade !== null) {
+        const diff = lote.validade.getTime() - dataAtual.getTime();
+        if (diff < tresMesesEmMillis) {
+          console.log(`ALERTA: Lote ${lote.id} com validade próxima (${Math.round(diff / (24 * 60 * 60 * 1000))} dias)`);
+        }
+      }
+    }
+  }
 }
 
 export default LoteRepositorio;
