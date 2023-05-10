@@ -41,6 +41,12 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
 
   const onSubmitHandler = (values: FormValues) => {
     // console.log("valores", values);
+    
+    if (values?.imagem) {
+      if (Object.keys(values.imagem).length === 0)
+        values.imagem = 'imagem.jpg';
+    }
+
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
       method: 'PUT',
       headers: {
@@ -74,7 +80,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       methods.reset()
       setShow(false);
       setTimeout(() => {
-        window.location.reload();
+        // window.location.reload();
       }, 3000)
     }
   }, [success]);

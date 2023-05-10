@@ -26,6 +26,7 @@ class ProdutoRepositorio {
   }
 
   async atualizar(produto: Produto) {
+    produto.idCategoriaProduto = Number(produto.idCategoriaProduto);
     return ProdutoRepositorio.repositorio.update({
       where: { id: produto.id },
       data: produto
