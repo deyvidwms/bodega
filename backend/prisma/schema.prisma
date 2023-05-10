@@ -102,11 +102,13 @@ model VendaLote {
 
   valor Decimal
 
+  idPessoa int
   idVenda Int?
   idLote  Int
 
-  venda Venda? @relation(fields: [idVenda], references: [id])
-  lote  Lote   @relation(fields: [idLote], references: [id])
+  pessoa Pessoa @relation(fields: [idPessoa], references: [id])
+  venda Venda?  @relation(fields: [idVenda], references: [id])
+  lote  Lote    @relation(fields: [idLote], references: [id])
 }
 
 model Venda {
