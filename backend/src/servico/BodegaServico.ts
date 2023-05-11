@@ -51,8 +51,13 @@ class BodegaServico {
   }
 
   async recomendacaoCliente(cpf: string){
-    let cliente = await BodegaServico.pessoaRepositorio.porCpf(cpf);
-    return {};
+    let pessoa = await BodegaServico.pessoaRepositorio.porCpf(cpf);
+    if(pessoa == null){
+      return;
+    }
+    let produtos = await BodegaServico.vendaRepositorio.recomendacaoCliente(pessoa);
+    //busca os produtos mais comprados
+    return produtos.forEach(vendaLote => {vendaLote.idLote});
   }
 }
 
