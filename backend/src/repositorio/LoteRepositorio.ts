@@ -46,7 +46,7 @@ class LoteRepositorio {
     return idProdutos;
   }
 
-  async verificarValidade() {
+  public static async avisoValidade() {
     const tresMesesEmMillis = 90 * 24 * 60 * 60 * 1000; // 90 dias em milissegundos
     const dataAtual = new Date();
     const lotes = await LoteRepositorio.repositorio.findMany();
