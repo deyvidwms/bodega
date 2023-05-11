@@ -4,7 +4,11 @@ import Usuario from "../entidade/Usuario";
 import Produto from "../entidade/Produto";
 
 class LoteRepositorio {
+  static verificarValidades() {
+    throw new Error('Method not implemented.');
+  }
   private static repositorio = new PrismaClient().lote;
+  static verificarValidade: any;
 
   async todos() {
     return await LoteRepositorio.repositorio.findMany({
@@ -46,7 +50,7 @@ class LoteRepositorio {
     return idProdutos;
   }
 
-  async verificarValidade() {
+  public static async avisoValidade() {
     const tresMesesEmMillis = 90 * 24 * 60 * 60 * 1000; // 90 dias em milissegundos
     const dataAtual = new Date();
     const lotes = await LoteRepositorio.repositorio.findMany();
