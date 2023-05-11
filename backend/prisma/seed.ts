@@ -195,6 +195,38 @@ async function main() {
       }).catch(error => console.log('error:', error))
     })
     .then(() => {
+      prisma.lote.create({
+        data: {
+          quantidadeInicial: 15,
+          quantidadeAtual: 9,
+          validade: '2023-08-24T18:25:43.511Z',
+          compradoEm: '2023-05-08T18:25:43.511Z',
+          custo: 15.00,
+          precoVenda: 8.00,
+          precoVendaPromocao: 0.00,
+          emPromocao: false,
+          idCriador: 1,
+          idProduto: 2
+        }
+      }).catch(error => console.log('error:', error))
+    })
+    .then(() => {
+      prisma.lote.create({
+        data: {
+          quantidadeInicial: 15,
+          quantidadeAtual: 9,
+          validade: '2023-06-24T18:25:43.511Z',
+          compradoEm: '2023-05-08T18:25:43.511Z',
+          custo: 11.00,
+          precoVenda: 8.00,
+          precoVendaPromocao: 0.00,
+          emPromocao: false,
+          idCriador: 1,
+          idProduto: 3
+        }
+      }).catch(error => console.log('error:', error))
+    })
+    .then(() => {
       prisma.venda.create({ data: { vendidoEm: '2023-04-09T18:25:43.511Z' } }).catch(error => console.log('error:', error))
     })
     .then(() => {
