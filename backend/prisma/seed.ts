@@ -148,6 +148,7 @@ async function cadastrarPessoas() {
   pessoasList.forEach((pessoa) => (prisma.pessoa.create({ data: pessoa }).catch(error => console.log('error:', error))));
 }
 
+
 async function main() {
   // cria uma bodega
   prisma.bodega.create({
@@ -191,6 +192,22 @@ async function main() {
           emPromocao: false,
           idCriador: 1,
           idProduto: 1
+        }
+      }).catch(error => console.log('error:', error))
+    })
+    .then(() => {
+      prisma.lote.create({
+        data: {
+          quantidadeInicial: 15,
+          quantidadeAtual: 9,
+          validade: '2023-08-24T18:25:43.511Z',
+          compradoEm: '2023-05-08T18:25:43.511Z',
+          custo: 15.00,
+          precoVenda: 8.00,
+          precoVendaPromocao: 0.00,
+          emPromocao: false,
+          idCriador: 1,
+          idProduto: 2
         }
       }).catch(error => console.log('error:', error))
     })
