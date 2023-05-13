@@ -7,7 +7,6 @@ import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoReposito
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
-import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class ProdutoServico implements ServicoEscrita<Produto> {
   private static repositorio = new ProdutoRepositorio();
@@ -16,26 +15,26 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   private static loteRepositorio = new LoteRepositorio();
   private static usuarioRepositorio = new UsuarioRepositorio();
 
-  private static validadorProduto: ValidadorEntidade = {
-    validacoesSincronas: {
+  private static validadorProduto = new ValidadorEntidade(
+    {
       'titulo': Validacao.vazio,
       'descricao': Validacao.vazio,
       'imagem': Validacao.vazio,
 
     },
-    validacoesAssincronas: {
+    {
       'idCriador': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.usuarioRepositorio.porId, false),
       'idBodega': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.bodegaRepositorio.porId, false),
       'idCategoriaProduto': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.categoriaProdutoRepositorio.porId, false),
     }
-  };
+  );
 
-  validarCadastro(produto: Produto): Promise<ErroNegocio | null> {
-    return Validacao.validar(ProdutoServico.validadorProduto, produto, false);
+  validarCadastro(produto: Produto): Promise<void> {
+    return ProdutoServico.validadorProduto.validar(produto, false);
   }
 
-  validarAtualizacao(produto: Produto): Promise<ErroNegocio | null> {
-    return Validacao.validar(ProdutoServico.validadorProduto, produto, true);
+  validarAtualizacao(produto: Produto): Promise<void> {
+    return ProdutoServico.validadorProduto.validar(produto, true);
   }
 
   todos(): Promise<Produto[]> {
@@ -47,19 +46,13 @@ class ProdutoServico implements ServicoEscrita<Produto> {
   }
 
   async criar(produto: Produto): Promise<Produto> {
-    const retorno = await this.validarCadastro(produto);
-    if (retorno === null) {
-      return await ProdutoServico.repositorio.criar(produto);
-    }
-    throw retorno;
+    await this.validarCadastro(produto);
+    return await ProdutoServico.repositorio.criar(produto);
   }
 
   async atualizar(produto: Produto): Promise<Produto> {
-    const retorno = await this.validarAtualizacao(produto);
-    if (retorno === null) {
-      return await ProdutoServico.repositorio.atualizar(produto);
-    }
-    throw retorno;
+    await this.validarAtualizacao(produto);
+    return await ProdutoServico.repositorio.atualizar(produto);
   }
 
   remover(id: number): Promise<Produto | null> {

@@ -1,34 +1,34 @@
 import { PrismaClient } from "@prisma/client";
 import Usuario from "../entidade/Usuario";
 
-class UsuarioRepositorio {
+export default class UsuarioRepositorio {
   private static repositorio = new PrismaClient().usuario;
 
-  async todos() {
-    return await UsuarioRepositorio.repositorio.findMany();
+  todos() {
+    return UsuarioRepositorio.repositorio.findMany();
   }
 
-  async porId(id: number) {
+  porId(id: number) {
     return UsuarioRepositorio.repositorio.findUnique({ where: { id } });
   }
 
-  async criar(usuario: Usuario) {
-    return await UsuarioRepositorio.repositorio.create({ data: usuario })
+  criar(usuario: Usuario) {
+    return UsuarioRepositorio.repositorio.create({ data: usuario })
   }
 
-  async atualizar(usuario: Usuario) {
+  atualizar(usuario: Usuario) {
     return UsuarioRepositorio.repositorio.update({
       where: { id: usuario.id },
       data: usuario
     });
   }
 
-  async remover(id: number) {
-    return await UsuarioRepositorio.repositorio.delete({ where: { id } });
+  remover(id: number) {
+    return UsuarioRepositorio.repositorio.delete({ where: { id } });
   }
 
-  async usuarioCadastrado(email: string, cpf: string, celular: string | null) {
-    const usuarios = await UsuarioRepositorio.repositorio.findMany({
+  usuarioCadastrado(email: string, cpf: string, celular: string | null) {
+    const usuarios = UsuarioRepositorio.repositorio.findMany({
       where: {
         OR: [{ pessoa: { cpf, celular } }, { email }]
       }
@@ -37,5 +37,3 @@ class UsuarioRepositorio {
     return usuarios;
   }
 }
-
-export default UsuarioRepositorio;

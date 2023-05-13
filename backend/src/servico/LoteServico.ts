@@ -1,4 +1,3 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
@@ -12,8 +11,8 @@ class LoteServico implements ServicoEscrita<Lote> {
   private static usuarioRepositorio = new UsuarioRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
 
-  private static validadorLote: ValidadorEntidade = {
-    validacoesSincronas: {
+  private static validadorLote = new ValidadorEntidade(
+    {
       'quantidadeInicial': Validacao.vazio,
       'quantidadeAtual': Validacao.vazio,
       'validade': (validade) => null,
@@ -23,18 +22,18 @@ class LoteServico implements ServicoEscrita<Lote> {
       'precoVendaPromocao': Validacao.precoPositivo,
       'emPromocao': Validacao.vazio,
     },
-    validacoesAssincronas: {
+    {
       'idCriador': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.usuarioRepositorio.porId, true),
       'idProduto': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.produtoRepositorio.porId, true),
     }
-  };
+  );
 
-  validarCadastro(lote: Lote): Promise<ErroNegocio | null> {
-    return Validacao.validar(LoteServico.validadorLote, lote, false);
+  validarCadastro(lote: Lote): Promise<void> {
+    return LoteServico.validadorLote.validar(lote, false);
   }
 
-  validarAtualizacao(lote: Lote): Promise<ErroNegocio | null> {
-    return Validacao.validar(LoteServico.validadorLote, lote, true);
+  validarAtualizacao(lote: Lote): Promise<void> {
+    return LoteServico.validadorLote.validar(lote, true);
   }
 
   todos(): Promise<Lote[]> {
@@ -46,19 +45,13 @@ class LoteServico implements ServicoEscrita<Lote> {
   }
 
   async criar(lote: Lote): Promise<Lote> {
-    const retorno = await this.validarCadastro(lote);
-    if (retorno === null) {
-      return await LoteServico.repositorio.criar(lote);
-    }
-    throw retorno;
+    await this.validarCadastro(lote);
+    return await LoteServico.repositorio.criar(lote);
   }
 
   async atualizar(lote: Lote): Promise<Lote> {
-    const retorno = await this.validarAtualizacao(lote);
-    if (retorno === null) {
-      return await LoteServico.repositorio.atualizar(lote);
-    }
-    throw retorno;
+    await this.validarAtualizacao(lote);
+    return await LoteServico.repositorio.atualizar(lote);
   }
 
   remover(id: number): Promise<Lote | null> {

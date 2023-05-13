@@ -9,7 +9,6 @@ import BodegaRepositorio from "../repositorio/BodegaRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio"
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
-import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class BodegaServico implements ServicoEscrita<Bodega> {
   private static repositorio = new BodegaRepositorio();
@@ -17,22 +16,22 @@ class BodegaServico implements ServicoEscrita<Bodega> {
   private static produtoRepositorio = new ProdutoRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
 
-  private static validadorBodega: ValidadorEntidade = {
-    validacoesSincronas: {
+  private static validadorBodega = new ValidadorEntidade(
+    {
       'nome': Validacao.nome,
       'descricao': Validacao.vazio,
       'cnpj': Validacao.cnpj,
       'imagem': Validacao.vazio,
     },
-    validacoesAssincronas: {},
-  };
+    {}
+  );
 
-  validarCadastro(bodega: Bodega): Promise<ErroNegocio | null> {
-    return Validacao.validar(BodegaServico.validadorBodega, bodega, false);
+  validarCadastro(bodega: Bodega): Promise<void> {
+    return BodegaServico.validadorBodega.validar(bodega, false);
   }
 
-  validarAtualizacao(bodega: Bodega): Promise<ErroNegocio | null> {
-    return Validacao.validar(BodegaServico.validadorBodega, bodega, true);
+  validarAtualizacao(bodega: Bodega): Promise<void> {
+    return BodegaServico.validadorBodega.validar(bodega, true);
   }
 
   todos(): Promise<Bodega[]> {
@@ -44,19 +43,13 @@ class BodegaServico implements ServicoEscrita<Bodega> {
   }
 
   async criar(bodega: Bodega): Promise<Bodega> {
-    const retorno = await this.validarCadastro(bodega);
-    if (retorno === null) {
-      return await BodegaServico.repositorio.criar(bodega);
-    }
-    throw retorno;
+    await this.validarCadastro(bodega);
+    return await BodegaServico.repositorio.criar(bodega);
   }
 
   async atualizar(bodega: Bodega): Promise<Bodega> {
-    const retorno = await this.validarAtualizacao(bodega);
-    if (retorno === null) {
-      return await BodegaServico.repositorio.atualizar(bodega);
-    }
-    throw retorno;
+    await this.validarAtualizacao(bodega);
+    return await BodegaServico.repositorio.atualizar(bodega);
   }
 
   remover(id: number): Promise<Bodega | null> {

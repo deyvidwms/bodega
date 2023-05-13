@@ -1,6 +1,4 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
@@ -8,19 +6,19 @@ import VendaRepositorio from "../repositorio/VendaRepositorio";
 class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();
 
-  private static validadorVenda: ValidadorEntidade = {
-    validacoesSincronas: {
+  private static validadorVenda = new ValidadorEntidade(
+    {
       'vendidoEm': () => null,
     },
-    validacoesAssincronas: {}
-  };
+    {}
+  );
 
-  validarCadastro(venda: Venda): Promise<ErroNegocio | null> {
-    return Validacao.validar(VendaServico.validadorVenda, venda, false);
+  validarCadastro(venda: Venda): Promise<void> {
+    return VendaServico.validadorVenda.validar(venda, false);
   }
 
-  validarAtualizacao(venda: Venda): Promise<ErroNegocio | null> {
-    return Validacao.validar(VendaServico.validadorVenda, venda, true);
+  validarAtualizacao(venda: Venda): Promise<void> {
+    return VendaServico.validadorVenda.validar(venda, true);
   }
 
   todos(): Promise<Venda[]> {
@@ -32,19 +30,13 @@ class VendaServico implements ServicoEscrita<Venda> {
   }
 
   async criar(venda: Venda): Promise<Venda> {
-    const retorno = await this.validarCadastro(venda);
-    if (retorno === null) {
-      return await VendaServico.repositorio.criar(venda);
-    }
-    throw retorno;
+    await this.validarCadastro(venda);
+    return await VendaServico.repositorio.criar(venda);
   }
 
   async atualizar(venda: Venda): Promise<Venda> {
-    const retorno = await this.validarAtualizacao(venda);
-    if (retorno === null) {
-      return await VendaServico.repositorio.atualizar(venda);
-    }
-    throw retorno;
+    await this.validarAtualizacao(venda);
+    return await VendaServico.repositorio.atualizar(venda);
   }
 
   remover(id: number): Promise<Venda | null> {

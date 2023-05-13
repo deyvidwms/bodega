@@ -1,4 +1,3 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
@@ -10,22 +9,22 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   private static repositorio = new UsuarioRepositorio();
   private static pessoaRepositorio = new PessoaRepositorio();
 
-  private static validadorUsuario: ValidadorEntidade = {
-    validacoesSincronas: {
+  private static validadorUsuario = new ValidadorEntidade(
+    {
       'email': Validacao.email,
       'senha': Validacao.vazio,
     },
-    validacoesAssincronas: {
+    {
       'idPessoa': (id) => Validacao.entidadeFoiInformada(Number(id), UsuarioServico.pessoaRepositorio.porId, true),
     }
-  };
+  );
 
-  validarCadastro(usuario: Usuario): Promise<ErroNegocio | null> {
-    return Validacao.validar(UsuarioServico.validadorUsuario, usuario, false);
+  validarCadastro(usuario: Usuario): Promise<void> {
+    return UsuarioServico.validadorUsuario.validar(usuario, false);
   }
 
-  validarAtualizacao(usuario: Usuario): Promise<ErroNegocio | null> {
-    return Validacao.validar(UsuarioServico.validadorUsuario, usuario, true);
+  validarAtualizacao(usuario: Usuario): Promise<void> {
+    return UsuarioServico.validadorUsuario.validar(usuario, true);
   }
 
   todos(): Promise<Usuario[]> {
@@ -37,19 +36,13 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
   }
 
   async criar(usuario: Usuario): Promise<Usuario> {
-    const retorno = await this.validarCadastro(usuario);
-    if (retorno === null) {
-      return await UsuarioServico.repositorio.criar(usuario);
-    }
-    throw retorno;
+    await this.validarCadastro(usuario);
+    return await UsuarioServico.repositorio.criar(usuario);
   }
 
   async atualizar(usuario: Usuario): Promise<Usuario> {
-    const retorno = await this.validarAtualizacao(usuario);
-    if (retorno === null) {
-      return await UsuarioServico.repositorio.atualizar(usuario);
-    }
-    throw retorno;
+    await this.validarAtualizacao(usuario);
+    return await UsuarioServico.repositorio.atualizar(usuario);
   }
 
   remover(id: number): Promise<Usuario | null> {

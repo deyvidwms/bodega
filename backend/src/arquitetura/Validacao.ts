@@ -1,44 +1,6 @@
-import ErroNegocio from "./ErroNegocio";
-import ValidadorEntidade from "./ValidadorEntidade";
 import { Decimal } from "@prisma/client/runtime/library";
 
-export type ObjetoGenerico = { [key: string]: any };
-
 export default class Validacao {
-  public static async validar(validador: ValidadorEntidade, entidade: ObjetoGenerico, atualizacao: boolean): Promise<ErroNegocio | null> {
-    let erros: ObjetoGenerico = {};
-
-    for (const atributo in validador.validacoesSincronas) {
-      let erro = validador.validacoesSincronas[atributo](entidade[atributo]);
-      if (erro !== null) {
-        erros[atributo] = erro;
-      }
-    }
-
-    for (const atributo in validador.validacoesAssincronas) {
-      const erro = await validador.validacoesAssincronas[atributo](entidade[atributo]);
-      if (erro !== null) {
-        erros[atributo] = erro;
-      }
-    }
-
-    for (const atributo in entidade) {
-      if (atributo === 'id' && atualizacao) {
-        continue;
-      }
-
-      if (validador.validacoesSincronas[atributo] === undefined && validador.validacoesAssincronas[atributo] === undefined) {
-        erros[atributo] = 'Atributo não reconhecido';
-      }
-    }
-
-    if (Object.keys(erros).length > 0) {
-      return new ErroNegocio(erros);
-    }
-
-    return null;
-  }
-
   public static async entidadeFoiInformada(idEntidade: number, funcaoTestaExistencia: (id: number) => Promise<any | null>, obrigatoria: boolean): Promise<string | null> {
     if (idEntidade === null || idEntidade === undefined) {
       if (obrigatoria) {
@@ -46,6 +8,10 @@ export default class Validacao {
       }
 
       return null;
+    }
+
+    if (Number.isNaN(idEntidade)) {
+      return 'Id inválido';
     }
 
     const entidade = await funcaoTestaExistencia(idEntidade);

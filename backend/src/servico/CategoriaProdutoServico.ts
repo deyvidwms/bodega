@@ -1,4 +1,3 @@
-import ErroNegocio from "../arquitetura/ErroNegocio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
@@ -8,20 +7,20 @@ import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoReposito
 class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   private static repositorio = new CategoriaProdutoRepositorio();
 
-  private static validadorCategoriaProduto: ValidadorEntidade = {
-    validacoesSincronas: {
+  private static validadorCategoriaProduto = new ValidadorEntidade(
+    {
       'nome': Validacao.vazio,
       'imagem': Validacao.vazio,
     },
-    validacoesAssincronas: {},
-  };
+    {},
+  );
 
-  validarCadastro(categoriaProduto: CategoriaProduto): Promise<ErroNegocio | null> {
-    return Validacao.validar(CategoriaProdutoServico.validadorCategoriaProduto, categoriaProduto, false);
+  validarCadastro(categoriaProduto: CategoriaProduto): Promise<void> {
+    return CategoriaProdutoServico.validadorCategoriaProduto.validar(categoriaProduto, false);
   }
 
-  validarAtualizacao(categoriaProduto: CategoriaProduto): Promise<ErroNegocio | null> {
-    return Validacao.validar(CategoriaProdutoServico.validadorCategoriaProduto, categoriaProduto, true);
+  validarAtualizacao(categoriaProduto: CategoriaProduto): Promise<void> {
+    return CategoriaProdutoServico.validadorCategoriaProduto.validar(categoriaProduto, true);
   }
 
   todos(): Promise<CategoriaProduto[]> {
@@ -33,19 +32,13 @@ class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   }
 
   async criar(categoriaProduto: CategoriaProduto): Promise<CategoriaProduto> {
-    const retorno = await this.validarCadastro(categoriaProduto);
-    if (retorno === null) {
-      return await CategoriaProdutoServico.repositorio.criar(categoriaProduto);
-    }
-    throw retorno;
+    await this.validarCadastro(categoriaProduto);
+    return CategoriaProdutoServico.repositorio.criar(categoriaProduto);
   }
 
   async atualizar(categoriaProduto: CategoriaProduto): Promise<CategoriaProduto> {
-    const retorno = await this.validarAtualizacao(categoriaProduto);
-    if (retorno === null) {
-      return await CategoriaProdutoServico.repositorio.atualizar(categoriaProduto);
-    }
-    throw retorno;
+    await this.validarAtualizacao(categoriaProduto);
+    return await CategoriaProdutoServico.repositorio.atualizar(categoriaProduto);
   }
 
   remover(id: number): Promise<CategoriaProduto | null> {

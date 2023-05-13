@@ -1,68 +1,44 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import CustomRequest from "../arquitetura/CustomRequest";
 import Bodega from "../entidade/Bodega";
 import BodegaServico from "../servico/BodegaServico";
-import ErroNegocio from "../arquitetura/ErroNegocio";
 
 class BodegaControle {
   private static servico = new BodegaServico();
 
-  async todos(_: CustomRequest<Bodega>, res: Response): Promise<void> {
-    const bodegas = await BodegaControle.servico.todos();
-    res.status(201).json({ bodegas });
+  todos(_: Request, res: Response): void {
+    BodegaControle.servico.todos()
+      .then((entidades) => { res.status(201).json(entidades); });
   }
 
-  async porId(req: Request, res: Response): Promise<void> {
+  porId(req: Request, res: Response, next: NextFunction): void {
     BodegaControle.servico.porId(Number(req.params.id))
       .then((entidade) => {
         if (entidade == null) {
           res.status(404).send();
-          return;
+        } else {
+          res.status(201).json(entidade);
         }
-
-        res.status(201).json(entidade)
-      });
+      })
+      .catch(next);
   }
 
-  async criar(req: CustomRequest<Bodega>, res: Response): Promise<void> {
-    try {
-      const entidade = await BodegaControle.servico.criar(req.body);
-      res.status(201).json(entidade);
-    } catch (e) {
-      if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() });
-        return;
-      }
-      res.status(400).json({
-        erros: ['Houve um erro ao processar a sua requisição']
-      });
-    }
+  criar(req: CustomRequest<Bodega>, res: Response, next: NextFunction): void {
+    BodegaControle.servico.criar(req.body)
+      .then((entidade) => { res.status(201).json(entidade); })
+      .catch(next);
   }
 
-  async atualizar(req: CustomRequest<Bodega>, res: Response): Promise<void> {
-    try {
-      const entidade = await BodegaControle.servico.atualizar(req.body);
-      res.status(201).json(entidade);
-    } catch (e) {
-      if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() });
-        return;
-      }
-      res.status(400).json({
-        erros: ['Houve um erro ao processar a sua requisição']
-      });
-    }
+  atualizar(req: CustomRequest<Bodega>, res: Response, next: NextFunction): void {
+    BodegaControle.servico.atualizar(req.body)
+      .then((entidade) => { res.status(201).json(entidade); })
+      .catch(next);
   }
 
-  async remover(req: Request, res: Response): Promise<void> {
-    try {
-      const bodega = await BodegaControle.servico.remover(Number(req.params.id));
-      res.status(201).json({ bodega });
-    } catch (e) {
-      if (e instanceof ErroNegocio) {
-        res.status(400).json({ erros: e.getErros() })
-      }
-    }
+  remover(req: Request, res: Response, next: NextFunction): void {
+    BodegaControle.servico.remover(Number(req.params.id))
+      .then((entidade) => { res.status(200).json(entidade); })
+      .catch(next);
   }
 
   async encarte(req: Request, res: Response): Promise<void> {
