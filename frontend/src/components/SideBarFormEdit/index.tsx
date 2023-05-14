@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchemaClientEdit } from '../../schemas/validationSchema/Cliente';
-import { validationSchemaProduct } from '../../schemas/validationSchema/Produto';
-
+import { validationSchemaProductEdit } from '../../schemas/validationSchema/Produto';
+import { validationSchemaLoteEdit } from '../../schemas/validationSchema/Lote';
+ 
 import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { Button } from '@mui/material';
 
@@ -23,7 +24,8 @@ type Props = {
 
 const validationSchemas = [
   validationSchemaClientEdit,
-  validationSchemaProduct
+  validationSchemaProductEdit,
+  validationSchemaLoteEdit
 ];
 
 const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem }) => {

@@ -61,7 +61,7 @@ const Produto: React.FC = () => {
 
     const setProducts = (data: any) => {
       const response: Produto[] = [];
-      data.produtos.forEach( (element: Produto) => response.push(element) );
+      data.forEach( (element: Produto) => response.push(element) );
       setRows(response)
     };
 
@@ -74,7 +74,7 @@ const Produto: React.FC = () => {
 
     const setProductCategories = (data: any) => {
       const response: CategoriaProduto[] = [];
-      data.categoriasProdutos.forEach( (element: CategoriaProduto) => response.push(element) );
+      data.forEach( (element: CategoriaProduto) => response.push(element) );
       setCategorias(response)
     }
 

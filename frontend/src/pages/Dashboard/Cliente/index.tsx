@@ -26,7 +26,7 @@ type Pessoa = {
   id: number,
   cpf: string,
   nome: string,
-  apelido: string,
+  apelido: string | null,
   celular: string,
   endereco: string | null,
   cliente: boolean,
@@ -65,7 +65,7 @@ const Cliente: React.FC = () => {
 
     const setClients = (data: any) => {
       const response: Pessoa[] = [];
-      data.pessoas.forEach( (element: Pessoa) => element.Usuario === null && response.push(element) );
+      data.forEach( (element: Pessoa) => element.Usuario === null && response.push(element) );
       setRows(response)
       console.log(response);
     };

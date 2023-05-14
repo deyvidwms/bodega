@@ -10,6 +10,7 @@ import { Button } from '@mui/material';
 import { FormValues } from '../../types/FormValues';
 import { FaCheckCircle } from 'react-icons/fa';
 import { SuccessMessage } from '../../pages/Dashboard/Produto/styles';
+import { validationSchemaLote } from '../../schemas/validationSchema/Lote';
 
 type Props = {
   title: string;
@@ -22,7 +23,8 @@ type Props = {
 
 const validationSchemas = [
   validationSchemaClient,
-  validationSchemaProduct
+  validationSchemaProduct,
+  validationSchemaLote
 ];
 
 const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint }) => {
