@@ -73,7 +73,7 @@ model Lote {
   custo              Decimal
   precoVenda         Decimal
   precoVendaPromocao Decimal
-  emPromocao         Boolean
+  emPromocao         Boolean   @default(false)
 
   criador Usuario @relation(fields: [idCriador], references: [id])
   produto Produto @relation(fields: [idProduto], references: [id])

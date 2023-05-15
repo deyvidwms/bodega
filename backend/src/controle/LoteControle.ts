@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import CustomRequest from "../arquitetura/CustomRequest";
-import Lote from "../entidade/Lote";
 import LoteServico from "../servico/LoteServico";
 
-class LoteControle {
+export default class LoteControle {
   private static servico = new LoteServico();
 
   todos(_: Request, res: Response): void {
@@ -23,13 +21,25 @@ class LoteControle {
       .catch(next);
   }
 
-  criar(req: CustomRequest<Lote>, res: Response, next: NextFunction): void {
+  criar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     LoteControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
-  atualizar(req: CustomRequest<Lote>, res: Response, next: NextFunction): void {
+  atualizar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     LoteControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -40,6 +50,10 @@ class LoteControle {
       .then((entidade) => { res.status(200).json(entidade); })
       .catch(next);
   }
-}
 
-export default LoteControle;
+  comBaixaValidade(req: Request, res: Response, next: NextFunction): void {
+    LoteControle.servico.comBaixaValidade(Number(req.params.id), req.body.dataLimite)
+      .then((entidade) => { res.status(200).json(entidade); })
+      .catch(next);
+  }
+}

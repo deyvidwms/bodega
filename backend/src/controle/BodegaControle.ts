@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import CustomRequest from "../arquitetura/CustomRequest";
-import Bodega from "../entidade/Bodega";
 import BodegaServico from "../servico/BodegaServico";
 
-class BodegaControle {
+export default class BodegaControle {
   private static servico = new BodegaServico();
 
   todos(_: Request, res: Response): void {
@@ -23,13 +21,25 @@ class BodegaControle {
       .catch(next);
   }
 
-  criar(req: CustomRequest<Bodega>, res: Response, next: NextFunction): void {
+  criar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     BodegaControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
-  atualizar(req: CustomRequest<Bodega>, res: Response, next: NextFunction): void {
+  atualizar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     BodegaControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -41,20 +51,21 @@ class BodegaControle {
       .catch(next);
   }
 
-  async encarte(req: Request, res: Response): Promise<void> {
-    const encarte = await BodegaControle.servico.encarte(Number(req.params.id));
-    if (encarte == null) {
-      res.status(404).send();
-      return;
-    }
-
-    res.status(201).json(encarte);
+  encarte(req: Request, res: Response, next: NextFunction): void {
+    BodegaControle.servico.encarte(Number(req.params.id))
+      .then((encarte) => {
+        if (encarte == null) {
+          res.status(404).send();
+        } else {
+          res.status(201).json(encarte);
+        }
+      })
+      .catch(next);
   }
 
-  async relatorioFinanceiro(req: Request, res: Response): Promise<void> {
-    const relatorioFinanceiro = await BodegaControle.servico.relatorioFinanceiro(req.body.inicio, req.body.fim)
-    res.status(200).json({ relatorioFinanceiro })
+  relatorioFinanceiro(req: Request, res: Response, next: NextFunction): void {
+    BodegaControle.servico.relatorioFinanceiro(Number(req.params.id), req.body.inicio, req.body.fim)
+      .then((relatorioFinanceiro) => { res.status(200).json(relatorioFinanceiro) })
+      .catch(next);
   }
 }
-
-export default BodegaControle;

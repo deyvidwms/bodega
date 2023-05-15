@@ -27,10 +27,13 @@ export default class VendaRepositorio {
     return VendaRepositorio.repositorio.delete({ where: { id } });
   }
 
-  porPeriodo(inicio: Date, fim: Date) {
+  porPeriodo(id: number, inicio: Date, fim: Date) {
     return VendaRepositorio.repositorio.findMany({
-      where: { vendidoEm: { gte: inicio, lte: fim } },
-      include: { vendaLotes: true },
+      where: {
+        vendidoEm: { gte: inicio, lte: fim },
+        vendaLotes: { some: { lote: { produto: { idBodega: id } } } }
+      },
+      include: { vendaLotes: { include: { lote: true, venda: true } } },
     });
   }
 }

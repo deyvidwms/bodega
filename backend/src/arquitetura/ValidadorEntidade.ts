@@ -6,8 +6,8 @@ type ValidacaoAssincrona = { [key: string]: (valor: any) => Promise<string | nul
 export type ObjetoGenerico = { [key: string]: any };
 
 export default class ValidadorEntidade {
-  validacoesSincronas: ValidacaoSincrona;
-  validacoesAssincronas: ValidacaoAssincrona;
+  private validacoesSincronas: ValidacaoSincrona;
+  private validacoesAssincronas: ValidacaoAssincrona;
 
   constructor(validacoesSincronas: ValidacaoSincrona, validacoesAssincronas: ValidacaoAssincrona) {
     this.validacoesSincronas = validacoesSincronas;

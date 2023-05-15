@@ -4,7 +4,7 @@ import Validacao from "../arquitetura/Validacao";
 import Pessoa from "../entidade/Pessoa";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 
-class PessoaServico implements ServicoEscrita<Pessoa> {
+export default class PessoaServico implements ServicoEscrita<Pessoa> {
   private static repositorio = new PessoaRepositorio();
 
   private static validadorPessoa = new ValidadorEntidade(
@@ -47,5 +47,3 @@ class PessoaServico implements ServicoEscrita<Pessoa> {
     return PessoaServico.repositorio.remover(id);
   }
 }
-
-export default PessoaServico;

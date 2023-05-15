@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import CustomRequest from "../arquitetura/CustomRequest";
-import Venda from "../entidade/Venda";
 import VendaServico from "../servico/VendaServico";
 
-class VendaControle {
+export default class VendaControle {
   private static servico = new VendaServico();
 
   todos(_: Request, res: Response): void {
@@ -23,13 +21,25 @@ class VendaControle {
       .catch(next);
   }
 
-  criar(req: CustomRequest<Venda>, res: Response, next: NextFunction): void {
+  criar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     VendaControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
-  atualizar(req: CustomRequest<Venda>, res: Response, next: NextFunction): void {
+  atualizar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     VendaControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -41,5 +51,3 @@ class VendaControle {
       .catch(next);
   }
 }
-
-export default VendaControle;

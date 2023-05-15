@@ -8,7 +8,7 @@ import LoteRepositorio from "../repositorio/LoteRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 
-class ProdutoServico implements ServicoEscrita<Produto> {
+export default class ProdutoServico implements ServicoEscrita<Produto> {
   private static repositorio = new ProdutoRepositorio();
   private static categoriaProdutoRepositorio = new CategoriaProdutoRepositorio();
   private static bodegaRepositorio = new BodegaRepositorio();
@@ -64,5 +64,3 @@ class ProdutoServico implements ServicoEscrita<Produto> {
     return ProdutoServico.repositorio.porIds(ids);
   }
 }
-
-export default ProdutoServico;

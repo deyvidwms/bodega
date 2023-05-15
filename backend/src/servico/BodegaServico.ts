@@ -10,7 +10,7 @@ import LoteRepositorio from "../repositorio/LoteRepositorio"
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
-class BodegaServico implements ServicoEscrita<Bodega> {
+export default class BodegaServico implements ServicoEscrita<Bodega> {
   private static repositorio = new BodegaRepositorio();
   private static loteRepositorio = new LoteRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
@@ -24,6 +24,16 @@ class BodegaServico implements ServicoEscrita<Bodega> {
       'imagem': Validacao.vazio,
     },
     {}
+  );
+
+  private static validadorRelatorioFinanceiro = new ValidadorEntidade(
+    {
+      'inicio': Validacao.data,
+      'fim': Validacao.data,
+    },
+    {
+      'idBodega': (id) => Validacao.entidadeFoiInformada(id, BodegaServico.repositorio.porId, true),
+    }
   );
 
   validarCadastro(bodega: Bodega): Promise<void> {
@@ -60,9 +70,10 @@ class BodegaServico implements ServicoEscrita<Bodega> {
     return BodegaServico.produtoRepositorio.encarte(id);
   }
 
-  async relatorioFinanceiro(inicio: Date, fim: Date) {
-    const lotes = await BodegaServico.loteRepositorio.porPeriodo(inicio, fim);
-    const vendas = await BodegaServico.vendaRepositorio.porPeriodo(inicio, fim);
+  async relatorioFinanceiro(idBodega: number, inicio: Date, fim: Date) {
+    await BodegaServico.validadorRelatorioFinanceiro.validar({ idBodega, inicio, fim }, false);
+    const lotes = await BodegaServico.loteRepositorio.porPeriodo(idBodega, inicio, fim);
+    const vendas = await BodegaServico.vendaRepositorio.porPeriodo(idBodega, inicio, fim);
 
     let despesa = new Decimal(0);
     lotes.forEach(element => {
@@ -70,14 +81,19 @@ class BodegaServico implements ServicoEscrita<Bodega> {
     });
 
     let receita = new Decimal(0);
-    // vendas.forEach(venda => {
-    //   venda.vendaLotes.forEach(vendaLote => {
-    //     receita.add(vendaLote.valor);
-    //   });
-    // });
+    vendas.forEach(venda => {
+      venda.vendaLotes.forEach(vendaLote => {
+        receita.add(vendaLote.lote.custo.times(vendaLote.quantidade));
+      });
+    });
 
-    return { compras: lotes, vendas: vendas, receita, despesa, lucro: receita.minus(despesa) };
+    const lucro = receita.minus(despesa);
+    return {
+      compras: lotes,
+      vendas: vendas,
+      receita: receita,
+      despesa: despesa,
+      lucro: lucro
+    };
   }
 }
-
-export default BodegaServico;

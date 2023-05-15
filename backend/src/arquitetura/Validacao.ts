@@ -1,6 +1,8 @@
 import { Decimal } from "@prisma/client/runtime/library";
 
 export default class Validacao {
+  static MENSAGEM_VALOR_INFORMADO = `Valor informado é inválido`;
+
   public static async entidadeFoiInformada(idEntidade: number, funcaoTestaExistencia: (id: number) => Promise<any | null>, obrigatoria: boolean): Promise<string | null> {
     if (idEntidade === null || idEntidade === undefined) {
       if (obrigatoria) {
@@ -10,7 +12,7 @@ export default class Validacao {
       return null;
     }
 
-    if (Number.isNaN(idEntidade)) {
+    if (typeof idEntidade === 'string' || Number.isNaN(idEntidade)) {
       return 'Id inválido';
     }
 
@@ -26,11 +28,11 @@ export default class Validacao {
       return 'Valor não informado';
     }
 
-    if (typeof preco === 'number') {
+    if (['number', 'string'].includes(typeof preco)) {
       preco = new Decimal(preco);
     }
 
-    if (preco.isNegative()) {
+    if (typeof preco !== 'number' && preco.isNegative()) {
       return 'Valor não pode ser negativo';
     }
 
@@ -45,8 +47,17 @@ export default class Validacao {
     return null;
   }
 
-  private static descricaoCampoInvalido(nomeCampo: string): string {
-    return `${nomeCampo} inválido`;
+  public static data(data: any): string | null {
+    if (data === null || data === undefined) {
+      return 'Valor não informado';
+    }
+
+    const d = new Date(data);
+    if (d.toString() === 'Invalid Date') {
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
+    }
+
+    return null;
   }
 
   public static cpf(cpf: string): string | null {
@@ -58,13 +69,13 @@ export default class Validacao {
     cpf = cpf.replace(/\D/g, '');
 
     if (cpf.length != 11) {
-      return Validacao.descricaoCampoInvalido('CPF');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     let soma = 0;
 
     if (cpf === "00000000000") {
-      return Validacao.descricaoCampoInvalido('CPF');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     for (let i = 1; i <= 9; i++) {
@@ -78,7 +89,7 @@ export default class Validacao {
     }
 
     if (resto !== parseInt(cpf.substring(9, 10))) {
-      return Validacao.descricaoCampoInvalido('CPF');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     soma = 0;
@@ -93,7 +104,7 @@ export default class Validacao {
     }
 
     if (resto != parseInt(cpf.substring(10, 11))) {
-      return Validacao.descricaoCampoInvalido('CPF');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     return null;
@@ -115,7 +126,7 @@ export default class Validacao {
       || cnpj == "77777777777777"
       || cnpj == "88888888888888"
       || cnpj == "99999999999999") {
-      return Validacao.descricaoCampoInvalido('CNPJ');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     let tamanho = cnpj.length - 2;
@@ -132,7 +143,7 @@ export default class Validacao {
 
     let resultado = String(soma % 11 < 2 ? 0 : 11 - soma % 11);
     if (resultado !== digitos.charAt(0)) {
-      return Validacao.descricaoCampoInvalido('CNPJ');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     tamanho = tamanho + 1;
@@ -147,7 +158,7 @@ export default class Validacao {
     resultado = String(soma % 11 < 2 ? 0 : 11 - soma % 11);
 
     if (resultado != digitos.charAt(1)) {
-      return Validacao.descricaoCampoInvalido('CNPJ');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     return null;
@@ -161,7 +172,7 @@ export default class Validacao {
 
     const CELULAR_REGEX = /^\(\d{2}\) 9\d{4}-\d{4}$/;
     if (!CELULAR_REGEX.test(celular)) {
-      return Validacao.descricaoCampoInvalido('Celular');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     return null;
@@ -175,7 +186,7 @@ export default class Validacao {
     }
 
     if (/\d/.test(nome)) {
-      return Validacao.descricaoCampoInvalido('Nome');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     return null;
@@ -189,7 +200,7 @@ export default class Validacao {
     }
 
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      return Validacao.descricaoCampoInvalido('E-mail');
+      return Validacao.MENSAGEM_VALOR_INFORMADO;
     }
 
     return null;

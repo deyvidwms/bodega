@@ -3,7 +3,7 @@ import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
-class VendaServico implements ServicoEscrita<Venda> {
+export default class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();
 
   private static validadorVenda = new ValidadorEntidade(
@@ -43,5 +43,3 @@ class VendaServico implements ServicoEscrita<Venda> {
     return VendaServico.repositorio.remover(id);
   }
 }
-
-export default VendaServico;

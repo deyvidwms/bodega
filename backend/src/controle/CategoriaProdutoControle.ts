@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import CustomRequest from "../arquitetura/CustomRequest";
-import CategoriaProduto from "../entidade/CategoriaProduto";
 import CategoriaProdutoServico from "../servico/CategoriaProdutoServico";
 
-class CategoriaProdutoControle {
+export default class CategoriaProdutoControle {
   private static servico = new CategoriaProdutoServico();
 
   todos(_: Request, res: Response): void {
@@ -23,13 +21,25 @@ class CategoriaProdutoControle {
       .catch(next);
   }
 
-  criar(req: CustomRequest<CategoriaProduto>, res: Response, next: NextFunction): void {
+  criar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     CategoriaProdutoControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
-  atualizar(req: CustomRequest<CategoriaProduto>, res: Response, next: NextFunction): void {
+  atualizar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     CategoriaProdutoControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -41,5 +51,3 @@ class CategoriaProdutoControle {
       .catch(next);
   }
 }
-
-export default CategoriaProdutoControle;

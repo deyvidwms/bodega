@@ -5,7 +5,7 @@ import Usuario from "../entidade/Usuario";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 
-class UsuarioServico implements ServicoEscrita<Usuario> {
+export default class UsuarioServico implements ServicoEscrita<Usuario> {
   private static repositorio = new UsuarioRepositorio();
   private static pessoaRepositorio = new PessoaRepositorio();
 
@@ -49,5 +49,3 @@ class UsuarioServico implements ServicoEscrita<Usuario> {
     return UsuarioServico.repositorio.remover(id);
   }
 }
-
-export default UsuarioServico;

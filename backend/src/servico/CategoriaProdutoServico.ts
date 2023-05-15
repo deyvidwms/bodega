@@ -4,7 +4,7 @@ import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import CategoriaProduto from "../entidade/CategoriaProduto";
 import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoRepositorio";
 
-class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
+export default class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   private static repositorio = new CategoriaProdutoRepositorio();
 
   private static validadorCategoriaProduto = new ValidadorEntidade(
@@ -45,5 +45,3 @@ class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
     return CategoriaProdutoServico.repositorio.remover(id);
   }
 }
-
-export default CategoriaProdutoServico;

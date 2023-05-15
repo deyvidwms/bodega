@@ -26,10 +26,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(400).json({ erros: err.getErros() });
     return;
   }
-  res.status(400).json({
-    erros: ['Houve um erro ao processar a sua requisição'],
-    stacktrace: err.message,
-  });
+  console.log(err);
+  res.status(400).json({ erros: ['Houve um erro ao processar a sua requisição'] });
 });
 
 app.listen(PORTA, () => {

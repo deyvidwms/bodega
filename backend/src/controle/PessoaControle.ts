@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import CustomRequest from "../arquitetura/CustomRequest";
-import Pessoa from "../entidade/Pessoa";
 import PessoaServico from "../servico/PessoaServico";
 
-class PessoaControle {
+export default class PessoaControle {
   private static servico = new PessoaServico();
 
   todos(_: Request, res: Response): void {
@@ -23,13 +21,25 @@ class PessoaControle {
       .catch(next);
   }
 
-  criar(req: CustomRequest<Pessoa>, res: Response, next: NextFunction): void {
+  criar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     PessoaControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
-  atualizar(req: CustomRequest<Pessoa>, res: Response, next: NextFunction): void {
+  atualizar(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (key.startsWith('id')) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     PessoaControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -41,5 +51,3 @@ class PessoaControle {
       .catch(next);
   }
 }
-
-export default PessoaControle;

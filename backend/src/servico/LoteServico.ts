@@ -2,12 +2,14 @@ import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Lote from "../entidade/Lote";
+import BodegaRepositorio from "../repositorio/BodegaRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 
-class LoteServico implements ServicoEscrita<Lote> {
+export default class LoteServico implements ServicoEscrita<Lote> {
   private static repositorio = new LoteRepositorio();
+  private static bodegaRepositorio = new BodegaRepositorio();
   private static usuarioRepositorio = new UsuarioRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
 
@@ -25,6 +27,15 @@ class LoteServico implements ServicoEscrita<Lote> {
     {
       'idCriador': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.usuarioRepositorio.porId, true),
       'idProduto': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.produtoRepositorio.porId, true),
+    }
+  );
+
+  private static validadorValidade = new ValidadorEntidade(
+    {
+      'dataLimite': Validacao.data,
+    },
+    {
+      'idBodega': (id) => Validacao.entidadeFoiInformada(Number(id), LoteServico.bodegaRepositorio.porId, true),
     }
   );
 
@@ -57,6 +68,9 @@ class LoteServico implements ServicoEscrita<Lote> {
   remover(id: number): Promise<Lote | null> {
     return LoteServico.repositorio.remover(id);
   }
-}
 
-export default LoteServico;
+  async comBaixaValidade(idBodega: number, dataLimite: Date): Promise<Lote[]> {
+    await LoteServico.validadorValidade.validar({ idBodega, dataLimite }, false);
+    return LoteServico.repositorio.findComBaixaValidade(idBodega, dataLimite);
+  }
+}
