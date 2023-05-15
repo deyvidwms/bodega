@@ -50,4 +50,10 @@ export default class VendaControle {
       .then((entidade) => { res.status(200).json(entidade); })
       .catch(next);
   }
+
+  relatorioDemandaProdutosMensal(req: Request, res: Response, next: NextFunction): void {
+    VendaControle.servico.relatorioDemandaProdutosMensal(Number(req.params.id))
+      .then((entidade) => { res.status(200).json(entidade); })
+      .catch(next);
+  }
 }

@@ -9,5 +9,6 @@ vendaRota.get('/:id', controle.porId);
 vendaRota.post('/', controle.criar);
 vendaRota.put('/', controle.atualizar);
 vendaRota.delete('/:id', controle.remover);
+vendaRota.get('/demanda-produtos/:id', controle.relatorioDemandaProdutosMensal);
 
 export default vendaRota;

@@ -2,10 +2,12 @@ import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
+import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 export default class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();
+  private static produtoRepositorio = new ProdutoRepositorio();
 
   private static validadorVenda = new ValidadorEntidade(
     {
@@ -42,5 +44,35 @@ export default class VendaServico implements ServicoEscrita<Venda> {
 
   remover(id: number): Promise<Venda | null> {
     return VendaServico.repositorio.remover(id);
+  }
+
+  relatorioDemandaProdutosMensal(idBodega: number) {
+    const dataAtual = new Date();
+    dataAtual.setMonth(dataAtual.getMonth() - 1);
+
+    let produtos: { [key: number]: number } = {};
+    VendaServico.repositorio.porPeriodo(idBodega, dataAtual, new Date())
+      .then((vendas) => {
+        vendas.map((venda) => {
+          venda.vendaLotes.map((vendaLote) => {
+            const idProduto = vendaLote.lote.produto.id;
+            if (produtos[idProduto] === undefined) {
+              produtos[idProduto] = vendaLote.quantidade;
+            } else {
+              produtos[idProduto] += vendaLote.quantidade;
+            }
+          })
+        })
+      });
+
+    let idProdutoMaisVendido = 0;
+    for (const key in produtos) {
+      if (produtos[idProdutoMaisVendido] === undefined || produtos[key] > produtos[idProdutoMaisVendido]) {
+      } else {
+        idProdutoMaisVendido = Number(key);
+      }
+    }
+
+    return VendaServico.produtoRepositorio.porId(idProdutoMaisVendido);
   }
 }
