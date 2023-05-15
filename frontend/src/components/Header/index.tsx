@@ -39,7 +39,7 @@ const Header: React.FC = () => {
           </Navbar> :
           <FaBars onClick={handleShowMenu} style={{cursor: 'pointer'}}/>
         }
-      <Menu show={showMenu}/>
+      {/* <Menu show={showMenu}/> */}
     </Container>
   );
 }
