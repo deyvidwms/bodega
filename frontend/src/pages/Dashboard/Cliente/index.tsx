@@ -67,14 +67,12 @@ const Cliente: React.FC = () => {
       const response: Pessoa[] = [];
       data.forEach( (element: Pessoa) => element.Usuario === null && response.push(element) );
       setRows(response)
-      console.log(response);
     };
 
     getClients();
   }, []);
 
   const editClient = (id: number) => {
-    console.log('o id é ', id)
     setRowId(id);
     setShowSideBarFormEdit(true);
   }

@@ -19,6 +19,7 @@ type Props = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   currentSchema: number;
   endpoint?: string;
+  style?: React.CSSProperties | undefined;
 };
 
 const validationSchemas = [
@@ -27,7 +28,7 @@ const validationSchemas = [
   validationSchemaLote
 ];
 
-const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint }) => {
+const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, style }) => {
   const [success, setSuccess] = useState<boolean>(false);
 
   const methods = useForm<FormValues>({
@@ -40,6 +41,16 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
   }
 
   const onSubmitHandler = (values: FormValues) => {
+
+    if (endpoint === 'lote') {
+      values['idCriador'] = 1;
+      const validadeSplited = values.validade.split('/');
+      values.validade = new Date(`${validadeSplited[2]}-${validadeSplited[1]}-${validadeSplited[0]}`).toISOString();
+      const compradoEmSplited = values.compradoEm.split('/');
+      values.compradoEm = new Date(`${compradoEmSplited[2]}-${compradoEmSplited[1]}-${compradoEmSplited[0]}`).toISOString();
+      values.emPromocao = values.emPromocao === '1';
+    }
+
     if (endpoint === 'produto') {
       values['idCriador'] = 1;
       values['idBodega'] = 1;
@@ -50,7 +61,6 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
         values.imagem = 'imagem.jpg';
     }
 
-    console.log("valores", values);
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
       method: 'POST',
       headers: {
@@ -70,15 +80,15 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
       methods.reset()
       setShow(false);
       setTimeout(() => {
-        window.location.reload();
+        // window.location.reload();
       }, 300)
     }
   }, [success]);
 
-  // console.log(methods.formState.errors)
+  console.log(methods.formState.errors)
 
   return (
-    <Container show={show}>
+    <Container show={show} style={style}>
       {!success && <Title>Cadastro de {title}</Title>}
       {
         !success &&
@@ -102,7 +112,6 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
                 variant="contained"
                 color="success"
                 type='submit'
-                onClick={() => console.log('clicou')}
               >
                 Cadastrar
               </Button>

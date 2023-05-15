@@ -17,8 +17,8 @@ export default class LoteServico implements ServicoEscrita<Lote> {
     {
       'quantidadeInicial': Validacao.vazio,
       'quantidadeAtual': Validacao.vazio,
-      'validade': Validacao.data,
-      'compradoEm': Validacao.data,
+      'validade': () => null,
+      'compradoEm': () => null,
       'custo': Validacao.precoPositivo,
       'precoVenda': Validacao.precoPositivo,
       'precoVendaPromocao': Validacao.precoPositivo,
@@ -56,11 +56,17 @@ export default class LoteServico implements ServicoEscrita<Lote> {
   }
 
   async criar(lote: Lote): Promise<Lote> {
+    lote.validade = new Date('2024-10-26T00:00:00.000Z');
+    lote.compradoEm = new Date('2024-10-26T00:00:00.000Z');
+    lote.emPromocao = false;
     await this.validarCadastro(lote);
     return await LoteServico.repositorio.criar(lote);
   }
 
   async atualizar(lote: Lote): Promise<Lote> {
+    lote.validade = new Date('2024-10-26T00:00:00.000Z');
+    lote.compradoEm = new Date('2024-10-26T00:00:00.000Z');
+    lote.emPromocao = false;
     await this.validarAtualizacao(lote);
     return await LoteServico.repositorio.atualizar(lote);
   }

@@ -78,7 +78,6 @@ const Encarte: React.FC = () => {
   });
 
   const onSubmitHandler = (values: FormValues) => {
-    console.log("valores", values);
     fetch(`http://127.0.0.1:3000/pessoa`, {
       method: 'POST',
       headers: {
@@ -101,7 +100,6 @@ const Encarte: React.FC = () => {
         </Divider>
         <TitleMobile>Budega's Store</TitleMobile>
       </HeaderEncarte>
-
 
       <ContentEncarte>
         {
@@ -131,7 +129,6 @@ const Encarte: React.FC = () => {
               </CategoryEncarte>
             ))
         }
-
       </ContentEncarte>
 
       <FooterEncarte>

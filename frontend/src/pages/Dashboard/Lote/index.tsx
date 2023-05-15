@@ -15,6 +15,7 @@ import { Masks } from '../../../assets/ts/Masks';
 import DateElement from '../../../components/DateElement';
 import dayjs from 'dayjs';
 import SideBarFormEdit from '../../../components/SideBarFormEdit';
+import SelectFieldElement from '../../../components/SelectFieldElement';
 
 type Lote = {
   quantidadeInicial: number;
@@ -45,7 +46,7 @@ const Lote: React.FC = () => {
   const [showSideBarFormEdit, setShowSideBarFormEdit] = useState<boolean>(false);
   const [rows, setRows] = useState<Lote[]>([]);
   const [rowId, setRowId] = useState<number>(0);
-  const [produtos, setProdutos] = useState<{id: number, nome: string}[]>([]);
+  const [produtos, setProdutos] = useState<{ id: number, nome: string }[]>([]);
 
   const caminhos = [
     {
@@ -57,7 +58,7 @@ const Lote: React.FC = () => {
       link: '/dashboard/lote'
     }
   ];
-  
+
   const handleClick = () => {
     setShowSideBarForm(!showSideBarForm);
   }
@@ -72,11 +73,11 @@ const Lote: React.FC = () => {
 
     const setLotes = (data: any) => {
       const response: Lote[] = [];
-      data.forEach( (element: Lote) => {
+      data.forEach((element: Lote) => {
         element['nomeProduto'] = element.produto.titulo;
         element['validadeFormated'] = dayjs(element.validade).format('DD/MM/YYYY');
         response.push(element);
-      } );
+      });
       setRows(response)
     };
 
@@ -89,14 +90,14 @@ const Lote: React.FC = () => {
     };
 
     const setProducts = (data: any) => {
-      const response: {id: number, nome: string}[] = [];
-      data.forEach( (element: Produto) => {
+      const response: { id: number, nome: string }[] = [];
+      data.forEach((element: Produto) => {
         const tmpProduto = {
           id: element.id,
           nome: element.titulo
         };
         response.push(tmpProduto)
-      } );
+      });
       setProdutos(response)
     };
 
@@ -105,7 +106,6 @@ const Lote: React.FC = () => {
   }, []);
 
   const editLote = (id: number) => {
-    console.log('o id é ', id)
     setRowId(id);
     setShowSideBarFormEdit(true);
   }
@@ -140,40 +140,43 @@ const Lote: React.FC = () => {
 
         <Row>
           <Column>
-            <TableElement 
-              header={['Produto', 'Data de Validade']} 
-              rowsField={['nomeProduto', 'validadeFormated']} 
-              rows={rows} 
-              tableItemName='Lotes' 
+            <TableElement
+              header={['Produto', 'Data de Validade']}
+              rowsField={['nomeProduto', 'validadeFormated']}
+              rows={rows}
+              tableItemName='Lotes'
               handleEdit={editLote}
-              handleDelete={deleteLote}    
+              handleDelete={deleteLote}
             />
           </Column>
         </Row>
       </Container>
-      <SideBarForm 
-        title='Lotes' 
+      <SideBarForm
+        title='Lotes'
         show={showSideBarForm}
-        setShow={setShowSideBarForm}  
-        currentSchema={1}
+        setShow={setShowSideBarForm}
+        currentSchema={2}
+        endpoint={'lote'}
+        style={{ overflowY: 'scroll' }}
       >
         <AutoCompleteElement
           label='Produto'
-          name='produto'
+          name='idProduto'
           options={produtos}
           required
         />
 
-        <TextFieldElement 
-          label='Quantidade'
-          name='quantidade'
+        <TextFieldElement
+          label='Quantidade Inicial'
+          name='quantidadeInicial'
           maskFunction={Masks.onlyNumbers}
           required
         />
 
-        <TextFieldElement 
-          label='Descrição'
-          name='descricao'
+        <TextFieldElement
+          label='Quantidade Atual'
+          name='quantidadeAtual'
+          maskFunction={Masks.onlyNumbers}
           required
         />
 
@@ -189,17 +192,24 @@ const Lote: React.FC = () => {
           required
         />
 
-        <TextFieldElement 
+        <TextFieldElement
           label='Custo'
           name='custo'
           maskFunction={Masks.onlyNumbers}
           required
         />
 
-        <TextFieldElement 
+        <TextFieldElement
           label='Preço da venda'
           name='precoVenda'
           maskFunction={Masks.onlyNumbers}
+          required
+        />
+
+        <SelectFieldElement
+          label='O produto está em promoção? *'
+          name='emPromocao'
+          options={[{ id: 1, name: 'Não', value: '0' }, { id: 2, name: 'Sim', value: '1' }]}
           required
         />
 
@@ -212,14 +222,74 @@ const Lote: React.FC = () => {
 
       </SideBarForm>
       <SideBarFormEdit
-        title='lotes' 
+        title='lotes'
         show={showSideBarFormEdit}
         setShow={setShowSideBarFormEdit}
         currentSchema={2}
         endpoint={'lote'}
         idItem={rowId}
+        style={{ overflowY: 'scroll' }}
       >
+        <AutoCompleteElement
+          label='Produto'
+          name='idProduto'
+          options={produtos}
+          required
+        />
 
+        <TextFieldElement
+          label='Quantidade Inicial'
+          name='quantidadeInicial'
+          maskFunction={Masks.onlyNumbers}
+          required
+        />
+
+        <TextFieldElement
+          label='Quantidade Atual'
+          name='quantidadeAtual'
+          maskFunction={Masks.onlyNumbers}
+          required
+        />
+
+        <DateElement
+          label='Validade'
+          name='validade'
+          required
+        />
+
+        <DateElement
+          label='Comprado em'
+          name='compradoEm'
+          required
+        />
+
+        <TextFieldElement
+          label='Custo'
+          name='custo'
+          maskFunction={Masks.onlyNumbers}
+          required
+        />
+
+        <TextFieldElement
+          label='Preço da venda'
+          name='precoVenda'
+          maskFunction={Masks.onlyNumbers}
+          required
+        />
+
+        <SelectFieldElement
+          label='O produto está em promoção? *'
+          name='emPromocao'
+          options={[{ id: 1, name: 'Não', value: '0' }, { id: 2, name: 'Sim', value: '1' }]}
+          required
+        />
+
+        <TextFieldElement
+          label='Preço da venda em promoção'
+          name='precoVendaPromocao'
+          maskFunction={Masks.onlyNumbers}
+          required
+        />
       </SideBarFormEdit>
     </LayoutDashboard>
   );

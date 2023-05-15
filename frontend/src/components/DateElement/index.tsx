@@ -10,10 +10,6 @@ import { Container } from "./styles";
 const DateElement: React.FC<{name: string, label: string, required: boolean}> = ({ name, label, required }) => {
   const { watch, setValue, control } = useFormContext();
 
-  const [date, setDate] = useState<String | null>(
-    watch(name) || null
-  );
-
   return (
     <>
       <Container>
@@ -33,9 +29,9 @@ const DateElement: React.FC<{name: string, label: string, required: boolean}> = 
                 shrink: true,
               }}
               onChange={(event) => {
-                setDate(Masks.date(event));
+                field.onChange(Masks.date(event));
               }}
-              value={date || ""}
+              value={watch(name) || ""}
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
             />

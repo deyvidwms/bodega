@@ -13,7 +13,7 @@ type Props = {
   rowsField: string[];
   rows: { [key: string]: any }[];
   tableItemName: string;
-  handleEdit: (id: number) => void;
+  handleEdit: null | ((id: number) => void);
   handleDelete: (id: number) => void;
 }
 
@@ -74,8 +74,8 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
               (row, index) => (
                 <TableRow key={index}>
                   {
-                    rowsField.map( ( element: string, index: number ) =>
-                      <TableCell key={index} component="th" scope="row">{ element.indexOf('saldo') > -1 ? Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(row[element])) : row[element]}</TableCell>
+                    rowsField.map((element: string, index: number) =>
+                      <TableCell key={index} component="th" scope="row">{element.indexOf('saldo') > -1 ? Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(row[element])) : row[element]}</TableCell>
                     )
                   }
                   <TableCell component="th" scope="row" align='right'>
@@ -85,9 +85,13 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
                         <FaWhatsapp />
                       </ActionIcon>
                     }
-                    <ActionIcon background='#ffb703' onClick={() => handleEdit(row.id)}>
-                      <FaPencilAlt />
-                    </ActionIcon>
+                    {
+                      (handleEdit !== null)
+                      && <ActionIcon background='#ffb703' onClick={() => handleEdit(row.id)}>
+                        <FaPencilAlt />
+                      </ActionIcon>
+                    }
+
                     <ActionIcon background='#da4d4d' onClick={() => handleDelete(row.id)} >
                       <FaTrash />
                     </ActionIcon>

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchemaClientEdit } from '../../schemas/validationSchema/Cliente';
 import { validationSchemaProductEdit } from '../../schemas/validationSchema/Produto';
 import { validationSchemaLoteEdit } from '../../schemas/validationSchema/Lote';
- 
+
 import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { Button } from '@mui/material';
 
@@ -20,6 +20,7 @@ type Props = {
   currentSchema: number;
   endpoint: string;
   idItem: number;
+  style?: React.CSSProperties | undefined;
 };
 
 const validationSchemas = [
@@ -28,7 +29,7 @@ const validationSchemas = [
   validationSchemaLoteEdit
 ];
 
-const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem }) => {
+const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem, style }) => {
   const [success, setSuccess] = useState<boolean>(false);
   const [defaultValues, setDefaultValues] = useState<{ [key: string]: any }>({});
 
@@ -42,8 +43,6 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }
 
   const onSubmitHandler = (values: FormValues) => {
-    // console.log("valores", values);
-    
     if (values?.imagem) {
       if (Object.keys(values.imagem).length === 0)
         values.imagem = 'imagem.jpg';
@@ -60,7 +59,6 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       .then(data => (
         setSuccess(true)
       ))
-      // .then(data => console.log('data', data))
       .catch(error => console.error(error))
   };
 
@@ -71,7 +69,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
           .then(response => response.json())
           .then(data => setDefaultValues(data))
           .catch(error => { console.log(error) })
-      return setDefaultValues({ });
+      return setDefaultValues({});
     }
 
     getItem(idItem)
@@ -88,13 +86,23 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }, [success]);
 
   useEffect(() => {
+    if (defaultValues?.compradoEm) {
+      const compradoEmSplited = defaultValues.compradoEm.split('T')[0].split('-');
+      defaultValues.compradoEm = `${compradoEmSplited[2]}/${compradoEmSplited[1]}/${compradoEmSplited[0]}`;
+    }
+
+    if (defaultValues?.validade) {
+      const validadeSplited = defaultValues.validade.split('T')[0].split('-');
+      defaultValues.validade = `${validadeSplited[2]}/${validadeSplited[1]}/${validadeSplited[0]}`;
+    }
+
     methods.reset(defaultValues);
   }, [defaultValues])
 
-  // console.log('errors', methods.formState.errors)
+  useEffect(() => { console.log(methods.formState.errors) }, [methods.formState.errors])
 
   return (
-    <Container show={show}>
+    <Container show={show} style={style}>
       {!success && <Title>Edição de {title}</Title>}
       {
         !success &&
@@ -118,7 +126,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
                 variant="contained"
                 color="success"
                 type='submit'
-                onClick={() => console.log('clicou')}
+              // onClick={() => console.log('clicou')}
               >
                 Editar
               </Button>
