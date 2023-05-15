@@ -23,7 +23,7 @@ export default class VendaControle {
 
   criar(req: Request, res: Response, next: NextFunction): void {
     for (let key in req.body) {
-      if (key.startsWith('id')) {
+      if (!Number.isNaN(req.body[key])) {
         req.body[key] = Number(req.body[key]);
       }
     }
@@ -35,7 +35,7 @@ export default class VendaControle {
 
   atualizar(req: Request, res: Response, next: NextFunction): void {
     for (let key in req.body) {
-      if (key.startsWith('id')) {
+      if (!Number.isNaN(req.body[key])) {
         req.body[key] = Number(req.body[key]);
       }
     }

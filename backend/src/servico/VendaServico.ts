@@ -1,4 +1,5 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
+import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
@@ -8,7 +9,7 @@ export default class VendaServico implements ServicoEscrita<Venda> {
 
   private static validadorVenda = new ValidadorEntidade(
     {
-      'vendidoEm': () => null,
+      'vendidoEm': Validacao.data,
     },
     {}
   );

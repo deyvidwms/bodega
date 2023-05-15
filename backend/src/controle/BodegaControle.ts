@@ -23,7 +23,7 @@ export default class BodegaControle {
 
   criar(req: Request, res: Response, next: NextFunction): void {
     for (let key in req.body) {
-      if (key.startsWith('id')) {
+      if (!Number.isNaN(req.body[key])) {
         req.body[key] = Number(req.body[key]);
       }
     }
@@ -35,7 +35,7 @@ export default class BodegaControle {
 
   atualizar(req: Request, res: Response, next: NextFunction): void {
     for (let key in req.body) {
-      if (key.startsWith('id')) {
+      if (!Number.isNaN(req.body[key])) {
         req.body[key] = Number(req.body[key]);
       }
     }
@@ -64,6 +64,12 @@ export default class BodegaControle {
   }
 
   relatorioFinanceiro(req: Request, res: Response, next: NextFunction): void {
+    for (let key in req.body) {
+      if (!Number.isNaN(req.body[key])) {
+        req.body[key] = Number(req.body[key]);
+      }
+    }
+
     BodegaControle.servico.relatorioFinanceiro(Number(req.params.id), req.body.inicio, req.body.fim)
       .then((relatorioFinanceiro) => { res.status(200).json(relatorioFinanceiro) })
       .catch(next);

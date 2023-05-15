@@ -17,8 +17,8 @@ export default class LoteServico implements ServicoEscrita<Lote> {
     {
       'quantidadeInicial': Validacao.vazio,
       'quantidadeAtual': Validacao.vazio,
-      'validade': (validade) => null,
-      'compradoEm': (compradoEm) => null,
+      'validade': Validacao.data,
+      'compradoEm': Validacao.data,
       'custo': Validacao.precoPositivo,
       'precoVenda': Validacao.precoPositivo,
       'precoVendaPromocao': Validacao.precoPositivo,
