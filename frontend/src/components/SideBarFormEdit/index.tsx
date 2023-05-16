@@ -9,8 +9,8 @@ import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { Button } from '@mui/material';
 
 import { FormValues } from '../../types/FormValues';
-import { FaCheckCircle } from 'react-icons/fa';
-import { SuccessMessage } from '../../pages/Dashboard/Produto/styles';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FailedMessage, SuccessMessage } from '../../pages/Dashboard/Produto/styles';
 
 type Props = {
   title: string;
@@ -31,6 +31,7 @@ const validationSchemas = [
 
 const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem, style }) => {
   const [success, setSuccess] = useState<boolean>(false);
+  const [failed, setFailed] = useState<boolean>(false);
   const [defaultValues, setDefaultValues] = useState<{ [key: string]: any }>({});
 
   const methods = useForm<FormValues>({
@@ -43,6 +44,10 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }
 
   const onSubmitHandler = (values: FormValues) => {
+    if (values?.saldoDevedor) {
+      values.saldoDevedor = Number(values.saldoDevedor.replaceAll('.','').replaceAll(',','.'))
+    }
+
     if (values?.imagem) {
       if (Object.keys(values.imagem).length === 0)
         values.imagem = 'imagem.jpg';
@@ -56,9 +61,14 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       body: JSON.stringify(values)
     })
       .then(response => response.json())
-      .then(data => (
-        setSuccess(true)
-      ))
+      .then(data => {
+        console.log(data)
+        if (!data.erros) { 
+          setSuccess(true) 
+        } else {
+          setFailed(true);
+        }
+      })
       .catch(error => console.error(error))
   };
 
@@ -67,7 +77,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       if (id > 0)
         return await fetch(`http://127.0.0.1:3000/${endpoint}/${id}`)
           .then(response => response.json())
-          .then(data => setDefaultValues(data))
+          .then(data => { setDefaultValues(data) })
           .catch(error => { console.log(error) })
       return setDefaultValues({});
     }
@@ -88,6 +98,14 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }, [success]);
 
   useEffect(() => {
+    if (failed === true) {
+      setTimeout(() => {
+        setFailed(false);
+      }, 3000);
+    }
+  }, [failed]);
+
+  useEffect(() => {
     if (defaultValues?.compradoEm) {
       const compradoEmSplited = defaultValues.compradoEm.split('T')[0].split('-');
       defaultValues.compradoEm = `${compradoEmSplited[2]}/${compradoEmSplited[1]}/${compradoEmSplited[0]}`;
@@ -98,6 +116,10 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       defaultValues.validade = `${validadeSplited[2]}/${validadeSplited[1]}/${validadeSplited[0]}`;
     }
 
+    if (defaultValues?.saldoDevedor) {
+      defaultValues.saldoDevedor = new Intl.NumberFormat("pt-BR").format(defaultValues.saldoDevedor);
+    }
+
     methods.reset(defaultValues);
   }, [defaultValues])
 
@@ -105,9 +127,9 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
 
   return (
     <Container show={show} style={style}>
-      {!success && <Title>Edição de {title}</Title>}
+      { (!success && !failed) && <Title>Edição de {title}</Title>}
       {
-        !success &&
+        (!success && !failed) &&
         <ProductRegisterForm
           noValidate
           autoComplete="off"
@@ -142,6 +164,14 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
           <FaCheckCircle />
           <p><span>{title.substring(0, title.length - 1)}</span> editado com sucesso!</p>
         </SuccessMessage>
+      }
+      {
+        failed &&
+        <FailedMessage>
+          <FaTimesCircle />
+          <p>Falha ao cadastrar informação!</p>
+          <p>Confira os dados e tente novamente.</p>
+        </FailedMessage>
       }
     </Container>
   );

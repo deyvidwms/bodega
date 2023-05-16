@@ -53,4 +53,13 @@ export class Masks {
     event.currentTarget.value = value;
     return value;
   }
+
+  static currency(event: React.KeyboardEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {  
+    let value = event.currentTarget.value;
+    value = value.replace(/\D/g, "");
+    value = value.replace(/([0-9]{2})$/, ",$1");
+    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+    event.currentTarget.value = value;
+    return value;
+  }
 }

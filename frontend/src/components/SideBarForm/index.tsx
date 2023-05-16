@@ -8,8 +8,8 @@ import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { Button } from '@mui/material';
 
 import { FormValues } from '../../types/FormValues';
-import { FaCheckCircle } from 'react-icons/fa';
-import { SuccessMessage } from '../../pages/Dashboard/Produto/styles';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FailedMessage, SuccessMessage } from '../../pages/Dashboard/Produto/styles';
 import { validationSchemaLote } from '../../schemas/validationSchema/Lote';
 
 type Props = {
@@ -30,6 +30,7 @@ const validationSchemas = [
 
 const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, style }) => {
   const [success, setSuccess] = useState<boolean>(false);
+  const [failed, setFailed] = useState<boolean>(false);
 
   const methods = useForm<FormValues>({
     resolver: yupResolver(validationSchemas[currentSchema])
@@ -69,9 +70,14 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
       body: JSON.stringify(values)
     })
       .then(response => response.json())
-      .then(data => (
-        setSuccess(true)
-      ))
+      .then(data => {
+        console.log(data)
+        if (!data.erros) { 
+          setSuccess(true) 
+        } else {
+          setFailed(true);
+        }
+      })
       .catch(error => console.error(error))
   };
 
@@ -87,13 +93,21 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
     }
   }, [success]);
 
+  useEffect(() => {
+    if (failed === true) {
+      setTimeout(() => {
+        setFailed(false);
+      }, 3000);
+    }
+  }, [failed]);
+
   console.log(methods.formState.errors)
 
   return (
     <Container show={show} style={style}>
-      {!success && <Title>Cadastro de {title}</Title>}
+      { (!success && !failed) && <Title>Cadastro de {title}</Title>}
       {
-        !success &&
+         (!success && !failed) &&
         <ProductRegisterForm
           noValidate
           autoComplete="off"
@@ -127,6 +141,14 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
           <FaCheckCircle />
           <p><span>{title.substring(0, title.length - 1)}</span> cadastrado com sucesso!</p>
         </SuccessMessage>
+      }
+      {
+        failed &&
+        <FailedMessage>
+          <FaTimesCircle />
+          <p>Falha ao cadastrar informação!</p>
+          <p>Confira os dados e tente novamente.</p>
+        </FailedMessage>
       }
     </Container>
   );

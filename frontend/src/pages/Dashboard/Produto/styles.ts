@@ -33,3 +33,23 @@ export const SuccessMessage = styled.div`
     }
   }
 `;
+
+export const FailedMessage = styled.div`
+  padding: 10px;
+  text-align: center;
+
+  svg {
+    font-size : 5rem;
+    color: #ea3232;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    
+    &:last-child {
+      font-size: 1rem;
+    }
+  }
+`;

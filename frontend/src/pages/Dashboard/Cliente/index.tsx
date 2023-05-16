@@ -179,6 +179,7 @@ const Cliente: React.FC = () => {
         <CurrencyFieldElement
           label='Saldo Devedor'
           name='saldoDevedor'
+          maskFunction={Masks.currency}
           required
         />
 
