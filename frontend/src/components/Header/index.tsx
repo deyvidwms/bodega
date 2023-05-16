@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-import { FaBars, FaUserAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaUserAlt } from "react-icons/fa";
 
 import { Container, Navbar } from './styles';
 import Menu from './Menu';
 
-const Header: React.FC = () => {
+type Props = {
+  changeMobileMenu: boolean;
+  onClick: () => void;
+}
+
+const Header: React.FC<Props> = ({changeMobileMenu, onClick}) => {
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
   const [showMenu, setShowMenu] = useState<boolean>(false);
-
-  const handleShowMenu = () => {
-    setShowMenu(!showMenu);
-  }
 
   useEffect(() => {
 
     const changeNavBarMobile = () => {
       const width = window.innerWidth;
-      setShowMobileMenu(width <= 680);
+      setShowMobileMenu(width <= 800);
     }
 
     window.addEventListener('resize', changeNavBarMobile);
@@ -33,11 +34,14 @@ const Header: React.FC = () => {
       </div>
         {
           !showMobileMenu ?
-          <Navbar onClick={handleShowMenu}>
+          <Navbar>
             <p>Deyvid</p>
             <FaUserAlt />
-          </Navbar> :
-          <FaBars onClick={handleShowMenu} style={{cursor: 'pointer'}}/>
+          </Navbar> : (
+            !changeMobileMenu ?
+            <FaBars onClick={onClick} style={{cursor: 'pointer'}}/> :
+            <FaTimes onClick={onClick} style={{cursor: 'pointer'}} />
+          )
         }
       {/* <Menu show={showMenu}/> */}
     </Container>

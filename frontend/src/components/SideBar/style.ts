@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+type Props = {
+  show: boolean;
+}
+
+export const Container = styled.div<Props>`
   max-width: 250px;
   background-color: #FFF;
   height: calc(100vh - 70px);
   border-right: 1px solid #CCC;
+  transition: all ease 0.3s;
 
   @media (max-width: 800px) {
     position: absolute;
-    transform: translateX(-100%);
+    transform: translateX(${(props) => props.show ? '0' : '-100%'});
   }
 `;
 

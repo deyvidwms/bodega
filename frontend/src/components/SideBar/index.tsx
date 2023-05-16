@@ -5,7 +5,11 @@ import { FaBox, FaCaretRight, FaCartPlus, FaHome, FaLayerGroup, FaSignOutAlt, Fa
 import { Container, Menu, OptionList, OptionTitle } from './style';
 import { Link } from 'react-router-dom';
 
-const SideBar: React.FC = () => {
+type Props = {
+  showSideBar: boolean;
+}
+
+const SideBar: React.FC<Props> = ({ showSideBar }) => {
   const [homeActive, setHomeActive] = useState<boolean>(
     window.location.pathname === '/dashboard' ||
     window.location.pathname === '/dashboard/'
@@ -36,7 +40,7 @@ const SideBar: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container show={showSideBar}>
       <Menu>
         <Link to={'/dashboard/'}>
           <OptionList
