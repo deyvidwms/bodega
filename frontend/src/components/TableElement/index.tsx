@@ -40,7 +40,7 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
   };
 
   const handleClickWhatsApp = (number: string) => {
-    window.open(`https://api.whatsapp.com/send/?phone=55${number}&text=Olá, bom dia.%0ATemos promoções na nossa Budega.%0AVenha conferir!`)
+    window.open(`https://api.whatsapp.com/send/?phone=55${number}&text=Olá, tudo bem?%0ATemos promoções na nossa Budega.%0AVenha conferir!`)
   };
 
   return (

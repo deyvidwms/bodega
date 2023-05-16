@@ -77,11 +77,13 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
 
   useEffect(() => {
     if (success === true) {
-      methods.reset()
-      setShow(false);
       setTimeout(() => {
-        // window.location.reload();
-      }, 3000)
+        methods.reset()
+        setShow(false);
+        setTimeout(() => {
+          // window.location.reload();
+        }, 300)
+      }, 3000);
     }
   }, [success]);
 
