@@ -30,15 +30,7 @@ export const Navbar = styled.div`
   align-items: center;
   height: 69px;
   padding: 0 20px;
-  cursor: pointer;
-  transition: all ease 0.3s;
-
-  &:hover {
-    background-color: #f9ad23;
-    /* transform: scale(1.05); */
-    box-shadow: 0 0 5px rgb( 0 0 0 / 15%);
-  }
-
+  
   p {
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
