@@ -23,7 +23,9 @@ export default class BodegaServico implements ServicoEscrita<Bodega> {
       'cnpj': Validacao.cnpj,
       'imagem': Validacao.vazio,
     },
-    {}
+    {
+      'cnpj': (cnpj) => Validacao.valorUnico(cnpj, BodegaServico.repositorio.porCnpj),
+    }
   );
 
   private static validadorRelatorioFinanceiro = new ValidadorEntidade(

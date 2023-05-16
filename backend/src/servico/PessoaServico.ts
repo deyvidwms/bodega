@@ -14,7 +14,10 @@ export default class PessoaServico implements ServicoEscrita<Pessoa> {
       'celular': Validacao.celular,
       'saldoDevedor': () => null,
     },
-    {}
+    {
+      'cpf': (cpf) => Validacao.valorUnico(cpf, PessoaServico.repositorio.porCpf),
+      'celular': (celular) => Validacao.valorUnico(celular, PessoaServico.repositorio.porCelular),
+    }
   );
 
   validarCadastro(pessoa: Pessoa): Promise<void> {

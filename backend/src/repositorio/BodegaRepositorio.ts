@@ -26,4 +26,8 @@ export default class BodegaRepositorio {
   remover(id: number) {
     return BodegaRepositorio.repositorio.delete({ where: { id } });
   }
+
+  porCnpj(cnpj: string) {
+    return BodegaRepositorio.repositorio.findUnique({ where: { cnpj } });
+  }
 }

@@ -22,24 +22,12 @@ export default class BodegaControle {
   }
 
   criar(req: Request, res: Response, next: NextFunction): void {
-    for (let key in req.body) {
-      if (!Number.isNaN(req.body[key])) {
-        req.body[key] = Number(req.body[key]);
-      }
-    }
-
     BodegaControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
   atualizar(req: Request, res: Response, next: NextFunction): void {
-    for (let key in req.body) {
-      if (!Number.isNaN(req.body[key])) {
-        req.body[key] = Number(req.body[key]);
-      }
-    }
-
     BodegaControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -64,12 +52,6 @@ export default class BodegaControle {
   }
 
   relatorioFinanceiro(req: Request, res: Response, next: NextFunction): void {
-    for (let key in req.body) {
-      if (!Number.isNaN(req.body[key])) {
-        req.body[key] = Number(req.body[key]);
-      }
-    }
-
     BodegaControle.servico.relatorioFinanceiro(Number(req.params.id), req.body.inicio, req.body.fim)
       .then((relatorioFinanceiro) => { res.status(200).json(relatorioFinanceiro) })
       .catch(next);

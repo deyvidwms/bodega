@@ -22,24 +22,12 @@ export default class LoteControle {
   }
 
   criar(req: Request, res: Response, next: NextFunction): void {
-    for (let key in req.body) {
-      if (!Number.isNaN(req.body[key])) {
-        req.body[key] = Number(req.body[key]);
-      }
-    }
-
     LoteControle.servico.criar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
   }
 
   atualizar(req: Request, res: Response, next: NextFunction): void {
-    for (let key in req.body) {
-      if (!Number.isNaN(req.body[key])) {
-        req.body[key] = Number(req.body[key]);
-      }
-    }
-
     LoteControle.servico.atualizar(req.body)
       .then((entidade) => { res.status(201).json(entidade); })
       .catch(next);
@@ -52,12 +40,6 @@ export default class LoteControle {
   }
 
   comBaixaValidade(req: Request, res: Response, next: NextFunction): void {
-    for (let key in req.body) {
-      if (!Number.isNaN(req.body[key])) {
-        req.body[key] = Number(req.body[key]);
-      }
-    }
-
     LoteControle.servico.comBaixaValidade(Number(req.params.id), req.body.dataLimite)
       .then((entidade) => { res.status(200).json(entidade); })
       .catch(next);

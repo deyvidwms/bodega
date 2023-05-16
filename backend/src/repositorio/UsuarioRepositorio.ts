@@ -36,4 +36,12 @@ export default class UsuarioRepositorio {
 
     return usuarios;
   }
+
+  porPessoa(idPessoa: number) {
+    return UsuarioRepositorio.repositorio.findUnique({ where: { idPessoa } });
+  }
+
+  porEmail(email: string) {
+    return UsuarioRepositorio.repositorio.findUnique({ where: { email } });
+  }
 }

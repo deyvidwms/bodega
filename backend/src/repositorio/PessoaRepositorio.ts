@@ -26,4 +26,12 @@ export default class PessoaRepositorio {
   remover(id: number) {
     return PessoaRepositorio.repositorio.delete({ where: { id } });
   }
+
+  porCpf(cpf: string) {
+    return PessoaRepositorio.repositorio.findUnique({ where: { cpf } });
+  }
+
+  porCelular(celular: string) {
+    return PessoaRepositorio.repositorio.findUnique({ where: { celular } });
+  }
 }

@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import rota from './rota';
 import ErroNegocio from './arquitetura/ErroNegocio';
+import loginRota from './rota/loginRota';
 
 const cors = require('cors');
 
@@ -12,14 +13,8 @@ const PORTA = process.env.PORT;
 
 app.use(express.json());
 app.use(cors());
+app.use(loginRota);
 app.use(rota);
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const dataFormatada = new Date().toLocaleString('en-GB', { hour12: false });
-  console.log(`[${dataFormatada}] Requisição ${req.method} recebida`)
-  console.log('Params:', req.params);
-  console.log('Body:', req.body);
-  next();
-});
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ErroNegocio) {

@@ -23,6 +23,14 @@ export default class Validacao {
     return null;
   }
 
+  public static async valorUnico(valor: any, funcaoTestaValorUnico: (valor: any) => Promise<any | null>): Promise<string | null> {
+    if (!valor === null || valor === undefined) {
+      return null;
+    }
+    return funcaoTestaValorUnico(valor)
+      .then((retorno: any) => (retorno === null) ? null : 'Valor já existe para outra entidade');
+  }
+
   public static precoPositivo(preco: number | Decimal | null): string | null {
     if (preco === null || preco === undefined) {
       return 'Valor não informado';
