@@ -85,6 +85,12 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
         values.imagem = await Utils.getBase64(values.imagem);
     }
 
+    if (endpoint === 'produto') {
+      if (values?.idCategoriaProduto) {
+        values.idCategoriaProduto = Number(values.idCategoriaProduto);
+      }
+    }
+
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
       method: 'PUT',
       headers: {
