@@ -10,6 +10,10 @@ const LayoutDashboard: React.FC<{children: React.ReactNode}> = ({children}) => {
 
   const handleClickSideBar = () => setShowSideBar(!showSideBar);
 
+  useEffect(() => {
+    window.scrollTo(0,0);
+  }, [])
+
   return (
     <Container>
       <Header changeMobileMenu={showSideBar} onClick={handleClickSideBar} />

@@ -16,6 +16,7 @@ import DateElement from '../../../components/DateElement';
 import dayjs from 'dayjs';
 import SideBarFormEdit from '../../../components/SideBarFormEdit';
 import SelectFieldElement from '../../../components/SelectFieldElement';
+import CurrencyFieldElement from '../../../components/CurrencyFieldElement';
 
 type Lote = {
   quantidadeInicial: number;
@@ -181,28 +182,28 @@ const Lote: React.FC = () => {
         />
 
         <DateElement
-          label='Validade'
-          name='validade'
-          required
-        />
-
-        <DateElement
           label='Comprado em'
           name='compradoEm'
           required
         />
 
-        <TextFieldElement
-          label='Custo'
-          name='custo'
-          maskFunction={Masks.onlyNumbers}
+        <DateElement
+          label='Validade'
+          name='validade'
           required
         />
 
-        <TextFieldElement
+        <CurrencyFieldElement
+          label='Custo'
+          name='custo'
+          maskFunction={Masks.currency}
+          required
+        />
+
+        <CurrencyFieldElement
           label='Preço da venda'
           name='precoVenda'
-          maskFunction={Masks.onlyNumbers}
+          maskFunction={Masks.currency}
           required
         />
 
@@ -213,14 +214,14 @@ const Lote: React.FC = () => {
           required
         />
 
-        <TextFieldElement
+        <CurrencyFieldElement
           label='Preço da venda em promoção'
           name='precoVendaPromocao'
-          maskFunction={Masks.onlyNumbers}
+          maskFunction={Masks.currency}
           required
         />
-
       </SideBarForm>
+
       <SideBarFormEdit
         title='lotes'
         show={showSideBarFormEdit}
@@ -230,7 +231,7 @@ const Lote: React.FC = () => {
         idItem={rowId}
         style={{ overflowY: 'scroll' }}
       >
-        <AutoCompleteElement
+                <AutoCompleteElement
           label='Produto'
           name='idProduto'
           options={produtos}
@@ -252,28 +253,28 @@ const Lote: React.FC = () => {
         />
 
         <DateElement
-          label='Validade'
-          name='validade'
-          required
-        />
-
-        <DateElement
           label='Comprado em'
           name='compradoEm'
           required
         />
 
-        <TextFieldElement
-          label='Custo'
-          name='custo'
-          maskFunction={Masks.onlyNumbers}
+        <DateElement
+          label='Validade'
+          name='validade'
           required
         />
 
-        <TextFieldElement
+        <CurrencyFieldElement
+          label='Custo'
+          name='custo'
+          maskFunction={Masks.currency}
+          required
+        />
+
+        <CurrencyFieldElement
           label='Preço da venda'
           name='precoVenda'
-          maskFunction={Masks.onlyNumbers}
+          maskFunction={Masks.currency}
           required
         />
 
@@ -284,10 +285,10 @@ const Lote: React.FC = () => {
           required
         />
 
-        <TextFieldElement
+        <CurrencyFieldElement
           label='Preço da venda em promoção'
           name='precoVendaPromocao'
-          maskFunction={Masks.onlyNumbers}
+          maskFunction={Masks.currency}
           required
         />
       </SideBarFormEdit>

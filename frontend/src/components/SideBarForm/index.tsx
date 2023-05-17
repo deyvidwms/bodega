@@ -11,6 +11,7 @@ import { FormValues } from '../../types/FormValues';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { FailedMessage, SuccessMessage } from '../../pages/Dashboard/Produto/styles';
 import { validationSchemaLote } from '../../schemas/validationSchema/Lote';
+import { Utils } from '../../assets/ts/Utils';
 
 type Props = {
   title: string;
@@ -41,10 +42,31 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
     setShow(false);
   }
 
-  const onSubmitHandler = (values: FormValues) => {
+  const onSubmitHandler = async (values: FormValues) => {
 
     if (endpoint === 'lote') {
       values['idCriador'] = 1;
+
+      if (values?.idProduto)
+        values.idProduto = Number(values.idProduto);
+
+      if (values?.custo)
+        values.custo = Number(values.custo.replaceAll('.', '').replaceAll(',','.'));
+
+      if (values?.precoVenda)
+        values.precoVenda = Number(values.precoVenda.replaceAll('.', '').replaceAll(',','.'));
+
+      if (values?.precoVendaPromocao)
+        values.precoVendaPromocao = Number(values.precoVendaPromocao.replaceAll('.', '').replaceAll(',','.'));
+      else
+        values['precoVendaPromocao'] = 0;
+
+      if (values?.quantidadeAtual)
+        values.quantidadeAtual = Number(values.quantidadeAtual);
+      
+      if (values?.quantidadeInicial)
+        values.quantidadeInicial = Number(values.quantidadeInicial);
+        
       const validadeSplited = values.validade.split('/');
       values.validade = new Date(`${validadeSplited[2]}-${validadeSplited[1]}-${validadeSplited[0]}`).toISOString();
       const compradoEmSplited = values.compradoEm.split('/');
@@ -59,7 +81,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
 
     if (values?.imagem) {
       if (Object.keys(values.imagem).length === 0)
-        values.imagem = 'imagem.jpg';
+        values.imagem = await Utils.getBase64(values.imagem);
     }
 
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
@@ -101,7 +123,9 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
     }
   }, [failed]);
 
-  console.log(methods.formState.errors)
+  useEffect(() => {
+    console.log(methods.formState.errors)
+  }, [methods.formState.errors])
 
   return (
     <Container show={show} style={style}>

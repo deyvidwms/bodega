@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Container } from './styles';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
 type Props = {
@@ -26,16 +26,17 @@ const SelectFieldElement: React.FC<Props> = ({ name, label, options, required, s
       name={name}
       render={({ field, fieldState }) => (
         <Container>
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!fieldState.error}>
             <InputLabel id={`${name}Label`}>{label}</InputLabel>
             <Select
               labelId={`${name}Label`}
               id={`${name}Select`}
-              value={field.value? field.value : 0}
+              value={field.value? field.value : ''}
               label={label}
               onChange={event => field.onChange(event)}
               required={required}
             >
+              <MenuItem value={''}></MenuItem>
               {
                 options.map( element => 
                   <MenuItem 
@@ -47,6 +48,10 @@ const SelectFieldElement: React.FC<Props> = ({ name, label, options, required, s
                 )
               }
             </Select>
+            {
+              !!fieldState.error &&
+              <FormHelperText>{fieldState?.error?.message?.toString()}</FormHelperText>
+            }
           </FormControl>
         </Container>
       )}

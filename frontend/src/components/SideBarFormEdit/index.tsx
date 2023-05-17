@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchemaClientEdit } from '../../schemas/validationSchema/Cliente';
-import { validationSchemaProductEdit } from '../../schemas/validationSchema/Produto';
-import { validationSchemaLoteEdit } from '../../schemas/validationSchema/Lote';
+import { validationSchemaProduct } from '../../schemas/validationSchema/Produto';
+import { validationSchemaLote } from '../../schemas/validationSchema/Lote';
 
 import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { Button } from '@mui/material';
@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import { FormValues } from '../../types/FormValues';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { FailedMessage, SuccessMessage } from '../../pages/Dashboard/Produto/styles';
+import { Utils } from '../../assets/ts/Utils';
 
 type Props = {
   title: string;
@@ -25,8 +26,8 @@ type Props = {
 
 const validationSchemas = [
   validationSchemaClientEdit,
-  validationSchemaProductEdit,
-  validationSchemaLoteEdit
+  validationSchemaProduct,
+  validationSchemaLote
 ];
 
 const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem, style }) => {
@@ -43,14 +44,45 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
     setShow(false);
   }
 
-  const onSubmitHandler = (values: FormValues) => {
+  const onSubmitHandler = async (values: FormValues) => {
+
+    if (endpoint === 'lote') {
+      values['idCriador'] = 1;
+
+      if (values?.idProduto)
+        values.idProduto = Number(values.idProduto);
+
+      if (values?.custo)
+        values.custo = Number(values.custo.replaceAll('.', '').replaceAll(',','.'));
+
+      if (values?.precoVenda)
+        values.precoVenda = Number(values.precoVenda.replaceAll('.', '').replaceAll(',','.'));
+
+      if (values?.precoVendaPromocao)
+        values.precoVendaPromocao = Number(values.precoVendaPromocao.replaceAll('.', '').replaceAll(',','.'));
+      else
+        values['precoVendaPromocao'] = 0;
+
+      if (values?.quantidadeAtual)
+        values.quantidadeAtual = Number(values.quantidadeAtual);
+      
+      if (values?.quantidadeInicial)
+        values.quantidadeInicial = Number(values.quantidadeInicial);
+        
+      const validadeSplited = values.validade.split('/');
+      values.validade = new Date(`${validadeSplited[2]}-${validadeSplited[1]}-${validadeSplited[0]}`).toISOString();
+      const compradoEmSplited = values.compradoEm.split('/');
+      values.compradoEm = new Date(`${compradoEmSplited[2]}-${compradoEmSplited[1]}-${compradoEmSplited[0]}`).toISOString();
+      values.emPromocao = values.emPromocao === '1';
+    }
+
     if (values?.saldoDevedor) {
       values.saldoDevedor = Number(values.saldoDevedor.replaceAll('.','').replaceAll(',','.'))
     }
 
     if (values?.imagem) {
       if (Object.keys(values.imagem).length === 0)
-        values.imagem = 'imagem.jpg';
+        values.imagem = await Utils.getBase64(values.imagem);
     }
 
     fetch(`http://127.0.0.1:3000/${endpoint}`, {
@@ -118,6 +150,24 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
 
     if (defaultValues?.saldoDevedor) {
       defaultValues.saldoDevedor = new Intl.NumberFormat("pt-BR").format(defaultValues.saldoDevedor);
+    }
+
+    if (defaultValues?.emPromocao !== undefined) {
+      defaultValues.emPromocao = defaultValues.emPromocao ? '1' : '0';
+    }
+
+    if (defaultValues?.custo) {
+      defaultValues.custo = new Intl.NumberFormat("pt-BR").format(defaultValues.custo);
+    }
+
+    if (defaultValues?.precoVenda) {
+      defaultValues.precoVenda = new Intl.NumberFormat("pt-BR").format(defaultValues.precoVenda);
+    }
+
+    if (defaultValues?.precoVendaPromocao && defaultValues.precoVendaPromocao === '0' ) {
+      defaultValues.precoVendaPromocao = '';
+    } else if (defaultValues?.precoVendaPromocao && defaultValues.precoVendaPromocao === '0' ) {
+      defaultValues.precoVendaPromocao = new Intl.NumberFormat("pt-BR").format(defaultValues.precoVendaPromocao);
     }
 
     methods.reset(defaultValues);
