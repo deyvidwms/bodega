@@ -51,7 +51,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
 
   const onSubmitHandler = async (values: FormValues) => {
 
-    if (rowItem !== null) {
+    if (rowItem !== undefined) {
       const indexLote = rows.findIndex((element: { id: number; nome: string; quantidade: number; validade: string; }) => element.id === idItem);
       if (indexLote > -1) {
         const tmpRows = rows;
