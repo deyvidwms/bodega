@@ -22,7 +22,7 @@ const FileFieldElement: React.FC<Props> = ({name, label, required}) => {
         <Container style={{marginTop: 0}}>
           <FormLabel component="legend" sx={{mb: 1}}>Imagem do produto</FormLabel>
           <MuiFileInput
-            onChange={(event) => { field.onChange(event); console.log(watch(name)) }}
+            onChange={(event) => field.onChange(event)}
             value={watch(name) || ""}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}

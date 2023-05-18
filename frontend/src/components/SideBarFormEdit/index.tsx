@@ -50,7 +50,6 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   }
 
   const onSubmitHandler = async (values: FormValues) => {
-    console.log('values', values)
 
     if (rowItem !== null) {
       const indexLote = rows.findIndex((element: { id: number; nome: string; quantidade: number; validade: string; }) => element.id === idItem);
@@ -116,7 +115,6 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           if (!data.erros) {
             setSuccess(true)
           } else {
@@ -128,7 +126,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   };
 
   useEffect(() => {
-    if (rowItem !== null) {
+    if (rowItem !== undefined) {
       const tmpRow = {
         idLote: rowItem?.id,
         quantidade: rowItem?.quantidade
@@ -154,7 +152,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
         methods.reset()
         setShow(false);
         setTimeout(() => {
-          // window.location.reload();
+          window.location.reload();
         }, 300)
       }, 3000);
     }
@@ -204,8 +202,6 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
     methods.reset(defaultValues);
   }, [defaultValues])
 
-  useEffect(() => { console.log(methods.formState.errors) }, [methods.formState.errors])
-
   return (
     <Container show={show} style={style}>
       {(!success && !failed) && <Title>Edição de {title}</Title>}
@@ -231,7 +227,6 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
                 variant="contained"
                 color="success"
                 type='submit'
-              // onClick={() => console.log('clicou')}
               >
                 Editar
               </Button>

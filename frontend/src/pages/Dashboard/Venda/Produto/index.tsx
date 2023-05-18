@@ -135,9 +135,7 @@ const VendaProduto: React.FC = () => {
   }, []);
 
   const addProduct = (values: FormValues) => {
-    console.log(values);
     const indexLote = lotes.findIndex(element => Number(element.id) === Number(values.idLote));
-    console.log(indexLote)
     if (indexLote > -1) {
       const item = {
         id: Number(values.idLote),
@@ -164,10 +162,6 @@ const VendaProduto: React.FC = () => {
       setRows(rows.filter((element, index) => index !== indexLote));   
     }
   }
-
-  useEffect(() => {
-    console.log('rows', rows)
-  }, [rows])
 
   return (
     <LayoutDashboard>
