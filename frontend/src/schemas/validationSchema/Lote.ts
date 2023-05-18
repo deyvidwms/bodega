@@ -13,7 +13,7 @@ export const validationSchemaLote = yup
     quantidadeAtual: yup
       .string()
       .required("O campo acima é obrigatório")
-      .test('lassThenInitialQuantity', 'A quantidade atual deve ser igual ou menor que a inicial', (value, context) => value <= context.parent.quantidadeInicial),
+      .test('lassThenInitialQuantity', 'A quantidade atual deve ser igual ou menor que a inicial', (value, context) => Number(value) <= Number(context.parent.quantidadeInicial)),
     validade: yup
       .string()
       .required("O campo acima é obrigatório")
