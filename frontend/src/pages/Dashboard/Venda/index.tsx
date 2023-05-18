@@ -10,6 +10,7 @@ import SideBarForm from '../../../components/SideBarForm';
 import TextFieldElement from '../../../components/TextFieldElement';
 import { Masks } from '../../../assets/ts/Masks';
 import SideBarFormEdit from '../../../components/SideBarFormEdit';
+import { Link } from 'react-router-dom';
 
 type Lote = {
   id: number;
@@ -39,7 +40,7 @@ type Venda = {
   vendaLotes: VendaLote[];
 };
 
-const VendaComponent: React.FC = () => {
+const Venda: React.FC = () => {
   const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
   const [showSideBarFormEdit, setShowSideBarFormEdit] = useState<boolean>(false);
   const [rows, setRows] = useState<Venda[]>([]);
@@ -55,10 +56,6 @@ const VendaComponent: React.FC = () => {
       link: '/dashboard/venda'
     }
   ];
-
-  const handleClick = () => {
-    setShowSideBarForm(!showSideBarForm);
-  }
 
   useEffect(() => {
     const getVendas = () => {
@@ -106,7 +103,9 @@ const VendaComponent: React.FC = () => {
 
         <Row>
           <Column style={{ alignItems: 'flex-end' }}>
-            <ActionButton text='Nova Venda' onClick={handleClick} />
+            <Link to={'/dashboard/venda/produto'}>
+              <ActionButton text='Nova Venda' onClick={()=>{}}/>
+            </Link>
           </Column>
         </Row>
 
@@ -158,4 +157,4 @@ const VendaComponent: React.FC = () => {
   );
 }
 
-export default VendaComponent;
+export default Venda;

@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
+
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import { validationSchemaClient } from '../../schemas/validationSchema/Cliente';
 import { validationSchemaProduct } from '../../schemas/validationSchema/Produto';
+import { validationSchemaLote } from '../../schemas/validationSchema/Lote';
+import { validationSchemaSellProduct } from '../../schemas/validationSchema/ProdutoVenda';
 
-import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { Button } from '@mui/material';
 
-import { FormValues } from '../../types/FormValues';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { ButtonsList, Container, ProductRegisterForm, Title } from './styles';
 import { FailedMessage, SuccessMessage } from '../../pages/Dashboard/Produto/styles';
-import { validationSchemaLote } from '../../schemas/validationSchema/Lote';
+
+import { FormValues } from '../../types/FormValues';
+
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+
 import { Utils } from '../../assets/ts/Utils';
+import { validationSchemaSell } from '../../schemas/validationSchema/Venda';
 
 type Props = {
   title: string;
@@ -21,15 +29,18 @@ type Props = {
   currentSchema: number;
   endpoint?: string;
   style?: React.CSSProperties | undefined;
+  onHandleClick?: (event: any) => void;
 };
 
 const validationSchemas = [
   validationSchemaClient,
   validationSchemaProduct,
-  validationSchemaLote
+  validationSchemaLote,
+  validationSchemaSellProduct,
+  validationSchemaSell
 ];
 
-const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, style }) => {
+const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, style, onHandleClick }) => {
   const [success, setSuccess] = useState<boolean>(false);
   const [failed, setFailed] = useState<boolean>(false);
 
@@ -83,6 +94,10 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
       }
     }
 
+    if (endpoint === 'venda') {
+      values['vendidoEm'] = new Date().toISOString();
+    }
+    
     if (values?.imagem) {
       if (Object.keys(values.imagem).length === 0)
         values.imagem = await Utils.getBase64(values.imagem);
@@ -135,11 +150,11 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
     <Container show={show} style={style}>
       { (!success && !failed) && <Title>Cadastro de {title}</Title>}
       {
-         (!success && !failed) &&
+        (!success && !failed) &&
         <ProductRegisterForm
           noValidate
           autoComplete="off"
-          onSubmit={methods.handleSubmit(onSubmitHandler)}
+          onSubmit={ onHandleClick ? methods.handleSubmit(onHandleClick) : methods.handleSubmit(onSubmitHandler)}
         >
           <FormProvider {...methods}>
             {children}
