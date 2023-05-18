@@ -1,4 +1,4 @@
-type VendaLote = {
+interface VendaLote {
   id: number;
   quantidade: number;
   idVenda: number | null;

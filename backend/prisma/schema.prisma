@@ -94,6 +94,7 @@ model Pessoa {
 
   Usuario       Usuario?
   ClienteBodega ClienteBodega[]
+  Venda         Venda[]
 }
 
 model VendaLote {
@@ -111,8 +112,10 @@ model VendaLote {
 model Venda {
   id Int @id @default(autoincrement())
 
-  vendidoEm DateTime
+  idComprador Int?
+  vendidoEm   DateTime
 
+  comprador  Pessoa?     @relation(fields: [idComprador], references: [id])
   vendaLotes VendaLote[]
 }
 

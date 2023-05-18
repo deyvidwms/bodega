@@ -1,4 +1,4 @@
-type Venda = {
+interface Venda {
   id: number;
   vendidoEm: Date;
 }

@@ -6,6 +6,7 @@ import pessoaRota from "./pessoaRota";
 import produtoRota from "./produtoRota";
 import usuarioRota from "./usuarioRota";
 import vendaRota from "./vendaRota";
+import vendaLoteRota from "./vendaLoteRota";
 
 import jwt from 'jsonwebtoken';
 
@@ -20,22 +21,22 @@ rota.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 rota.use((req: any, res: any, next: any) => {
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).json({ autenticado: false, mensagem: 'Token não foi informado' });
-  }
+  // const token = req.headers['x-access-token'];
+  // if (!token) {
+  //   return res.status(401).json({ autenticado: false, mensagem: 'Token não foi informado' });
+  // }
 
-  const chave = process.env.TOKEN_PASS;
-  if (chave === undefined) {
-    console.error('Chave token não definida. Defina a variável "TOKEN_PASS" no arquivo .env');
-  } else {
-    jwt.verify(token, chave, (err: any, decoded: any) => {
-      if (err) {
-        return res.status(500).json({ autenticado: false, mensagem: 'Falha ao autenticar token' });
-      }
-      req.userId = decoded.id;
-    });
-  }
+  // const chave = process.env.TOKEN_PASS;
+  // if (chave === undefined) {
+  //   console.error('Chave token não definida. Defina a variável "TOKEN_PASS" no arquivo .env');
+  // } else {
+  //   jwt.verify(token, chave, (err: any, decoded: any) => {
+  //     if (err) {
+  //       return res.status(500).json({ autenticado: false, mensagem: 'Falha ao autenticar token' });
+  //     }
+  //     req.userId = decoded.id;
+  //   });
+  // }
   next();
 });
 
@@ -46,5 +47,6 @@ rota.use('/pessoa', pessoaRota);
 rota.use('/produto', produtoRota);
 rota.use('/usuario', usuarioRota);
 rota.use('/venda', vendaRota);
+rota.use('/venda-lote', vendaLoteRota);
 
 export default rota;

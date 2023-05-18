@@ -1,4 +1,4 @@
-type Produto = {
+interface Produto {
   id: number;
   titulo: string;
   descricao: string;

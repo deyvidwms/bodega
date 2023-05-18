@@ -2,18 +2,22 @@ import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Venda from "../entidade/Venda";
+import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
 
 export default class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
+  private static pessoaRepositorio = new PessoaRepositorio();
 
   private static validadorVenda = new ValidadorEntidade(
     {
       'vendidoEm': Validacao.data,
     },
-    {}
+    {
+      'idComprador': (id) => Validacao.entidadeFoiInformada(id, VendaServico.pessoaRepositorio.porId, false),
+    }
   );
 
   validarCadastro(venda: Venda): Promise<void> {

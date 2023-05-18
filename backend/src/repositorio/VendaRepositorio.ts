@@ -5,11 +5,35 @@ export default class VendaRepositorio {
   private static repositorio = new PrismaClient().venda;
 
   todos() {
-    return VendaRepositorio.repositorio.findMany();
+    return VendaRepositorio.repositorio.findMany({
+      include: {
+        vendaLotes: {
+          include: {
+            lote: {
+              include: {
+                produto: true
+              }
+            }
+          }
+        }
+      }
+    });
   }
 
   porId(id: number) {
-    return VendaRepositorio.repositorio.findUnique({ where: { id } });
+    return VendaRepositorio.repositorio.findUnique({
+      where: { id }, include: {
+        vendaLotes: {
+          include: {
+            lote: {
+              include: {
+                produto: true
+              }
+            }
+          }
+        }
+      }
+    });
   }
 
   criar(venda: Venda) {

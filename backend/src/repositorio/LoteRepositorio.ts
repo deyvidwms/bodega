@@ -41,8 +41,8 @@ export default class LoteRepositorio {
       by: ['idProduto'],
       _sum: { quantidadeAtual: true },
       where: { quantidadeAtual: { lte: limite } }
-    }).then((res) => (res.map(i => i.idProduto)));
-    return idProdutos;
+    });
+    return idProdutos.map(i => i.idProduto);
   }
 
   public findComBaixaValidade(idBodega: number, dataLimite: Date) {

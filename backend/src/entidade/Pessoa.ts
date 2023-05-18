@@ -1,6 +1,6 @@
 import { Decimal } from "@prisma/client/runtime";
 
-type Pessoa = {
+interface Pessoa {
   id: number;
   cpf: string;
   nome: string;

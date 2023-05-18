@@ -1,4 +1,4 @@
-type Bodega = {
+interface Bodega {
   id: number
   nome: string
   descricao: string
