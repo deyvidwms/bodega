@@ -204,7 +204,7 @@ async function main() {
           custo: 15.00,
           precoVenda: 8.00,
           precoVendaPromocao: 0.00,
-          emPromocao: false,
+          emPromocao: true,
           idCriador: 1,
           idProduto: 2
         }
@@ -220,7 +220,7 @@ async function main() {
           custo: 11.00,
           precoVenda: 8.00,
           precoVendaPromocao: 0.00,
-          emPromocao: false,
+          emPromocao: true,
           idCriador: 1,
           idProduto: 3
         }
