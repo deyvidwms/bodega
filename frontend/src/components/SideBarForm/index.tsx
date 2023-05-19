@@ -128,7 +128,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
         methods.reset()
         setShow(false);
         setTimeout(() => {
-          // window.location.reload();
+          window.location.reload();
         }, 300)
       }, 3000)
     }
