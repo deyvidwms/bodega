@@ -9,6 +9,6 @@ loteRota.get('/:id', controle.porId);
 loteRota.post('/', controle.criar);
 loteRota.put('/', controle.atualizar);
 loteRota.delete('/:id', controle.remover);
-loteRota.get('/baixa-validade', controle.comBaixaValidade);
+loteRota.get('/baixa-validade/:id', controle.comBaixaValidade);
 
 export default loteRota;

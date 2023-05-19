@@ -52,7 +52,7 @@ export default class BodegaControle {
   }
 
   relatorioFinanceiro(req: Request, res: Response, next: NextFunction): void {
-    BodegaControle.servico.relatorioFinanceiro(Number(req.params.id), req.body.inicio, req.body.fim)
+    BodegaControle.servico.relatorioFinanceiro(Number(req.params.id), new Date(req.body.inicio), new Date(req.body.fim))
       .then((relatorioFinanceiro) => { res.status(200).json(relatorioFinanceiro) })
       .catch(next);
   }

@@ -57,7 +57,7 @@ export default class VendaRepositorio {
         vendidoEm: { gte: inicio, lte: fim },
         vendaLotes: { some: { lote: { produto: { idBodega: id } } } }
       },
-      include: { vendaLotes: { include: { lote: { include: { produto: true } }, venda: true } } },
+      include: { vendaLotes: { include: { lote: { include: { produto: true } } } } },
     });
   }
 }

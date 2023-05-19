@@ -41,7 +41,13 @@ export default class VendaControle {
 
   relatorioDemandaProdutosMensal(req: Request, res: Response, next: NextFunction): void {
     VendaControle.servico.relatorioDemandaProdutosMensal(Number(req.params.id))
-      .then((entidade) => { res.status(200).json(entidade); })
+      .then((entidade) => {
+        if (entidade === null) {
+          res.status(404).json({mensagem: 'A bodega não possui vendas para o mês atual'});
+        } else {
+          res.status(200).json(entidade);
+        }
+      })
       .catch(next);
   }
 }

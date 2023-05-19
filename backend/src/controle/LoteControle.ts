@@ -40,7 +40,7 @@ export default class LoteControle {
   }
 
   comBaixaValidade(req: Request, res: Response, next: NextFunction): void {
-    LoteControle.servico.comBaixaValidade(Number(req.params.id), req.body.dataLimite)
+    LoteControle.servico.comBaixaValidade(Number(req.params.id), new Date(req.body.dataLimite))
       .then((entidade) => { res.status(200).json(entidade); })
       .catch(next);
   }

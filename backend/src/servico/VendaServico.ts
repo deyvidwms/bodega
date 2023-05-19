@@ -57,6 +57,9 @@ export default class VendaServico implements ServicoEscrita<Venda> {
     let produtos: { [key: number]: number } = {};
     VendaServico.repositorio.porPeriodo(idBodega, dataAtual, new Date())
       .then((vendas) => {
+        if (vendas.length === 0) {
+          return null;
+        }
         vendas.map((venda) => {
           venda.vendaLotes.map((vendaLote) => {
             const idProduto = vendaLote.lote.produto.id;
