@@ -6,7 +6,7 @@ import loginRota from './rota/loginRota';
 
 const cors = require('cors');
 
-const prisma = new PrismaClient();
+const _ = new PrismaClient();
 
 const app = express();
 const PORTA = process.env.PORT;
