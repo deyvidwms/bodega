@@ -92,9 +92,16 @@ model Pessoa {
   celular      String? @unique
   saldoDevedor Decimal @default(0)
 
-  Usuario         Usuario?
-  ClienteComercio ClienteComercio[]
-  Venda           Venda[]
+  usuario          Usuario?
+  clientesComercio ClienteComercio[]
+  vendas           Venda[]
+}
+
+model TipoEntrega {
+  id        Int    @id @default(autoincrement())
+  descricao String
+
+  vendaLotes VendaLote[]
 }
 
 model VendaLote {
@@ -102,11 +109,15 @@ model VendaLote {
 
   quantidade Int
 
-  idLote  Int
-  idVenda Int?
+  idLote        Int
+  idVenda       Int?
+  endereco      String?
+  dataEncomenda DateTime?
+  tipoEntregaId Int?
 
-  lote  Lote   @relation(fields: [idLote], references: [id])
-  venda Venda? @relation(fields: [idVenda], references: [id])
+  lote        Lote         @relation(fields: [idLote], references: [id])
+  venda       Venda?       @relation(fields: [idVenda], references: [id])
+  tipoEntrega TipoEntrega? @relation(fields: [tipoEntregaId], references: [id])
 }
 
 model Venda {
@@ -114,8 +125,8 @@ model Venda {
 
   idComprador Int?
   vendidoEm   DateTime
+  comprador   Pessoa?  @relation(fields: [idComprador], references: [id])
 
-  comprador  Pessoa?     @relation(fields: [idComprador], references: [id])
   vendaLotes VendaLote[]
 }
 

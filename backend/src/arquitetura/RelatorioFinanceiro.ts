@@ -1,4 +1,4 @@
-import { Decimal } from "@prisma/client/runtime";
+import { Decimal } from "@prisma/client/runtime/library";
 import Lote from "../entidade/Lote";
 import Venda from "../entidade/Venda";
 

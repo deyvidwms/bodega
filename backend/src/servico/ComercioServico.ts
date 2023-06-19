@@ -1,4 +1,3 @@
-import { Decimal } from "@prisma/client/runtime/library";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
@@ -6,17 +5,12 @@ import Comercio from "../entidade/Comercio";
 import Lote from "../entidade/Lote";
 import Produto from "../entidade/Produto";
 import ComercioRepositorio from "../repositorio/ComercioRepositorio";
-import LoteRepositorio from "../repositorio/LoteRepositorio"
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
-import VendaRepositorio from "../repositorio/VendaRepositorio";
-import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
-import RelatorioFinanceiroComercio from "./RelatorioFinanceiroComercio";
+import RelatorioFinanceiroComercio from "./RelatorioFinanceiroBodega";
 
 export default class ComercioServico implements ServicoEscrita<Comercio> {
   private static repositorio = new ComercioRepositorio();
-  private static loteRepositorio = new LoteRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
-  private static vendaRepositorio = new VendaRepositorio();
 
   private static validadorComercio = new ValidadorEntidade(
     {
@@ -75,6 +69,7 @@ export default class ComercioServico implements ServicoEscrita<Comercio> {
   }
 
   async relatorioFinanceiro(idComercio: number, inicio: Date, fim: Date) {
+    await ComercioServico.validadorRelatorioFinanceiro.validar({ inicio, fim, idComercio }, false);
     const relatorioFinanceiroComercio = new RelatorioFinanceiroComercio(idComercio, inicio, fim);
     return relatorioFinanceiroComercio.calcularRelatorio();
   }

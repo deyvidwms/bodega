@@ -1,10 +1,10 @@
-import { Decimal } from "@prisma/client/runtime";
+import { Decimal } from "@prisma/client/runtime/library";
 import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
 import Lote from "../entidade/Lote";
 import Venda from "../entidade/Venda";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
-import VendaLote from "../entidade/VendaLote";
+import VendaLote from "../entidade/VendaLotePresencial";
 import Produto from "../entidade/Produto";
 
 class RelatorioFinanceiroComercio extends RelatorioFinanceiro {
