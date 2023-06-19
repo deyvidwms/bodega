@@ -51,7 +51,7 @@ type Produto = {
   titulo: string;
   descricao: string;
   imagem: string;
-  idBodega: number | null;
+  idComercio: number | null;
   idCriador: number | null;
   idCategoriaProduto: number | null;
   lotes: Lote[];
@@ -66,10 +66,10 @@ type CategoriaProduto = {
 const Encarte: React.FC = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [produtos, setProdutos] = useState<Produto[]>([]);
-  const idBodega = 1;
+  const idComercio = 1;
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:3000/bodega/encarte/${idBodega}`)
+    fetch(`http://127.0.0.1:3000/comercio/encarte/${idComercio}`)
       .then((response) => response.json())
       .then((response) => { setProdutos(response); });
   }, [])
@@ -105,7 +105,7 @@ const Encarte: React.FC = () => {
         {
           (produtos.length === 0)
             ? <h3 style={{ maxWidth: '700px', textAlign: 'center', fontSize: '1.5rem', fontFamily: 'roboto' }}>
-              No momento não temos produtos em promoção em nossa bodega, mas você pode voltar no futuro para ver as novas promoções.
+              No momento não temos produtos em promoção em nosso comércio, mas você pode voltar no futuro para ver as novas promoções.
             </h3>
             : produtos.map((produto: Produto) => (
               <CategoryEncarte key={produto.id}>

@@ -2,7 +2,7 @@ import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
 import Validacao from "../arquitetura/Validacao";
 import Produto from "../entidade/Produto";
-import BodegaRepositorio from "../repositorio/BodegaRepositorio";
+import ComercioRepositorio from "../repositorio/ComercioRepositorio";
 import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
@@ -11,7 +11,7 @@ import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
 export default class ProdutoServico implements ServicoEscrita<Produto> {
   private static repositorio = new ProdutoRepositorio();
   private static categoriaProdutoRepositorio = new CategoriaProdutoRepositorio();
-  private static bodegaRepositorio = new BodegaRepositorio();
+  private static comercioRepositorio = new ComercioRepositorio();
   private static loteRepositorio = new LoteRepositorio();
   private static usuarioRepositorio = new UsuarioRepositorio();
 
@@ -24,7 +24,7 @@ export default class ProdutoServico implements ServicoEscrita<Produto> {
     },
     {
       'idCriador': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.usuarioRepositorio.porId, false),
-      'idBodega': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.bodegaRepositorio.porId, false),
+      'idComercio': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.comercioRepositorio.porId, false),
       'idCategoriaProduto': (id) => Validacao.entidadeFoiInformada(Number(id), ProdutoServico.categoriaProdutoRepositorio.porId, false),
     }
   );

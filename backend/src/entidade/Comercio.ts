@@ -1,4 +1,4 @@
-interface Bodega {
+interface Comercio {
   id: number
   nome: string
   descricao: string
@@ -6,4 +6,4 @@ interface Bodega {
   imagem: string
 }
 
-export default Bodega;
+export default Comercio;

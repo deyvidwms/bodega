@@ -24,10 +24,12 @@ export default class ValidadorEntidade {
       }
     }
 
-    for (const atributo in this.validacoesAssincronas) {
-      const erro = await this.validacoesAssincronas[atributo](entidade[atributo]);
-      if (erro !== null) {
-        erros[atributo] = erro;
+    if (!atualizacao) {
+      for (const atributo in this.validacoesAssincronas) {
+        const erro = await this.validacoesAssincronas[atributo](entidade[atributo]);
+        if (erro !== null) {
+          erros[atributo] = erro;
+        }
       }
     }
 

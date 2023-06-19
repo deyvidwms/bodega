@@ -31,7 +31,7 @@ export default class LoteRepositorio {
     return LoteRepositorio.repositorio.findMany({
       where: {
         compradoEm: { gte: inicio, lte: fim },
-        criador: { idBodega: id },
+        criador: { idComercio: id },
       }
     });
   }
@@ -45,12 +45,12 @@ export default class LoteRepositorio {
     return idProdutos.map(i => i.idProduto);
   }
 
-  public findComBaixaValidade(idBodega: number, dataLimite: Date) {
+  public findComBaixaValidade(idComercio: number, dataLimite: Date) {
     return LoteRepositorio.repositorio.findMany({
       where: {
         AND: {
           validade: { lte: dataLimite },
-          produto: { idBodega: idBodega }
+          produto: { idComercio: idComercio }
         }
       }
     });

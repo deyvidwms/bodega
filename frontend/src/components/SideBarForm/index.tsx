@@ -87,7 +87,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
 
     if (endpoint === 'produto') {
       values['idCriador'] = 1;
-      values['idBodega'] = 1;
+      values['idComercio'] = 1;
       
       if (values?.idCategoriaProduto) {
         values.idCategoriaProduto = Number(values.idCategoriaProduto);
@@ -128,7 +128,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
         methods.reset()
         setShow(false);
         setTimeout(() => {
-          // window.location.reload();
+          window.location.reload();
         }, 300)
       }, 3000)
     }

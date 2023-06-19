@@ -3,7 +3,7 @@ interface Produto {
   titulo: string;
   descricao: string;
   imagem: string;
-  idBodega: number | null;
+  idComercio: number | null;
   idCriador: number | null;
   idCategoriaProduto: number | null;
 }

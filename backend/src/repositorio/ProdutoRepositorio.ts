@@ -35,12 +35,12 @@ export default class ProdutoRepositorio {
     });
   }
 
-  encarte(idBodega: number) {
+  encarte(idComercio: number) {
     return ProdutoRepositorio.repositorio.findMany({
       include: { lotes: { where: { AND: { emPromocao: true, quantidadeAtual: { gt: 0 } } } } },
       where: {
         lotes: { some: { AND: { emPromocao: true, quantidadeAtual: { gt: 0 } } }, },
-        criador: { idBodega: { equals: idBodega } },
+        criador: { idComercio: { equals: idComercio } },
       },
     });
   }

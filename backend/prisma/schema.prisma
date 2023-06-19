@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Bodega {
+model Comercio {
   id Int @id @default(autoincrement())
 
   nome      String
@@ -15,9 +15,9 @@ model Bodega {
   cnpj      String @unique
   imagem    String
 
-  usuarios      Usuario[]
-  produtos      Produto[]
-  clienteBodega ClienteBodega[]
+  usuarios        Usuario[]
+  produtos        Produto[]
+  clienteComercio ClienteComercio[]
 }
 
 model CategoriaProduto {
@@ -35,11 +35,11 @@ model Usuario {
   email String @unique
   senha String
 
-  idBodega Int?
-  idPessoa Int  @unique
+  idComercio Int?
+  idPessoa   Int  @unique
 
-  bodega Bodega? @relation(fields: [idBodega], references: [id])
-  pessoa Pessoa  @relation(fields: [idPessoa], references: [id])
+  comercio Comercio? @relation(fields: [idComercio], references: [id])
+  pessoa   Pessoa    @relation(fields: [idPessoa], references: [id])
 
   produtos Produto[]
   lotes    Lote[]
@@ -52,11 +52,11 @@ model Produto {
   descricao String
   imagem    String
 
-  idBodega           Int?
+  idComercio         Int?
   idCategoriaProduto Int?
   idCriador          Int?
 
-  bodega           Bodega?           @relation(fields: [idBodega], references: [id])
+  comercio         Comercio?         @relation(fields: [idComercio], references: [id])
   categoriaProduto CategoriaProduto? @relation(fields: [idCategoriaProduto], references: [id])
   criador          Usuario?          @relation(fields: [idCriador], references: [id])
 
@@ -92,9 +92,9 @@ model Pessoa {
   celular      String? @unique
   saldoDevedor Decimal @default(0)
 
-  Usuario       Usuario?
-  ClienteBodega ClienteBodega[]
-  Venda         Venda[]
+  Usuario         Usuario?
+  ClienteComercio ClienteComercio[]
+  Venda           Venda[]
 }
 
 model VendaLote {
@@ -119,12 +119,12 @@ model Venda {
   vendaLotes VendaLote[]
 }
 
-model ClienteBodega {
+model ClienteComercio {
   id Int @id @default(autoincrement())
 
-  idBodega  Int
-  idCliente Int
+  idComercio Int
+  idCliente  Int
 
-  cliente Pessoa @relation(fields: [idCliente], references: [id])
-  bodega  Bodega @relation(fields: [idBodega], references: [id])
+  cliente  Pessoa   @relation(fields: [idCliente], references: [id])
+  comercio Comercio @relation(fields: [idComercio], references: [id])
 }

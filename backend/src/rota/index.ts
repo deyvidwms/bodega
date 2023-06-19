@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import bodegaRota from "./bodegaRota";
+import comercioRota from "./comercioRota";
 import categoriaProdutoRota from "./categoriaProdutoRota";
 import loteRota from "./loteRota";
 import pessoaRota from "./pessoaRota";
@@ -40,7 +40,7 @@ rota.use((req: any, res: any, next: any) => {
   next();
 });
 
-rota.use('/bodega', bodegaRota);
+rota.use('/comercio', comercioRota);
 rota.use('/categoria-produto', categoriaProdutoRota);
 rota.use('/lote', loteRota);
 rota.use('/pessoa', pessoaRota);

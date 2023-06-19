@@ -50,12 +50,12 @@ export default class VendaServico implements ServicoEscrita<Venda> {
     return VendaServico.repositorio.remover(id);
   }
 
-  relatorioDemandaProdutosMensal(idBodega: number) {
+  relatorioDemandaProdutosMensal(idComercio: number) {
     const dataAtual = new Date();
     dataAtual.setMonth(dataAtual.getMonth() - 1);
 
     let produtos: { [key: number]: number } = {};
-    VendaServico.repositorio.porPeriodo(idBodega, dataAtual, new Date())
+    VendaServico.repositorio.porPeriodo(idComercio, dataAtual, new Date())
       .then((vendas) => {
         if (vendas.length === 0) {
           return null;

@@ -55,7 +55,7 @@ export default class VendaRepositorio {
     return VendaRepositorio.repositorio.findMany({
       where: {
         vendidoEm: { gte: inicio, lte: fim },
-        vendaLotes: { some: { lote: { produto: { idBodega: id } } } }
+        vendaLotes: { some: { lote: { produto: { idComercio: id } } } }
       },
       include: { vendaLotes: { include: { lote: { include: { produto: true } } } } },
     });
