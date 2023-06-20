@@ -7,20 +7,16 @@ import VendaRepositorio from "../repositorio/VendaRepositorio";
 import VendaLote from "../entidade/VendaLotePresencial";
 import Produto from "../entidade/Produto";
 
-class RelatorioFinanceiroComercio extends RelatorioFinanceiro {
+export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
   private static loteRepositorio = new LoteRepositorio();
   private static vendaRepositorio = new VendaRepositorio();
 
-  constructor(idComercio: number, inicio: Date, fim: Date) {
-    super(idComercio, inicio, fim);
+  async calcularCompras(idComercio: number, inicio: Date, fim: Date): Promise<Lote[]> {
+    return RelatorioFinanceiroBodega.loteRepositorio.porPeriodo(idComercio, inicio, fim);
   }
 
-  async calcularCompras(): Promise<Lote[]> {
-    return RelatorioFinanceiroComercio.loteRepositorio.porPeriodo(this.idComercio, this.inicio, this.fim);
-  }
-
-  calcularVendas(): Promise<Venda[]> {
-    return RelatorioFinanceiroComercio.vendaRepositorio.porPeriodo(this.idComercio, this.inicio, this.fim);
+  calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<Venda[]> {
+    return RelatorioFinanceiroBodega.vendaRepositorio.porPeriodo(idComercio, inicio, fim);
   }
 
   calcularReceita(vendas: (Venda & {
@@ -44,5 +40,3 @@ class RelatorioFinanceiroComercio extends RelatorioFinanceiro {
     return despesa;
   }
 }
-
-export default RelatorioFinanceiroComercio;

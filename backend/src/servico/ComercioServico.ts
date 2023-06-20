@@ -1,3 +1,4 @@
+import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../arquitetura/Validacao";
 import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
@@ -6,11 +7,13 @@ import Lote from "../entidade/Lote";
 import Produto from "../entidade/Produto";
 import ComercioRepositorio from "../repositorio/ComercioRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
-import RelatorioFinanceiroComercio from "./RelatorioFinanceiroBodega";
+import RelatorioFinanceiroBodega from "./RelatorioFinanceiroBodega";
 
 export default class ComercioServico implements ServicoEscrita<Comercio> {
   private static repositorio = new ComercioRepositorio();
   private static produtoRepositorio = new ProdutoRepositorio();
+
+  private static relatorioFinanceiro: RelatorioFinanceiro = new RelatorioFinanceiroBodega();
 
   private static validadorComercio = new ValidadorEntidade(
     {
@@ -70,7 +73,6 @@ export default class ComercioServico implements ServicoEscrita<Comercio> {
 
   async relatorioFinanceiro(idComercio: number, inicio: Date, fim: Date) {
     await ComercioServico.validadorRelatorioFinanceiro.validar({ inicio, fim, idComercio }, false);
-    const relatorioFinanceiroComercio = new RelatorioFinanceiroComercio(idComercio, inicio, fim);
-    return relatorioFinanceiroComercio.calcularRelatorio();
+    ComercioServico.relatorioFinanceiro.calcularRelatorio(idComercio, inicio, fim);
   }
 }

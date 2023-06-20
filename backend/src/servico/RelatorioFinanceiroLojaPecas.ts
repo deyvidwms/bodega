@@ -4,15 +4,11 @@ import Lote from "../entidade/Lote";
 import Venda from "../entidade/Venda";
 
 class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
-  constructor(idComercio: number, inicio: Date, fim: Date) {
-    super(idComercio, inicio, fim);
-  }
-
-  calcularCompras(): Promise<Lote[]> {
+  calcularCompras(idComercio: number, inicio: Date, fim: Date): Promise<Lote[]> {
     throw new Error("Method not implemented.");
   }
 
-  calcularVendas(): Promise<Venda[]> {
+  calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<Venda[]> {
     throw new Error("Method not implemented.");
   }
 
