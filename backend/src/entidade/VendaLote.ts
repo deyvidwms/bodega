@@ -9,4 +9,3 @@ export default interface VendaLote {
   endereco: string | null;
   dataEncomenda: Date | null;
 }
-

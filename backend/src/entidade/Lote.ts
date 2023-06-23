@@ -1,6 +1,6 @@
 import { Decimal } from "@prisma/client/runtime/library";
 
-interface Lote {
+export default interface Lote {
   id: number;
   quantidadeInicial: number;
   quantidadeAtual: number;
@@ -13,5 +13,3 @@ interface Lote {
   idCriador: number;
   idProduto: number;
 }
-
-export default Lote;

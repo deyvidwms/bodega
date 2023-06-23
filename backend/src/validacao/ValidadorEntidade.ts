@@ -1,7 +1,7 @@
-import ErroNegocio from "./ErroNegocio";
+import ErroNegocio from "../arquitetura/ErroNegocio";
 
-type ValidacaoSincrona = { [key: string]: (valor: any) => string | null };
-type ValidacaoAssincrona = { [key: string]: (valor: any) => Promise<string | null> };
+export type ValidacaoSincrona = { [key: string]: (valor: any) => string | null };
+export type ValidacaoAssincrona = { [key: string]: (valor: any) => Promise<string | null> };
 
 export type ObjetoGenerico = { [key: string]: any };
 

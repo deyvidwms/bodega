@@ -1,25 +1,12 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
-import Validacao from "../arquitetura/Validacao";
-import VendaLote from "../entidade/VendaLotePresencial";
+import ValidadorVendaLote from "../validacao/ValidadorVendaLote";
+import VendaLote from "../entidade/VendaLote";
 import VendaLoteRepositorio from "../repositorio/VendaLoteRepositorio";
-import LoteRepositorio from "../repositorio/LoteRepositorio";
-import VendaRepositorio from "../repositorio/VendaRepositorio";
+import ValidadorVendaLoteBodega from "../validacao/ValidadorVendaLoteBodega";
 
 export default class VendaLoteServico implements ServicoEscrita<VendaLote> {
   private static repositorio = new VendaLoteRepositorio();
-  private static loteRepositorio = new LoteRepositorio();
-  private static vendaRepositorio = new VendaRepositorio();
-
-  private static validadorVendaLote = new ValidadorEntidade(
-    {
-      'quantidade': Validacao.vazio,
-    },
-    {
-      'idLote': (id) => Validacao.entidadeFoiInformada(id, VendaLoteServico.loteRepositorio.porId, true),
-      'idVenda': (id) => Validacao.entidadeFoiInformada(id, VendaLoteServico.vendaRepositorio.porId, false),
-    }
-  );
+  private static validadorVendaLote: ValidadorVendaLote = new ValidadorVendaLoteBodega();
 
   validarCadastro(vendaLote: VendaLote): Promise<void> {
     return VendaLoteServico.validadorVendaLote.validar(vendaLote, false);
@@ -29,25 +16,25 @@ export default class VendaLoteServico implements ServicoEscrita<VendaLote> {
     return VendaLoteServico.validadorVendaLote.validar(vendaLote, true);
   }
 
-  todos(): Promise<VendaLote[]> {
+  todos(): Promise<any[]> {
     return VendaLoteServico.repositorio.todos();
   }
 
-  porId(id: number): Promise<VendaLote | null> {
+  porId(id: number): any {
     return VendaLoteServico.repositorio.porId(id);
   }
 
-  async criar(vendaLote: VendaLote): Promise<VendaLote> {
+  async criar(vendaLote: VendaLote): Promise<any> {
     await this.validarCadastro(vendaLote);
     return await VendaLoteServico.repositorio.criar(vendaLote);
   }
 
-  async atualizar(vendaLote: VendaLote): Promise<VendaLote> {
+  async atualizar(vendaLote: VendaLote): Promise<any> {
     await this.validarAtualizacao(vendaLote);
     return await VendaLoteServico.repositorio.atualizar(vendaLote);
   }
 
-  remover(id: number): Promise<VendaLote> {
+  remover(id: number): Promise<any> {
     return VendaLoteServico.repositorio.remover(id);
   }
 }

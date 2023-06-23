@@ -2,7 +2,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 import Lote from "../entidade/Lote";
 import Venda from "../entidade/Venda";
 
-abstract class RelatorioFinanceiro {
+export default abstract class RelatorioFinanceiro {
   async calcularRelatorio(idComercio: number, inicio: Date, fim: Date) {
     const compras = await this.calcularCompras(idComercio, inicio, fim);
     const vendas = await this.calcularVendas(idComercio, inicio, fim);
@@ -18,5 +18,3 @@ abstract class RelatorioFinanceiro {
   abstract calcularReceita(vendas: Venda[]): Decimal;
   abstract calcularDespesa(lotes: Lote[]): Decimal;
 }
-
-export default RelatorioFinanceiro;

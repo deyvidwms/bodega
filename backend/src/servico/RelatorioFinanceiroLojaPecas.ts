@@ -3,7 +3,7 @@ import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
 import Lote from "../entidade/Lote";
 import Venda from "../entidade/Venda";
 
-class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
+export default class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
   calcularCompras(idComercio: number, inicio: Date, fim: Date): Promise<Lote[]> {
     throw new Error("Method not implemented.");
   }
@@ -20,5 +20,3 @@ class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
     throw new Error("Method not implemented.");
   }
 }
-
-export default RelatorioFinanceiroLojaPecas;

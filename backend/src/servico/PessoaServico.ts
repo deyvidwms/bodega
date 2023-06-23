@@ -1,6 +1,6 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
-import Validacao from "../arquitetura/Validacao";
+import ValidadorEntidade from "../validacao/ValidadorEntidade";
+import Validacao from "../validacao/Validacao";
 import Pessoa from "../entidade/Pessoa";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
 

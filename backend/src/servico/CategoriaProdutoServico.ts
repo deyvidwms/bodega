@@ -1,6 +1,6 @@
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import Validacao from "../arquitetura/Validacao";
-import ValidadorEntidade from "../arquitetura/ValidadorEntidade";
+import Validacao from "../validacao/Validacao";
+import ValidadorEntidade from "../validacao/ValidadorEntidade";
 import CategoriaProduto from "../entidade/CategoriaProduto";
 import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoRepositorio";
 

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import VendaLote from "../entidade/VendaLotePresencial";
+import VendaLote from "../entidade/VendaLote";
 
 export default class VendaLoteRepositorio {
   private static repositorio = new PrismaClient().vendaLote;

@@ -1,4 +1,4 @@
-interface Produto {
+export default interface Produto {
   id: number;
   titulo: string;
   descricao: string;
@@ -7,5 +7,3 @@ interface Produto {
   idCriador: number | null;
   idCategoriaProduto: number | null;
 }
-
-export default Produto;
