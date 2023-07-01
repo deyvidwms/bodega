@@ -5,7 +5,7 @@ export default class PessoaRepositorio {
   private static repositorio = new PrismaClient().pessoa;
 
   todos() {
-    return PessoaRepositorio.repositorio.findMany({ include: { Usuario: true } });
+    return PessoaRepositorio.repositorio.findMany({ include: { usuario: true } });
   }
 
   porId(id: number) {
