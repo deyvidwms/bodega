@@ -11,7 +11,7 @@ export default class VendaLoteControle {
 
   porId(req: Request, res: Response, next: NextFunction): void {
     VendaLoteControle.servico.porId(Number(req.params.id))
-      .then((entidade) => {
+      .then((entidade: any) => {
         if (entidade == null) {
           res.status(404).send();
         } else {

@@ -7,7 +7,7 @@ import Lote from "../entidade/Lote";
 import Produto from "../entidade/Produto";
 import ComercioRepositorio from "../repositorio/ComercioRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
-import RelatorioFinanceiroBodega from "./RelatorioFinanceiroBodega";
+import RelatorioFinanceiroBodega from "../instancia/bodega/servico/RelatorioFinanceiroBodega";
 
 export default class ComercioServico implements ServicoEscrita<Comercio> {
   private static repositorio = new ComercioRepositorio();

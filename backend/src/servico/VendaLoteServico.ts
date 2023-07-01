@@ -2,7 +2,7 @@ import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import ValidadorVendaLote from "../validacao/ValidadorVendaLote";
 import VendaLote from "../entidade/VendaLote";
 import VendaLoteRepositorio from "../repositorio/VendaLoteRepositorio";
-import ValidadorVendaLoteBodega from "../validacao/ValidadorVendaLoteBodega";
+import ValidadorVendaLoteBodega from "../instancia/bodega/validacao/ValidadorVendaLoteBodega";
 
 export default class VendaLoteServico implements ServicoEscrita<VendaLote> {
   private static repositorio = new VendaLoteRepositorio();

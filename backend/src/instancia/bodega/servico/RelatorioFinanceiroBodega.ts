@@ -1,11 +1,11 @@
 import { Decimal } from "@prisma/client/runtime/library";
-import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
-import Lote from "../entidade/Lote";
-import Venda from "../entidade/Venda";
-import VendaLote from "../entidade/VendaLote";
-import LoteRepositorio from "../repositorio/LoteRepositorio";
-import VendaRepositorio from "../repositorio/VendaRepositorio";
-import Produto from "../entidade/Produto";
+import RelatorioFinanceiro from "../../../arquitetura/RelatorioFinanceiro";
+import LoteRepositorio from "../../../repositorio/LoteRepositorio";
+import VendaRepositorio from "../../../repositorio/VendaRepositorio";
+import Lote from "../../../entidade/Lote";
+import Venda from "../../../entidade/Venda";
+import Produto from "../../../entidade/Produto";
+import VendaLote from "../../../entidade/VendaLote";
 
 
 export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
