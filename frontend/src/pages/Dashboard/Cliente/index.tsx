@@ -37,7 +37,19 @@ type Pessoa = {
 const Cliente: React.FC = () => {
   const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
   const [showSideBarFormEdit, setShowSideBarFormEdit] = useState<boolean>(false);
-  const [rows, setRows] = useState<Pessoa[]>([]);
+  const [rows, setRows] = useState<Pessoa[]>([
+    {
+      id: 1,
+      cpf: '000.000.000-00',
+      nome: 'José da Silva',
+      apelido: 'Zezinho',
+      celular: '(84) 91234-5678',
+      endereco: 'Endereco',
+      cliente: true,
+      saldoDevedor: '0',
+      Usuario: 1,
+  }
+  ]);
   const [rowId, setRowId] = useState<number>(0);
 
   const caminhos = [
@@ -55,22 +67,23 @@ const Cliente: React.FC = () => {
     setShowSideBarForm(true);
   }
 
-  useEffect(() => {
-    const getClients = () => {
-      fetch('http://127.0.0.1:3000/pessoa')
-        .then(response => response.json())
-        .then(data => setClients(data))
-        .catch(error => console.error(error))
-    };
+  // useEffect(() => {
+  //   const getClients = () => {
+  //     fetch('http://127.0.0.1:3000/pessoa')
+  //       .then(response => response.json())
+  //       .then(data => setClients(data))
+  //       .catch(error => console.error(error))
+  //   };
 
-    const setClients = (data: any) => {
-      const response: Pessoa[] = [];
-      data.forEach( (element: Pessoa) => element.Usuario === null && response.push(element) );
-      setRows(response)
-    };
+  //   const setClients = (data: any) => {
+  //     const response: Pessoa[] = [];
+  //     data.forEach( (element: Pessoa) => element.Usuario === null && response.push(element) );
+  //     setRows(response)
+  //   };
 
-    getClients();
-  }, []);
+  //   getClients();
+  // }, []);
+
 
   const editClient = (id: number) => {
     setRowId(id);

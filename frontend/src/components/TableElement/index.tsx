@@ -7,6 +7,7 @@ import { Container, ActionIcon } from './styles';
 
 import { FaPencilAlt, FaTrash, FaWhatsapp } from 'react-icons/fa';
 import ActionButton from '../ActionButton';
+import ContatoCliente from '../ContatoCliente';
 
 type Props = {
   header: string[];
@@ -80,10 +81,10 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
                   }
                   <TableCell component="th" scope="row" align='right'>
                     {
-                      rowsField.indexOf('celular') !== -1 &&
-                      <ActionIcon background='#4fce5d' onClick={() => handleClickWhatsApp(row.celular.replace(/\D+/g, ""))}>
-                        <FaWhatsapp />
-                      </ActionIcon>
+                      <ContatoCliente 
+                        rowsField={rowsField}
+                        handleClick={() => handleClickWhatsApp(row.celular.replace(/\D+/g, ""))}
+                      />
                     }
                     {
                       (handleEdit !== null)
