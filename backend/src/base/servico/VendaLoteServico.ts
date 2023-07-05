@@ -1,8 +1,8 @@
+import ValidadorVendaLoteBodega from "../../instancia/bodega/validacao/ValidadorVendaLoteBodega";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorVendaLote from "../validacao/ValidadorVendaLote";
-import VendaLote from "../entidade/VendaLote";
+import VendaLote from "../arquitetura/VendaLote";
 import VendaLoteRepositorio from "../repositorio/VendaLoteRepositorio";
-import ValidadorVendaLoteBodega from "../instancia/bodega/validacao/ValidadorVendaLoteBodega";
+import ValidadorVendaLote from "../validacao/ValidadorVendaLote";
 
 export default class VendaLoteServico implements ServicoEscrita<VendaLote> {
   private static repositorio = new VendaLoteRepositorio();

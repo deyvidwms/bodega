@@ -1,12 +1,9 @@
 import { Decimal } from "@prisma/client/runtime/library";
-import RelatorioFinanceiro from "../../../arquitetura/RelatorioFinanceiro";
-import LoteRepositorio from "../../../repositorio/LoteRepositorio";
-import VendaRepositorio from "../../../repositorio/VendaRepositorio";
-import Lote from "../../../entidade/Lote";
-import Venda from "../../../entidade/Venda";
-import Produto from "../../../entidade/Produto";
-import VendaLote from "../../../entidade/VendaLote";
-
+import RelatorioFinanceiro from "../../../base/arquitetura/RelatorioFinanceiro";
+import LoteRepositorio from "../../../base/repositorio/LoteRepositorio";
+import VendaRepositorio from "../../../base/repositorio/VendaRepositorio";
+import { Lote, Produto, Venda } from "@prisma/client";
+import VendaLoteBodega from "../entidade/VendaLoteBodega";
 
 export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
   private static loteRepositorio = new LoteRepositorio();
@@ -21,7 +18,7 @@ export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
   }
 
   calcularReceita(vendas: (Venda & {
-    vendaLotes: (VendaLote & { lote: Lote & { produto: Produto } })[]
+    vendaLotes: (VendaLoteBodega & { lote: Lote & { produto: Produto } })[]
   })[]): Decimal {
     let receita = new Decimal(0);
     vendas.forEach(venda => {

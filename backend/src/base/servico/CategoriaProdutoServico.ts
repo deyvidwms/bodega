@@ -1,8 +1,8 @@
+import { CategoriaProduto } from "@prisma/client";
+import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoRepositorio";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import Validacao from "../validacao/Validacao";
 import ValidadorEntidade from "../validacao/ValidadorEntidade";
-import CategoriaProduto from "../entidade/CategoriaProduto";
-import CategoriaProdutoRepositorio from "../repositorio/CategoriaProdutoRepositorio";
 
 export default class CategoriaProdutoServico implements ServicoEscrita<CategoriaProduto> {
   private static repositorio = new CategoriaProdutoRepositorio();

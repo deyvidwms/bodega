@@ -1,7 +1,6 @@
 import { Decimal } from "@prisma/client/runtime/library";
-import RelatorioFinanceiro from "../../../arquitetura/RelatorioFinanceiro";
-import Lote from "../../../entidade/Lote";
-import Venda from "../../../entidade/Venda";
+import RelatorioFinanceiro from "../../../base/arquitetura/RelatorioFinanceiro";
+import { Lote, Venda } from "@prisma/client";
 
 export default class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
   calcularCompras(idComercio: number, inicio: Date, fim: Date): Promise<Lote[]> {

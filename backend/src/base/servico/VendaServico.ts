@@ -1,10 +1,10 @@
+import { Venda } from "@prisma/client";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import Validacao from "../validacao/Validacao";
-import ValidadorEntidade from "../validacao/ValidadorEntidade";
-import Venda from "../entidade/Venda";
-import PessoaRepositorio from "../repositorio/PessoaRepositorio";
-import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import VendaRepositorio from "../repositorio/VendaRepositorio";
+import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
+import PessoaRepositorio from "../repositorio/PessoaRepositorio";
+import ValidadorEntidade from "../validacao/ValidadorEntidade";
+import Validacao from "../validacao/Validacao";
 
 export default class VendaServico implements ServicoEscrita<Venda> {
   private static repositorio = new VendaRepositorio();

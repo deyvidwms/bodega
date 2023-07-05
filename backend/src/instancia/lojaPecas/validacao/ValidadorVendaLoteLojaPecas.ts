@@ -1,5 +1,5 @@
-import { ObjetoGenerico } from "../../../validacao/ValidadorEntidade";
-import ValidadorVendaLote from "../../../validacao/ValidadorVendaLote"
+import { ObjetoGenerico } from "../../../base/validacao/ValidadorEntidade";
+import ValidadorVendaLote from "../../../base/validacao/ValidadorVendaLote";
 
 export default class ValidadorVendaLoteLojaPecas extends ValidadorVendaLote {
   validarAtributosEspecificos(entidade: ObjetoGenerico, atualizacao: boolean): Promise<void> {

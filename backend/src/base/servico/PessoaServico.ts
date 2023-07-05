@@ -1,8 +1,8 @@
+import { Pessoa } from "@prisma/client";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import ValidadorEntidade from "../validacao/ValidadorEntidade";
-import Validacao from "../validacao/Validacao";
-import Pessoa from "../entidade/Pessoa";
 import PessoaRepositorio from "../repositorio/PessoaRepositorio";
+import Validacao from "../validacao/Validacao";
+import ValidadorEntidade from "../validacao/ValidadorEntidade";
 
 export default class PessoaServico implements ServicoEscrita<Pessoa> {
   private static repositorio = new PessoaRepositorio();

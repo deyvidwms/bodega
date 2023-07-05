@@ -1,6 +1,5 @@
+import { Lote, Venda } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
-import Lote from "../entidade/Lote";
-import Venda from "../entidade/Venda";
 
 export default abstract class RelatorioFinanceiro {
   async calcularRelatorio(idComercio: number, inicio: Date, fim: Date) {

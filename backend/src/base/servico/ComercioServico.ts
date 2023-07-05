@@ -1,13 +1,11 @@
-import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
+import { Comercio, Lote, Produto } from "@prisma/client";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import Validacao from "../validacao/Validacao";
-import ValidadorEntidade from "../validacao/ValidadorEntidade";
-import Comercio from "../entidade/Comercio";
-import Lote from "../entidade/Lote";
-import Produto from "../entidade/Produto";
 import ComercioRepositorio from "../repositorio/ComercioRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
-import RelatorioFinanceiroBodega from "../instancia/bodega/servico/RelatorioFinanceiroBodega";
+import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
+import RelatorioFinanceiroBodega from "../../instancia/bodega/servico/RelatorioFinanceiroBodega";
+import ValidadorEntidade from "../validacao/ValidadorEntidade";
+import Validacao from "../validacao/Validacao";
 
 export default class ComercioServico implements ServicoEscrita<Comercio> {
   private static repositorio = new ComercioRepositorio();

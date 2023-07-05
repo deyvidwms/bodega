@@ -1,11 +1,11 @@
+import { Lote } from "@prisma/client";
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
-import Validacao from "../validacao/Validacao";
-import ValidadorEntidade from "../validacao/ValidadorEntidade";
-import Lote from "../entidade/Lote";
 import ComercioRepositorio from "../repositorio/ComercioRepositorio";
 import LoteRepositorio from "../repositorio/LoteRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
 import UsuarioRepositorio from "../repositorio/UsuarioRepositorio";
+import Validacao from "../validacao/Validacao";
+import ValidadorEntidade from "../validacao/ValidadorEntidade";
 
 export default class LoteServico implements ServicoEscrita<Lote> {
   private static repositorio = new LoteRepositorio();
