@@ -1,15 +1,18 @@
-import React from 'react';
 import { ActionIcon } from '../../TableElement/styles';
 import { FaWhatsapp } from 'react-icons/fa';
+import { ContatoCliente } from '../../../interfaces/ContatoCliente';
 
-// import { Container } from './styles';
+export default class ContatoClienteBodega implements ContatoCliente {
+  render(row: {[key: string]: any}) {
+    const onHandleClick = () => {
+      const number = row.whatsapp;
+      window.open(`https://api.whatsapp.com/send/?phone=55${number}&text=Olá, tudo bem?%0ATemos promoções na nossa Budega.%0AVenha conferir!`)
+    }
 
-const ContatoClienteBodega: React.FC = () => {
-  return (
-    <ActionIcon background='#4fce5d' onClick={()=>console.log('opa')}>
-      <FaWhatsapp />
-    </ActionIcon> 
-  );
+    return (
+      <ActionIcon background='#4fce5d' onClick={onHandleClick}>
+        <FaWhatsapp />
+      </ActionIcon> 
+    );
+  }
 }
-
-export default ContatoClienteBodega;

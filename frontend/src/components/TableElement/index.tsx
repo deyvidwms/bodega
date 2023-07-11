@@ -6,8 +6,10 @@ import TablePaginationActions from './TablePaginationActions';
 import { Container, ActionIcon } from './styles';
 
 import { FaPencilAlt, FaTrash, FaWhatsapp } from 'react-icons/fa';
-import ActionButton from '../ActionButton';
-import ContatoCliente from '../ContatoCliente';
+import { ContatoCliente } from '../../interfaces/ContatoCliente';
+import ContatoClienteBodega from '../ContatoCliente/ContatoClienteBodega';
+import ContatoClienteSupermercado from '../ContatoCliente/ContatoClienteSupermercado';
+import ContatoClienteLojaDePeca from '../ContatoCliente/ContatoClienteLojaDePeca';
 
 type Props = {
   header: string[];
@@ -21,6 +23,12 @@ type Props = {
 const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName, handleEdit, handleDelete }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const contatoCliente: ContatoCliente = new ContatoClienteBodega(); 
+
+  const renderBotaoContato: (row: {[key: string]: any}) => JSX.Element = (row) => { 
+    return contatoCliente.render(row);
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -38,10 +46,6 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleClickWhatsApp = (number: string) => {
-    window.open(`https://api.whatsapp.com/send/?phone=55${number}&text=Olá, tudo bem?%0ATemos promoções na nossa Budega.%0AVenha conferir!`)
   };
 
   return (
@@ -81,10 +85,7 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
                   }
                   <TableCell component="th" scope="row" align='right'>
                     {
-                      <ContatoCliente 
-                        rowsField={rowsField}
-                        handleClick={() => handleClickWhatsApp(row.celular.replace(/\D+/g, ""))}
-                      />
+                      renderBotaoContato(row)
                     }
                     {
                       (handleEdit !== null)

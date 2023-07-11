@@ -1,15 +1,19 @@
 import React from 'react';
 import { ActionIcon } from '../../TableElement/styles';
 import { FaPhoneAlt } from 'react-icons/fa';
+import { ContatoCliente } from '../../../interfaces/ContatoCliente';
 
-// import { Container } from './styles';
+export default class ContatoClienteSupermercado implements ContatoCliente {
+  render(row: {[key: string]: any}) {
+    const onHandleClick = () => {
+      const number = row.celular;
+      window.open(`tel:+55${number}`)
+    }
 
-const ContatoClienteSupermercado: React.FC = () => {
-  return (
-    <ActionIcon background='#4fce5d' onClick={()=>console.log('opa')}>
-      <FaPhoneAlt />
-    </ActionIcon> 
-  );
+    return (
+      <ActionIcon background='#4885F4' onClick={onHandleClick}>
+        <FaPhoneAlt />
+      </ActionIcon>
+    );
+  }
 }
-
-export default ContatoClienteSupermercado;
