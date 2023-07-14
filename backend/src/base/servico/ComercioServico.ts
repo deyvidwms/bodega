@@ -1,4 +1,7 @@
-import { Comercio, Lote, Produto } from "@prisma/client";
+import { Comercio, Lote, Produto, Venda } from "@prisma/client";
+import * as ExcelJS from 'exceljs';
+import fs from 'fs';
+
 import ServicoEscrita from "../arquitetura/ServicoEscrita";
 import ComercioRepositorio from "../repositorio/ComercioRepositorio";
 import ProdutoRepositorio from "../repositorio/ProdutoRepositorio";
@@ -6,6 +9,8 @@ import RelatorioFinanceiro from "../arquitetura/RelatorioFinanceiro";
 import RelatorioFinanceiroBodega from "../../instancia/bodega/servico/RelatorioFinanceiroBodega";
 import ValidadorEntidade from "../validacao/ValidadorEntidade";
 import Validacao from "../validacao/Validacao";
+import { Decimal } from "@prisma/client/runtime";
+
 
 export default class ComercioServico implements ServicoEscrita<Comercio> {
   private static repositorio = new ComercioRepositorio();
@@ -69,8 +74,41 @@ export default class ComercioServico implements ServicoEscrita<Comercio> {
     return ComercioServico.produtoRepositorio.encarte(id);
   }
 
+  private gerarRelatorioFinanceiro (dadosRelatorio: { 
+    compras: Lote[], 
+    vendas: Venda[], 
+    lucro: Decimal, 
+    despesa: Decimal, 
+    receita: Decimal  
+  }) {
+    const filePath = '../../../reports/relatorio.xlsx';
+
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Relatório');
+
+    worksheet.getCell('A1').value = 'Nome';
+    worksheet.getCell('B1').value = 'Idade';
+    worksheet.getCell('A2').value = 'John Doe 2';
+    worksheet.getCell('B2').value = 30;
+    
+    workbook.xlsx.writeFile(filePath)
+      .then(() => {
+        console.log('Relatório gerado com sucesso!');
+      })
+      .catch((error) => {
+        console.error('Erro ao gerar o relatório:', error);
+      });
+
+    return { 'link': 'http://localhost:3000/reports/relatorio.xlsx' };
+  }
+
   async relatorioFinanceiro(idComercio: number, inicio: Date, fim: Date) {
     await ComercioServico.validadorRelatorioFinanceiro.validar({ inicio, fim, idComercio }, false);
-    return ComercioServico.relatorioFinanceiro.calcularRelatorio(idComercio, inicio, fim);
+    const dadosRelatorio = await ComercioServico.relatorioFinanceiro.calcularRelatorio(idComercio, inicio, fim);
+    return this.gerarRelatorioFinanceiro(dadosRelatorio);
   }
 }
