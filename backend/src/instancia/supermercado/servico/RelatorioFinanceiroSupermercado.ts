@@ -23,7 +23,8 @@ export default class RelatorioFinanceiroSupermercado extends RelatorioFinanceiro
     let receita = new Decimal(0);
     vendas.forEach(venda => {
       venda.vendaLotes.forEach(vendaLote => {
-        receita.add(vendaLote.lote.custo.times(vendaLote.quantidade));
+        const valor = vendaLote.lote.precoVenda.times(vendaLote.quantidade);
+        receita = Decimal.add(receita, valor);
       });
     });
     return receita;
@@ -39,12 +40,12 @@ export default class RelatorioFinanceiroSupermercado extends RelatorioFinanceiro
     vendas.forEach((venda) => {
       venda.vendaLotes.forEach((vendaLote) => {
         const valor = vendaLote.lote.precoVenda.times(vendaLote.quantidade);
-        despesa.add(valor.times(taxaEntrega));
+        despesa = Decimal.add(despesa, valor.times(taxaEntrega));
       });
     })
 
     lotes.forEach(element => {
-      despesa.add(element.custo);
+      despesa = Decimal.add(despesa, element.custo);
     });
     return despesa;
   }

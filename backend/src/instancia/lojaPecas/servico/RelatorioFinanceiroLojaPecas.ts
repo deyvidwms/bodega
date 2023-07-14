@@ -35,7 +35,8 @@ export default class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
     vendas.forEach(venda => {
       venda.vendaLotes.forEach(vendaLote => {
         if (RelatorioFinanceiroLojaPecas.isDataDepoisHoje(vendaLote.dataEncomenda)) {
-          receita.add(vendaLote.lote.custo.times(vendaLote.quantidade));
+          const valor = vendaLote.lote.precoVenda.times(vendaLote.quantidade);
+          receita = Decimal.add(receita, valor);
         }
       });
     });
@@ -45,7 +46,7 @@ export default class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
   calcularDespesa(_: Venda[], lotes: Lote[]): Decimal {
     let despesa = new Decimal(0);
     lotes.forEach(element => {
-      despesa.add(element.custo);
+      despesa = Decimal.add(despesa, element.custo);
     });
     return despesa;
   }

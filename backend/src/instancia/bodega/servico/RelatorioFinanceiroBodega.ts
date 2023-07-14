@@ -23,7 +23,8 @@ export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
     let receita = new Decimal(0);
     vendas.forEach(venda => {
       venda.vendaLotes.forEach(vendaLote => {
-        receita.add(vendaLote.lote.custo.times(vendaLote.quantidade));
+        const valor = vendaLote.lote.precoVenda.times(vendaLote.quantidade);
+        receita = Decimal.add(receita, valor);
       });
     });
     return receita;
@@ -32,7 +33,7 @@ export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
   calcularDespesa(_: Venda[], lotes: Lote[]): Decimal {
     let despesa = new Decimal(0);
     lotes.forEach(element => {
-      despesa.add(element.custo);
+      despesa = Decimal.add(despesa, element.custo);
     });
     return despesa;
   }
