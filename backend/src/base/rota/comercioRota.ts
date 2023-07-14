@@ -10,6 +10,6 @@ comercioRota.post('/', controle.criar);
 comercioRota.put('/', controle.atualizar);
 comercioRota.delete('/:id', controle.remover);
 comercioRota.get('/encarte/:id', controle.encarte);
-comercioRota.get('/financeiro/:id', controle.relatorioFinanceiro);
+comercioRota.post('/financeiro/:id', controle.relatorioFinanceiro);
 
 export default comercioRota;

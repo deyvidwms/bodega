@@ -71,6 +71,6 @@ export default class ComercioServico implements ServicoEscrita<Comercio> {
 
   async relatorioFinanceiro(idComercio: number, inicio: Date, fim: Date) {
     await ComercioServico.validadorRelatorioFinanceiro.validar({ inicio, fim, idComercio }, false);
-    ComercioServico.relatorioFinanceiro.calcularRelatorio(idComercio, inicio, fim);
+    return ComercioServico.relatorioFinanceiro.calcularRelatorio(idComercio, inicio, fim);
   }
 }
