@@ -97,13 +97,6 @@ model Pessoa {
   vendas           Venda[]
 }
 
-model TipoEntrega {
-  id        Int    @id @default(autoincrement())
-  descricao String
-
-  vendaLotes VendaLote[]
-}
-
 model VendaLote {
   id Int @id @default(autoincrement())
 
@@ -113,11 +106,10 @@ model VendaLote {
   idVenda       Int?
   endereco      String?
   dataEncomenda DateTime?
-  tipoEntregaId Int?
+  fiado         Boolean?
 
-  lote        Lote         @relation(fields: [idLote], references: [id])
-  venda       Venda?       @relation(fields: [idVenda], references: [id])
-  tipoEntrega TipoEntrega? @relation(fields: [tipoEntregaId], references: [id])
+  lote  Lote   @relation(fields: [idLote], references: [id])
+  venda Venda? @relation(fields: [idVenda], references: [id])
 }
 
 model Venda {

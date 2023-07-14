@@ -29,12 +29,11 @@ export default class RelatorioFinanceiroBodega extends RelatorioFinanceiro {
     return receita;
   }
 
-  calcularDespesa(lotes: Lote[]): Decimal {
+  calcularDespesa(_: Venda[], lotes: Lote[]): Decimal {
     let despesa = new Decimal(0);
     lotes.forEach(element => {
       despesa.add(element.custo);
     });
-
     return despesa;
   }
 }
