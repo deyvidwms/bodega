@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response, Router } from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
+import path from 'path';
 import comercioRota from "./comercioRota";
 import categoriaProdutoRota from "./categoriaProdutoRota";
 import loteRota from "./loteRota";
@@ -48,5 +49,6 @@ rota.use('/produto', produtoRota);
 rota.use('/usuario', usuarioRota);
 rota.use('/venda', vendaRota);
 rota.use('/venda-lote', vendaLoteRota);
+rota.use('/reports', express.static(path.join(__dirname, '../../../reports')));
 
 export default rota;
