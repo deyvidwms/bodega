@@ -1,6 +1,6 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import RelatorioFinanceiro from "../../../base/arquitetura/RelatorioFinanceiro";
-import { Lote, Produto, Venda } from "@prisma/client";
+import { Lote, Produto, Venda, VendaLote } from "@prisma/client";
 import LoteRepositorio from "../../../base/repositorio/LoteRepositorio";
 import VendaRepositorio from "../../../base/repositorio/VendaRepositorio";
 import VendaLoteSupermercado from "../entidade/VendaLoteSupermercado";
@@ -13,7 +13,13 @@ export default class RelatorioFinanceiroSupermercado extends RelatorioFinanceiro
     return RelatorioFinanceiroSupermercado.loteRepositorio.porPeriodo(idComercio, inicio, fim);
   }
 
-  async calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<Venda[]> {
+  async calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<(Venda & {
+    vendaLotes: (VendaLote & {
+      lote: Lote & {
+        produto: Produto;
+      };
+    })[];
+  })[]> {
     return RelatorioFinanceiroSupermercado.vendaRepositorio.porPeriodo(idComercio, inicio, fim);
   }
 

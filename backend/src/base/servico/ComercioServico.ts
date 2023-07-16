@@ -343,7 +343,7 @@ export default class ComercioServico implements ServicoEscrita<Comercio> {
       .then(() => {
         console.log('Relatório gerado com sucesso!');
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error('Erro ao gerar o relatório:', error);
       });
 

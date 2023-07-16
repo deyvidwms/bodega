@@ -1,6 +1,6 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import RelatorioFinanceiro from "../../../base/arquitetura/RelatorioFinanceiro";
-import { Lote, Produto, Venda } from "@prisma/client";
+import { Lote, Produto, Venda, VendaLote } from "@prisma/client";
 import VendaLoteLojaPecas from "../entidade/VendaLoteLojaPecas";
 import LoteRepositorio from "../../../base/repositorio/LoteRepositorio";
 import VendaRepositorio from "../../../base/repositorio/VendaRepositorio";
@@ -17,7 +17,13 @@ export default class RelatorioFinanceiroLojaPecas extends RelatorioFinanceiro {
     return new Date(data.toDateString()) >= new Date(new Date().toDateString());
   }
 
-  async calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<Venda[]> {
+  async calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<(Venda & {
+    vendaLotes: (VendaLote & {
+      lote: Lote & {
+        produto: Produto;
+      };
+    })[];
+  })[]> {
     const vendas = await RelatorioFinanceiroLojaPecas.vendaRepositorio.porPeriodo(idComercio, inicio, fim);
     const vendasValidas = []
     for (const venda of vendas) {
