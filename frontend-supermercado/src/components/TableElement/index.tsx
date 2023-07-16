@@ -7,9 +7,7 @@ import { Container, ActionIcon } from './styles';
 
 import { FaPencilAlt, FaTrash, FaWhatsapp } from 'react-icons/fa';
 import { ContatoCliente } from '../../interfaces/ContatoCliente';
-import ContatoClienteBodega from '../ContatoCliente/ContatoClienteBodega';
 import ContatoClienteSupermercado from '../ContatoCliente/ContatoClienteSupermercado';
-import ContatoClienteLojaDePeca from '../ContatoCliente/ContatoClienteLojaDePeca';
 
 type Props = {
   header: string[];
@@ -24,7 +22,7 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const contatoCliente: ContatoCliente = new ContatoClienteBodega(); 
+  const contatoCliente: ContatoCliente = new ContatoClienteSupermercado(); 
 
   const renderBotaoContato: (row: {[key: string]: any}) => JSX.Element = (row) => { 
     return contatoCliente.render(row);
