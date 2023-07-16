@@ -36,14 +36,15 @@ type VendaLote = {
 
 type Venda = {
   id: number;
-  vendidoEm: Date;
+  idComprador: number;
   vendaLotes: VendaLote[];
+  vendidoEm: Date;
 };
 
 const Venda: React.FC = () => {
   const [showSideBarForm, setShowSideBarForm] = useState<boolean>(false);
   const [showSideBarFormEdit, setShowSideBarFormEdit] = useState<boolean>(false);
-  const [rows, setRows] = useState<Venda[]>([]);
+  const [rows, setRows] = useState<{id: number, nome: string, vendidoEm: string, valorVenda: string }[]>([]);
   const [rowId, setRowId] = useState<number>(0);
 
   const caminhos = [
@@ -66,8 +67,28 @@ const Venda: React.FC = () => {
     };
 
     const setVendas = (data: any) => {
-      const response: Venda[] = [];
-      data.pessoas.forEach((element: Venda) => response.push(element));
+      console.log('Dados request: ', data)
+      const response: {id: number, nome: string, vendidoEm: string, valorVenda: string }[] = [];
+            
+      data.forEach((element: Venda) => { 
+        let totalVenda = 0;
+
+        element.vendaLotes.forEach( vendaLote => {
+          totalVenda += vendaLote.quantidade * ( vendaLote.lote.emPromocao ? vendaLote.lote.precoVendaPromocao : vendaLote.lote.precoVenda );
+        });
+
+        const venda = {
+          id: element.id,
+          nome: element.idComprador !== null ? 'Comprador '+element.idComprador : 'Compra anônima',
+          vendidoEm: new Date(String(element.vendidoEm).substring(0,10)).toLocaleDateString(),
+          valorVenda: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format( Number(totalVenda) ),
+        };
+
+        response.push(venda);
+      });
+
+      console.log('Valores da tabela', response)
+
       setRows(response);
     };
 
@@ -112,10 +133,10 @@ const Venda: React.FC = () => {
         <Row>
           <Column>
             <TableElement
-              header={['nome', 'celular', 'saldo devedor']}
-              rowsField={['nome', 'celular', 'saldoDevedor']}
+              header={['comprador', 'data da venda', 'valor da venda']}
+              rowsField={['nome', 'vendidoEm', 'valorVenda']}
               rows={rows}
-              tableItemName='Clientes'
+              tableItemName='Vendas'
               handleEdit={editVenda}
               handleDelete={deleteVenda}
             />

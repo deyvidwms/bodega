@@ -85,6 +85,7 @@ const TableElement: React.FC<Props> = ({ header, rowsField, rows, tableItemName,
                   }
                   <TableCell component="th" scope="row" align='right'>
                     {
+                      tableItemName === 'Clientes' &&
                       renderBotaoContato(row)
                     }
                     {
