@@ -112,7 +112,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        console.log('side bar form data: ',data)
         if (!data.erros) { 
           setSuccess(true) 
         } else {
@@ -143,7 +143,7 @@ const SideBarForm: React.FC<Props> = ({ title, children, show, setShow, currentS
   }, [failed]);
 
   useEffect(() => {
-    console.log(methods.formState.errors)
+    console.log('side bar form erros: ', methods.formState.errors)
   }, [methods.formState.errors])
 
   return (

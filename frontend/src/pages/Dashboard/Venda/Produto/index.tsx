@@ -11,9 +11,10 @@ import TextFieldElement from '../../../../components/TextFieldElement';
 import { Masks } from '../../../../assets/ts/Masks';
 import SideBarFormEdit from '../../../../components/SideBarFormEdit';
 import dayjs from 'dayjs';
-import { Button } from '@mui/material';
 import AutoCompleteElement from '../../../../components/AutoCompleteElement';
 import { FormValues } from '../../../../types/FormValues';
+import SelectFieldElement from '../../../../components/SelectFieldElement';
+import DateElement from '../../../../components/DateElement';
 
 type Lote = {
   id: string;
@@ -147,6 +148,19 @@ const VendaProduto: React.FC = () => {
     }
   }
 
+  const editProduct = (values: FormValues) => {
+    console.log('values ',values)
+    const indexLote = rows.findIndex((element: { id: number; nome: string; quantidade: number; validade: string; }) => element.id === Number(values.idLote));
+    if (indexLote > -1) {
+      const tmpRows = rows;
+      const rowItem = tmpRows[indexLote];
+      rowItem.id = Number(values.idLote);
+      rowItem.quantidade = Number(values.quantidade);
+      tmpRows[indexLote] = rowItem;
+      setRows(tmpRows);
+    }
+  }
+
   const editVenda = (id: number) => {
     const indexLote = lotes.findIndex(element => Number(element.id) === id);
     if (indexLote > -1) {
@@ -162,6 +176,30 @@ const VendaProduto: React.FC = () => {
       setRows(rows.filter((element, index) => index !== indexLote));   
     }
   }
+
+  const renderField = () => {
+    const field = ( <SelectFieldElement
+      label='A venda é uma venda fiada? *'
+      name='fiado'
+      options={[{ id: 1, name: 'Não', value: '0' }, { id: 2, name: 'Sim', value: '1' }]}
+      required
+    /> );
+    // const field = (
+    //   <TextFieldElement 
+    //     label='Endereço'
+    //     name='nome'
+    //     required
+    //   />
+    // );
+    // const field = (<DateElement
+    //   label='Data de retirada'
+    //   name='dtRetirada'
+    //   required
+    // />);
+    return field;
+  }
+
+  useEffect(() => { console.log('venda > produto > rows', rows) }, [rows])
 
   return (
     <LayoutDashboard>
@@ -237,6 +275,7 @@ const VendaProduto: React.FC = () => {
         rowItem={rowItem}
         rows={rows}
         setRows={setRows}
+        handleClickEdit={editProduct}
       >
         <AutoCompleteElement
           label='Produto'
@@ -279,6 +318,10 @@ const VendaProduto: React.FC = () => {
             )
           }
         />
+
+        {
+          renderField()
+        }
       </SideBarForm>
     </LayoutDashboard>
   );

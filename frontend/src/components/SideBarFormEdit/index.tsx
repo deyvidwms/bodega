@@ -26,6 +26,7 @@ type Props = {
   rows?: any;
   setRows?: any;
   style?: React.CSSProperties | undefined;
+  handleClickEdit?: (values: FormValues) => void;
 };
 
 const validationSchemas = [
@@ -35,8 +36,9 @@ const validationSchemas = [
   validationSchemaSellProduct
 ];
 
-const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem, rowItem, rows, setRows, style }) => {
+const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, currentSchema, endpoint, idItem, rowItem, rows, setRows, style, handleClickEdit }) => {
   const [success, setSuccess] = useState<boolean>(false);
+  const [successProdutoVenda, setSuccessProdutoVenda] = useState<boolean>(false);
   const [failed, setFailed] = useState<boolean>(false);
   const [defaultValues, setDefaultValues] = useState<{ [key: string]: any }>({});
 
@@ -52,13 +54,16 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
   const onSubmitHandler = async (values: FormValues) => {
 
     if (rowItem !== undefined) {
-      const indexLote = rows.findIndex((element: { id: number; nome: string; quantidade: number; validade: string; }) => element.id === idItem);
-      if (indexLote > -1) {
-        const tmpRows = rows;
-        rowItem.id = Number(values.idLote);
-        rowItem.quantidade = Number(values.quantidade);
-        tmpRows[indexLote] = rowItem;
-        setRows(tmpRows);
+      if ( handleClickEdit !== undefined ) {
+        handleClickEdit(values);
+        setSuccessProdutoVenda(true);
+        setTimeout(() => {
+          methods.reset()
+          setTimeout(() => {
+            setShow(false);
+            setSuccessProdutoVenda(false);
+          })
+        }, 3000);
       }
     } else {
       if (endpoint === 'lote') {
@@ -204,9 +209,9 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
 
   return (
     <Container show={show} style={style}>
-      {(!success && !failed) && <Title>Edição de {title}</Title>}
+      {(!(success || successProdutoVenda) && !failed) && <Title>Edição de {title}</Title>}
       {
-        (!success && !failed) &&
+        (!(success || successProdutoVenda) && !failed) &&
         <ProductRegisterForm
           noValidate
           autoComplete="off"
@@ -235,7 +240,7 @@ const SideBarFormEdit: React.FC<Props> = ({ title, children, show, setShow, curr
         </ProductRegisterForm>
       }
       {
-        success &&
+        (success || successProdutoVenda) &&
         <SuccessMessage>
           <FaCheckCircle />
           <p><span>{title.substring(0, title.length - 1)}</span> editado com sucesso!</p>

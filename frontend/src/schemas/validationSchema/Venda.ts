@@ -5,5 +5,8 @@ export const validationSchemaSell = yup
   .shape({
     idCliente: yup
       .string(),
+    // fiado: yup
+    //   .string()
+    //   .required("Selecione uma opção válida"),
   })
   .required();
