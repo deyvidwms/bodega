@@ -13,7 +13,13 @@ export default abstract class RelatorioFinanceiro {
   }
 
   abstract calcularCompras(idComercio: number, inicio: Date, fim: Date): Promise<Lote[]>;
-  abstract calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<Venda[]>;
+  abstract calcularVendas(idComercio: number, inicio: Date, fim: Date): Promise<(Venda & {
+    vendaLotes: (VendaLote & {
+      lote: Lote & {
+        produto: Produto;
+      };
+    })[];
+  })[]>;
   abstract calcularReceita(vendas: Venda[]): Decimal;
   abstract calcularDespesa(vendas: (Venda & any)[], lotes: Lote[]): Decimal;
 }
