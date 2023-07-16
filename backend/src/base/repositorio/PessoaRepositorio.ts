@@ -1,4 +1,5 @@
-import { Pessoa, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import Pessoa from "../entidade/Pessoa";
 
 export default class PessoaRepositorio {
   private static repositorio = new PrismaClient().pessoa;
@@ -18,9 +19,6 @@ export default class PessoaRepositorio {
 
   async criar(pessoa: Pessoa) {
     const p = await PessoaRepositorio.repositorio.create({ data: pessoa });
-    if (p === null) {
-      return null;
-    }
     return { ...p, whatsapp: p.celular };
   }
 
@@ -29,9 +27,6 @@ export default class PessoaRepositorio {
       where: { id: pessoa.id },
       data: pessoa
     });
-    if (p === null) {
-      return null;
-    }
     return { ...p, whatsapp: p.celular };
   }
 
