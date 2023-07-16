@@ -3,34 +3,55 @@ import { Pessoa, PrismaClient } from "@prisma/client";
 export default class PessoaRepositorio {
   private static repositorio = new PrismaClient().pessoa;
 
-  todos() {
-    return PessoaRepositorio.repositorio.findMany({ include: { usuario: true } });
+  async todos() {
+    const pessoas = await PessoaRepositorio.repositorio.findMany({ include: { usuario: true } });
+    return pessoas.map((p) => ({ ...p, whatsapp: p.celular }));
   }
 
-  porId(id: number) {
-    return PessoaRepositorio.repositorio.findUnique({ where: { id } });
+  async porId(id: number) {
+    const p = await PessoaRepositorio.repositorio.findUnique({ where: { id } });
+    if (p === null) {
+      return null;
+    }
+    return { ...p, whatsapp: p.celular };
   }
 
-  criar(pessoa: Pessoa) {
-    return PessoaRepositorio.repositorio.create({ data: pessoa })
+  async criar(pessoa: Pessoa) {
+    const p = await PessoaRepositorio.repositorio.create({ data: pessoa });
+    if (p === null) {
+      return null;
+    }
+    return { ...p, whatsapp: p.celular };
   }
 
-  atualizar(pessoa: Pessoa) {
-    return PessoaRepositorio.repositorio.update({
+  async atualizar(pessoa: Pessoa) {
+    const p = await PessoaRepositorio.repositorio.update({
       where: { id: pessoa.id },
       data: pessoa
     });
+    if (p === null) {
+      return null;
+    }
+    return { ...p, whatsapp: p.celular };
   }
 
   remover(id: number) {
     return PessoaRepositorio.repositorio.delete({ where: { id } });
   }
 
-  porCpf(cpf: string) {
-    return PessoaRepositorio.repositorio.findUnique({ where: { cpf } });
+  async porCpf(cpf: string) {
+    const p = await PessoaRepositorio.repositorio.findUnique({ where: { cpf } });
+    if (p === null) {
+      return null;
+    }
+    return { ...p, whatsapp: p.celular };
   }
 
-  porCelular(celular: string) {
-    return PessoaRepositorio.repositorio.findUnique({ where: { celular } });
+  async porCelular(celular: string) {
+    const p = await PessoaRepositorio.repositorio.findUnique({ where: { celular } });
+    if (p === null) {
+      return null;
+    }
+    return { ...p, whatsapp: p.celular };
   }
 }
