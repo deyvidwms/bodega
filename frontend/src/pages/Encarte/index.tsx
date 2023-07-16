@@ -96,9 +96,9 @@ const Encarte: React.FC = () => {
       <HeaderEncarte>
         <Subtitle>Novas Ofertas</Subtitle>
         <Divider sx={{ width: '60%', transform: 'translateY: (-60%)' }}>
-          <Title>Budega's Store</Title>
+          <Title>Comercio Store</Title>
         </Divider>
-        <TitleMobile>Budega's Store</TitleMobile>
+        <TitleMobile>Comercio Store</TitleMobile>
       </HeaderEncarte>
 
       <ContentEncarte>

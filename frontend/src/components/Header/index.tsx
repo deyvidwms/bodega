@@ -30,7 +30,7 @@ const Header: React.FC<Props> = ({changeMobileMenu, onClick}) => {
   return (
     <Container>
       <div>
-        <h1>Budega's Store</h1>
+        <h1>Comercio Store</h1>
       </div>
         {
           !showMobileMenu ?

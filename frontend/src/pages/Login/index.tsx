@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   return (
     <LayoutLogin>
       <CardLogin>
-        <Title>Budega's Store</Title>
+        <Title>Comercio Store</Title>
         <Row>
           <Column>
             <label htmlFor="">Login</label>
