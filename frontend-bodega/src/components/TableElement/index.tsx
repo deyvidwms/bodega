@@ -8,8 +8,6 @@ import { Container, ActionIcon } from './styles';
 import { FaPencilAlt, FaTrash, FaWhatsapp } from 'react-icons/fa';
 import { ContatoCliente } from '../../interfaces/ContatoCliente';
 import ContatoClienteBodega from '../ContatoCliente/ContatoClienteBodega';
-import ContatoClienteSupermercado from '../ContatoCliente/ContatoClienteSupermercado';
-import ContatoClienteLojaDePeca from '../ContatoCliente/ContatoClienteLojaDePeca';
 
 type Props = {
   header: string[];
