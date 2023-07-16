@@ -67,7 +67,6 @@ const Venda: React.FC = () => {
     };
 
     const setVendas = (data: any) => {
-      console.log('Dados request: ', data)
       const response: {id: number, nome: string, vendidoEm: string, valorVenda: string }[] = [];
             
       data.forEach((element: Venda) => { 
@@ -86,9 +85,7 @@ const Venda: React.FC = () => {
 
         response.push(venda);
       });
-
-      console.log('Valores da tabela', response)
-
+      
       setRows(response);
     };
 
