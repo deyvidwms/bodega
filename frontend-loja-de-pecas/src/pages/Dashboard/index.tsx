@@ -11,10 +11,13 @@ const Dashboard: React.FC = () => {
   const handleClickRelatorio = () => {
     fetch('http://localhost:3000/comercio/financeiro/1', {
       method: 'POST',
-      body: JSON.stringify({inicio: '2012-04-23T18:25:43.511Z', fim: String(new Date().toJSON())})
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({inicio: '2001-01-01T18:25:43.511Z', fim: String(new Date().toJSON())})
     })
       .then( response => response.json() )
-      .then( data => console.log(data) )
+      .then( data => window.open(data.link, 'blank') )
       .catch( error => console.log('Erro:', error) )
   }
 
